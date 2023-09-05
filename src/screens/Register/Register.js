@@ -1,15 +1,18 @@
 import React from "react";
 import { View, Text, Button, StyleSheet, ImageBackground, TextInput, Alert } from "react-native";
-
-const image = {
-  uri: "https://cdn.pixabay.com/photo/2023/08/07/12/28/swan-8174925_1280.jpg",
-};
-const LoginButton = ({ navigation }) => {
+import Video from "react-native-video";
+const Register = ({ navigation }) => {
   const { user, onChangeUser } = React.useState();
   const { password, onChangePassword } = React.useState();
   const { password2, onChangePassword2 } = React.useState();
   return (
-    <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+    <View>
+      <Video
+        source={{ uri: '../../../assets/tinta.mp4' }} // Ruta del video en Android
+        style={styles.backgroundVideo}
+        resizeMode="cover" // Puedes ajustar esto según tus necesidades
+        repeat
+      />
       <View style={styles.main}>
         <TextInput
           style={styles.input}
@@ -39,11 +42,11 @@ const LoginButton = ({ navigation }) => {
         <Button title="Registrar" onPress={() => Alert.alert("Botton pulsado registrar")} />
         <Button title="Cancelar" onPress={() => navigation.navigate('Login')} />
       </View>
-    </ImageBackground>
+    </View>
   );
 };
 
-export default LoginButton;
+export default Register;
 
 const styles = StyleSheet.create({
   container: {
@@ -65,5 +68,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#E4E4E4",
     marginBottom: 10,
     marginLeft: 112,
-  }
+  }, backgroundVideo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
 });

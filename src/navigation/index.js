@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import BottomNav from "./bottom/BottomNav";
+import BottomNav from "./bottom/TattooBottomNav";
 import LoginNav from "../screens/Login/Login";
 import Stack from "../navigation/stack/StackNav"
 

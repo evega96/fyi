@@ -1,14 +1,19 @@
 import React from "react";
 import { View, Text, Button, StyleSheet, ImageBackground, TextInput, Alert } from "react-native";
+import Video from "react-native-video";
 
-const image = {
-  uri: "https://cdn.pixabay.com/photo/2023/08/07/12/28/swan-8174925_1280.jpg",
-};
+
 const LoginButton = ({ navigation }) => {
   const { user, onChangeUser } = React.useState();
   const { password, onChangePassword } = React.useState();
   return (
-    <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+    <View>
+      <Video
+        source={{ uri: '../../../assets/tinta.mp4' }}
+        style={styles.backgroundVideo}
+        resizeMode="cover"
+        repeat
+      />
       <View style={styles.main}>
         <TextInput
           style={styles.input}
@@ -31,7 +36,7 @@ const LoginButton = ({ navigation }) => {
         <Button title="Iniciar sesion" onPress={() => Alert.alert("Boton pulsado iniciar sesion")} />
         <Button title="Registrar" onPress={() => navigation.navigate("Register")} />
       </View>
-    </ImageBackground>
+    </View>
   );
 };
 
@@ -57,5 +62,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#E4E4E4",
     marginBottom: 10,
     marginLeft: 112,
-  }
+  }, backgroundVideo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+  },
 });
