@@ -7,6 +7,7 @@ const image = {
 const LoginButton = ({ navigation }) => {
   const { user, onChangeUser } = React.useState();
   const { password, onChangePassword } = React.useState();
+  const { password2, onChangePassword2 } = React.useState();
   return (
     <ImageBackground source={image} resizeMode="cover" style={styles.image}>
       <View style={styles.main}>
@@ -19,7 +20,6 @@ const LoginButton = ({ navigation }) => {
         >
 
         </TextInput>
-
         <TextInput
           style={styles.input}
           onChangeText={onChangePassword}
@@ -28,8 +28,16 @@ const LoginButton = ({ navigation }) => {
           placeholder="Contraseña"
         >
         </TextInput>
-        <Button title="Iniciar sesion" onPress={() => Alert.alert("Boton pulsado iniciar sesion")} />
-        <Button title="Registrar" onPress={() => navigation.navigate("Register")} />
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangePassword2}
+          value={password2}
+          type="text"
+          placeholder="Repite la contraseña"
+        >
+        </TextInput>
+        <Button title="Registrar" onPress={() => Alert.alert("Botton pulsado registrar")} />
+        <Button title="Cancelar" onPress={() => navigation.navigate('Login')} />
       </View>
     </ImageBackground>
   );
