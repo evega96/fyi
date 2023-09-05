@@ -1,7 +1,7 @@
 import Favorite from "./Favorite";
 import Ionicons from 'react-native-vector-icons/Fontisto';
 
-const Page2Config = {
+const Favorite = {
     name: "Favorite",
     component: Favorite,
     options: {
@@ -10,4 +10,4 @@ const Page2Config = {
     }
 }
 
-export default Page2Config;
+export default Favorite;
