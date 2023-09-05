@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Button, StyleSheet, ImageBackground, TextInput } from "react-native";
+import { View, Text, Button, StyleSheet, ImageBackground, TextInput, Alert } from "react-native";
 
 const image = {
   uri: "https://cdn.pixabay.com/photo/2023/08/07/12/28/swan-8174925_1280.jpg",
@@ -15,7 +15,7 @@ const LoginButton = () => {
           onChangeText={onChangeUser}
           value={user}
           type="text"
-          placeholder="user"
+          placeholder="Correo electronico o usuario"
         >
 
         </TextInput>
@@ -24,10 +24,11 @@ const LoginButton = () => {
           onChangeText={onChangePassword}
           value={password}
           type="text"
-          placeholder="pass"
+          placeholder="Contraseña"
         >
-
         </TextInput>
+        <Button title="Iniciar sesion" onPress={() => Alert.alert("Botton pulsado iniciar sesion")} />
+        <Button title="Registar" onPress={() => Alert.alert("Botton pulsado registrar")} />
       </View>
     </ImageBackground>
   );
@@ -50,10 +51,10 @@ const styles = StyleSheet.create({
   },
   input: {
     alignContent: "center",
-    width: 200,
-    height: 20,
+    width: 205,
+    height: 25,
     backgroundColor: "#E4E4E4",
     marginBottom: 10,
-    marginLeft: 110,
+    marginLeft: 112,
   }
 });
