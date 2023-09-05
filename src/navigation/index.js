@@ -1,11 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native";
 import BottomNav from "./bottom/BottomNav";
-import LoginNav from "../components/login/LoginButton";
+import LoginNav from "../screens/Login/Login";
+import Stack from "../navigation/stack/StackNav"
 
 const index = () => {
   return (
     <NavigationContainer>
-      <LoginNav></LoginNav>
+      <Stack></Stack>
     </NavigationContainer>
   );
 };

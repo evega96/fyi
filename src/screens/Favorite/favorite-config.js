@@ -1,13 +1,13 @@
-import Favorite from "./Favorite";
+import Fav from "./Favorite";
 import Ionicons from 'react-native-vector-icons/Fontisto';
 
-const Page2Config = {
+const Favorite = {
     name: "Favorite",
-    component: Favorite,
+    component: Fav,
     options: {
         headerTitle: 'Favorite',
         tabBarIcon: () => <Ionicons name="favorite" size={30} color="#6451a5" ></Ionicons>
     }
 }
 
-export default Page2Config;
+export default Favorite;
