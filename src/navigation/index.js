@@ -1,12 +1,13 @@
 import { NavigationContainer } from "@react-navigation/native";
-import BottomNav from "./bottom/BottomNav";
-import LoginNav from "../screens/Login/Login";
-import Stack from "../navigation/stack/StackNav"
+import GuessNav from "./stack/GuessNav";
+import ClientBottomNav from "./bottom/ClientBottom/ClientBottomNav";
+import TattooArtistNav from "./bottom/TattooArtistBottomNav";
 
 const index = () => {
+  const userLogin = true;
   return (
     <NavigationContainer>
-      <Stack></Stack>
+      {userLogin ? <ClientBottomNav /> : <GuessNav />}
     </NavigationContainer>
   );
 };

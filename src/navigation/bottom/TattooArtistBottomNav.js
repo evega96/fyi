@@ -2,8 +2,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Fav from "../../screens/Favorite/Favorite";
 import Account from "../../screens/Account/Account";
 import Message from "../../screens/Message/Message";
-import Stacknav from "../stack/StackNav";
-import BottomConfig from "./bottom-config";
+import Stacknav from "../stack/GuessNav";
+import BottomConfig from "./TattooArtistBottom-config";
 import HomeConfig from "../../screens/Home/home-config";
 import PageConfig from "../../screens/Favorite/favorite-config";
 import MessageConfig from "../../screens/Message/message-config";
@@ -13,7 +13,7 @@ import AddConfig from "../../screens/Add/add-config";
 
 const BottomTab = createBottomTabNavigator();
 
-const BottomNav = () => {
+const TattooArtistBottomNav = () => {
   return (
     <BottomTab.Navigator {...BottomConfig}>
       <BottomTab.Screen
@@ -29,4 +29,4 @@ const BottomNav = () => {
   );
 };
 
-export default BottomNav;
+export default TattooArtistBottomNav;

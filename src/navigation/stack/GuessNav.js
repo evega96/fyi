@@ -1,10 +1,10 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import Login from "../../screens/Login/Login"
-import Register from "../../screens/Register/Register"
+import Login from "../../screens/Login/Login";
+import Register from "../../screens/Register/Register";
 
 const Stack = createStackNavigator();
 
-const StackNav = () => {
+const GuessNav = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Login" component={Login} />
@@ -13,4 +13,4 @@ const StackNav = () => {
   );
 };
 
-export default StackNav;
+export default GuessNav;
