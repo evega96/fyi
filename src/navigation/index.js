@@ -2,12 +2,27 @@ import { NavigationContainer } from "@react-navigation/native";
 import GuessNav from "./stack/GuessNav";
 import ClientBottomNav from "./bottom/ClientBottom/ClientBottomNav";
 import TattooArtistNav from "./bottom/TattooArtistBottomNav";
+import { useState } from "react";
 
 const index = () => {
-  const userLogin = true;
+  const user = {
+    name: "Marcos",
+    Role: "TattooArtist",
+  };
+
+  const [userLogin, setuserLogin] = useState(user);
+
   return (
     <NavigationContainer>
-      {userLogin ? <ClientBottomNav /> : <GuessNav />}
+      {userLogin ? (
+        userLogin.Role === "Client" ? (
+          <ClientBottomNav />
+        ) : userLogin.Role === "TattooArtist" ? (
+          <TattooArtistNav />
+        ) : null
+      ) : (
+        <GuessNav />
+      )}
     </NavigationContainer>
   );
 };

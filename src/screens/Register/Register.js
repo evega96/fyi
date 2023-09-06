@@ -21,6 +21,10 @@ const LoginButton = ({ navigation }) => {
     <View style={styles.container}>
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
         <View style={styles.main}>
+          <Image
+            style={styles.logo}
+            source={require("../../../assets/Logo.png")}
+          />
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
@@ -107,5 +111,8 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 1,
     borderColor: "#000000",
+  },
+  logo: {
+    marginBottom: 10,
   },
 });
