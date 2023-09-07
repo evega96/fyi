@@ -4,6 +4,7 @@ import ClientBottomNav from "./bottom/ClientBottom/ClientBottomNav";
 import TattooArtistNav from "./bottom/TattooArtistBottomNav";
 import { useState } from "react";
 
+
 const index = () => {
   const user = {
     name: "Marcos",

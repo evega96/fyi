@@ -1,15 +1,15 @@
 import Home from "./Home";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import home from '../../../assets/home.png';
+import { Image } from "react-native";
 
 const HomeConfig = {
   name: "Home",
   component: Home,
   options: {
     headerTitle: "Home",
-    tabBarIcon: () => (
-      <Ionicons name="home" size={30} color="#6451a5"></Ionicons>
-    ),
-  },
+    tabBarIcon: () => <Image source={home} />
+  }
 };
 
 export default HomeConfig;

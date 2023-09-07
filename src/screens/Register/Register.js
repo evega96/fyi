@@ -70,7 +70,7 @@ const LoginButton = ({ navigation }) => {
   );
 };
 
-export default LoginButton;
+export default Register;
 
 const styles = StyleSheet.create({
   container: {

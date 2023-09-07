@@ -1,14 +1,14 @@
 import Message from "./Message";
 import Ionicons from "react-native-vector-icons/AntDesign";
+import img from '../../../assets/mensaje.png';
+import { Image } from "react-native";
 
 const MessageConfig = {
   name: "Message",
   component: Message,
   options: {
     headerTitle: "Message",
-    tabBarIcon: () => (
-      <Ionicons name="message1" size={30} color="#6451a5"></Ionicons>
-    ),
+    tabBarIcon: () => <Image source={img} />
   },
 };
 

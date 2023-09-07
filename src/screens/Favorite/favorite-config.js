@@ -1,12 +1,14 @@
 import Fav from "./Favorite";
 import Ionicons from 'react-native-vector-icons/Fontisto';
+import img from '../../../assets/save-line.png';
+import { Image } from "react-native";
 
 const Favorite = {
     name: "Favorite",
     component: Fav,
     options: {
         headerTitle: 'Favorite',
-        tabBarIcon: () => <Ionicons name="favorite" size={30} color="#6451a5" ></Ionicons>
+        tabBarIcon: () => <Image source={img} />,
     }
 }
 
