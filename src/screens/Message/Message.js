@@ -1,14 +1,24 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import Ionicons from 'react-native-vector-icons/AntDesign';
+import Chat from '../../components/ChatRoom'
 
 const Message = () => {
     return (
-        <View>
-            <Text>esto es mensajes</Text>
-            <Ionicons name="message1" size={30} color="#6451a5" ></Ionicons>
-        </View>
+        <Chat></Chat>
     )
 }
 
 export default Message
+
+const styles = StyleSheet.create({
+
+    input: {
+        alignContent: "center",
+        width: 205,
+        height: 25,
+        backgroundColor: "#E4E4E4",
+        marginBottom: 10,
+        marginLeft: 112,
+    }
+});
