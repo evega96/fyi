@@ -1,7 +1,6 @@
 import React from "react";
 
 import { View, Text, Button, StyleSheet, ImageBackground, TextInput, Alert } from "react-native";
-import GifBackgroundView from 'react-native-gif';
 import tinta from '../../../assets/tinta.mp4'
 import { Video } from 'expo-av';
 

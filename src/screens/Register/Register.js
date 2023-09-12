@@ -12,7 +12,7 @@ import {
 import image from "../../../assets/RegisterImage.png";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-const LoginButton = ({ navigation }) => {
+const Register = ({ navigation }) => {
   const [user, onChangeUser] = React.useState("");
   const [password, onChangePassword] = React.useState("");
   const [password2, onChangePassword2] = React.useState("");
