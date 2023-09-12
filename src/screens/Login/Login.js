@@ -1,6 +1,8 @@
 import React from "react";
 
-import { View, Text, Button, StyleSheet, ImageBackground, TextInput, Alert } from "react-native";
+
+import { View, Text, Button, StyleSheet, Image, TextInput, Alert } from "react-native";
+
 import tinta from '../../../assets/tinta.mp4'
 import { Video } from 'expo-av';
 
@@ -18,27 +20,33 @@ const LoginButton = ({ navigation }) => {
         isLooping={true}
         shouldPlay={true}
       >
-        <View style={styles.main}>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeUser}
-            value={user}
-            type="text"
-            placeholder="Correo electronico o usuario"
-          >
-          </TextInput>
 
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangePassword}
-            value={password}
-            type="text"
-            placeholder="Contraseña"
-          >
-          </TextInput>
-          <Button title="Iniciar sesion" onPress={() => Alert.alert("Boton pulsado iniciar sesion")} />
-          <Button title="Registrar" onPress={() => navigation.navigate("Register")} />
-        </View>
+      <View style={styles.main}>
+      <Image
+          style={styles.logo}
+          source={require("../../../assets/Logo.png")}
+        />
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeUser}
+          value={user}
+          type="text"
+          placeholder="Correo electronico o usuario"
+        >
+        </TextInput>
+
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangePassword}
+          value={password}
+          type="text"
+          placeholder="Contraseña"
+        >
+        </TextInput>
+        <Button title="Iniciar sesion" onPress={() => Alert.alert("Boton pulsado iniciar sesion")} />
+        <Button title="Registrar" onPress={() => navigation.navigate("Register")} />
+      </View>
+
       </Video>
     </View>
   );
@@ -75,4 +83,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
   },
+  logo: {
+    marginBottom: 10,
+    marginLeft:150
+  }
 });

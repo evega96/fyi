@@ -1,5 +1,8 @@
 import { collection, getDocs, query, doc, getDoc, addDoc, deleteDoc, updateDoc, setDoc, where } from "firebase/firestore";
-import { db } from './firebase';
+
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { db, auth } from './firebase';
+
 const collectionName = 'chat';
 
 // CREATE
@@ -47,3 +50,29 @@ const getArrayFromCollection = (collection) => {
         return { ...doc.data(), id: doc.id };
     });
 }
+
+//Sign Up and Sign In
+
+export const signUp = async (email, password) => {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        await setDoc(doc(db, 'users', user.uid), {});
+        return user.uid;
+    } catch (err) {
+        return err.message;
+    }
+}
+
+export const signIn = async (email, password) => {
+    try {
+        const result = await signInWithEmailAndPassword(auth, email, password);
+        return result.user.uid;
+    } catch (err) {
+        return err.message;
+    }
+}
+
+export const getCurrentUserId = async () => await auth.currentUser?.uid;
+export const logout = async () => await signOut(auth);
+

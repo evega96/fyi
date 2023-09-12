@@ -11,7 +11,8 @@ const index = () => {
     Role: "TattooArtist",
   };
 
-  const [userLogin, setuserLogin] = useState(user);
+  const [userLogin, setuserLogin] = useState(null);
+
 
   return (
     <NavigationContainer>

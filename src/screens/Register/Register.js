@@ -12,6 +12,10 @@ import {
 import image from "../../../assets/RegisterImage.png";
 import Icon from "react-native-vector-icons/FontAwesome";
 
+import {signUp} from '../../app/api';
+
+
+
 const Register = ({ navigation }) => {
   const [user, onChangeUser] = React.useState("");
   const [password, onChangePassword] = React.useState("");
@@ -29,7 +33,6 @@ const Register = ({ navigation }) => {
             <TextInput
               style={styles.input}
               onChangeText={onChangeUser}
-              value={user}
               placeholder="Correo electrónico o usuario"
             />
             <Icon name="user" size={20} color="#000" style={styles.icon} />
@@ -38,7 +41,6 @@ const Register = ({ navigation }) => {
             <TextInput
               style={styles.input}
               onChangeText={onChangePassword}
-              value={password}
               placeholder="Contraseña"
               secureTextEntry={true} // Para ocultar la contraseña
             />
@@ -49,7 +51,6 @@ const Register = ({ navigation }) => {
             <TextInput
               style={styles.input}
               onChangeText={onChangePassword2}
-              value={password2}
               placeholder="Repite la contraseña"
               secureTextEntry={true} // Para ocultar la contraseña
             />
@@ -58,7 +59,16 @@ const Register = ({ navigation }) => {
 
           <Button
             title="Registrar"
-            onPress={() => Alert.alert("Botón pulsado registrar")}
+
+            onPress={() => {
+              if(password===password2){
+                signUp(user,password)
+                Alert.alert("Se ha registrado a ", user)
+              }else{
+                Alert.alert("Las contraseñas no coinciden")
+              }
+            }}
+
           />
           <Button
             title="Cancelar"
