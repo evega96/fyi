@@ -11,11 +11,22 @@ import {
 } from "react-native";
 import image from "../../../assets/RegisterImage.png";
 import Icon from "react-native-vector-icons/FontAwesome";
+import {signUp} from '../../app/api';
 
-const LoginButton = ({ navigation }) => {
+
+const Register = ({ navigation }) => {
   const [user, onChangeUser] = React.useState("");
   const [password, onChangePassword] = React.useState("");
   const [password2, onChangePassword2] = React.useState("");
+
+  const regis = (correo, contraseña) => {
+    if(contraseña == password2){
+      signUp(correo, contraseña);
+    }else {
+      alert("Las contraseñas no coinciden")
+    }
+  }
+  
 
   return (
     <View style={styles.container}>
@@ -29,7 +40,6 @@ const LoginButton = ({ navigation }) => {
             <TextInput
               style={styles.input}
               onChangeText={onChangeUser}
-              value={user}
               placeholder="Correo electrónico o usuario"
             />
             <Icon name="user" size={20} color="#000" style={styles.icon} />
@@ -38,7 +48,6 @@ const LoginButton = ({ navigation }) => {
             <TextInput
               style={styles.input}
               onChangeText={onChangePassword}
-              value={password}
               placeholder="Contraseña"
               secureTextEntry={true} // Para ocultar la contraseña
             />
@@ -49,7 +58,6 @@ const LoginButton = ({ navigation }) => {
             <TextInput
               style={styles.input}
               onChangeText={onChangePassword2}
-              value={password2}
               placeholder="Repite la contraseña"
               secureTextEntry={true} // Para ocultar la contraseña
             />
@@ -58,7 +66,14 @@ const LoginButton = ({ navigation }) => {
 
           <Button
             title="Registrar"
-            onPress={() => Alert.alert("Botón pulsado registrar")}
+            onPress={() => {
+              if(password===password2){
+                signUp(user,password)
+                Alert.alert("Se ha registrado a ", user)
+              }else{
+                Alert.alert("Las contraseñas no coinciden")
+              }
+            }}
           />
           <Button
             title="Cancelar"
