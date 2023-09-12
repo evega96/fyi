@@ -1,6 +1,8 @@
 import { collection, getDocs, query, doc, getDoc, addDoc, deleteDoc, updateDoc, setDoc, where } from "firebase/firestore";
+
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { db, auth } from './firebase';
+
 const collectionName = 'chat';
 
 // CREATE
@@ -73,3 +75,4 @@ export const signIn = async (email, password) => {
 
 export const getCurrentUserId = async () => await auth.currentUser?.uid;
 export const logout = async () => await signOut(auth);
+

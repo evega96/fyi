@@ -1,6 +1,8 @@
 import React from "react";
 
+
 import { View, Text, Button, StyleSheet, Image, TextInput, Alert } from "react-native";
+
 import tinta from '../../../assets/tinta.mp4'
 import { Video } from 'expo-av';
 
@@ -18,6 +20,7 @@ const LoginButton = ({ navigation }) => {
         isLooping={true}
         shouldPlay={true}
       >
+
       <View style={styles.main}>
       <Image
           style={styles.logo}
@@ -43,6 +46,7 @@ const LoginButton = ({ navigation }) => {
         <Button title="Iniciar sesion" onPress={() => Alert.alert("Boton pulsado iniciar sesion")} />
         <Button title="Registrar" onPress={() => navigation.navigate("Register")} />
       </View>
+
       </Video>
     </View>
   );

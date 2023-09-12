@@ -11,22 +11,15 @@ import {
 } from "react-native";
 import image from "../../../assets/RegisterImage.png";
 import Icon from "react-native-vector-icons/FontAwesome";
+
 import {signUp} from '../../app/api';
+
 
 
 const Register = ({ navigation }) => {
   const [user, onChangeUser] = React.useState("");
   const [password, onChangePassword] = React.useState("");
   const [password2, onChangePassword2] = React.useState("");
-
-  const regis = (correo, contraseña) => {
-    if(contraseña == password2){
-      signUp(correo, contraseña);
-    }else {
-      alert("Las contraseñas no coinciden")
-    }
-  }
-  
 
   return (
     <View style={styles.container}>
@@ -66,6 +59,7 @@ const Register = ({ navigation }) => {
 
           <Button
             title="Registrar"
+
             onPress={() => {
               if(password===password2){
                 signUp(user,password)
@@ -74,6 +68,7 @@ const Register = ({ navigation }) => {
                 Alert.alert("Las contraseñas no coinciden")
               }
             }}
+
           />
           <Button
             title="Cancelar"
