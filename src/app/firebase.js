@@ -1,18 +1,32 @@
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
-import { getAuth, setPersistence, browserLocalPersistence } from 'firebase/auth';
-import { VITE_API_KEY, VITE_PROJECT_ID } from '@env'
+import { initializeApp, getApp } from "firebase/app";
+import {
+  initializeAuth,
+  getAuth,
+  getReactNativePersistence,
+} from "firebase/auth";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+
+// import {...} from "firebase/database";
+import { getFirestore } from "firebase/firestore";
+// import {...} from "firebase/functions";
+// import {...} from "firebase/storage";
+import { VITE_API_KEY, VITE_PROJECT_ID } from "@env";
 
 const firebaseConfig = {
-    apiKey: VITE_API_KEY,
-    authDomain: VITE_PROJECT_ID + '.firebaseapp.com',
-    projectId: VITE_PROJECT_ID,
-    storageBucket: VITE_PROJECT_ID + ".appspot.com",
+  apiKey: "AIzaSyBtUCHHU3Y3zs8-o-oErQEBzAZPaI_Ycaw",
+  authDomain: "findyourink-5d885.firebaseapp.com",
+  databaseURL: "https://findyourink-5d885.firebaseio.com",
+  projectId: "findyourink-5d885",
+  storageBucket: "findyourink-5d885.appspot.com",
+  messagingSenderId: "744259670184",
+  appId: "1:744259670184:web:ac316857ea9ffc49a0729d",
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
+// initialize Firebase App
+const app = initializeApp(firebaseConfig);
+// initialize Firebase Db  and Auth
 export const db = getFirestore();
-export const auth = getAuth(firebaseApp);
-
-// Si descomentas la siguiente línea, cuando mientras que el usuario no se desloguee expresamente o cierre el navegador, permanecerá logueado y podremos acceder a su id desde cualquier página
-setPersistence(auth, browserLocalPersistence);
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+});
+export { app, auth, getApp, getAuth };

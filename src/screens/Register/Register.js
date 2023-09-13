@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -12,14 +12,22 @@ import {
 import image from "../../../assets/RegisterImage.png";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import {signUp} from '../../app/api';
-
-
+import { signUp } from "../../app/api";
 
 const Register = ({ navigation }) => {
-  const [user, onChangeUser] = React.useState("");
-  const [password, onChangePassword] = React.useState("");
-  const [password2, onChangePassword2] = React.useState("");
+  const [user, setUser] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [password2, setPassword2] = React.useState("");
+  const [errores, setErrores] = useState();
+
+  const SavePerson = async () => {
+    try {
+      await signUp(user, password);
+      Alert.alert("guardado");
+    } catch (err) {
+      Alert.alert(err);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -32,7 +40,7 @@ const Register = ({ navigation }) => {
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              onChangeText={onChangeUser}
+              onChangeText={setUser}
               placeholder="Correo electrónico o usuario"
             />
             <Icon name="user" size={20} color="#000" style={styles.icon} />
@@ -40,7 +48,7 @@ const Register = ({ navigation }) => {
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              onChangeText={onChangePassword}
+              onChangeText={setPassword}
               placeholder="Contraseña"
               secureTextEntry={true} // Para ocultar la contraseña
             />
@@ -50,7 +58,7 @@ const Register = ({ navigation }) => {
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              onChangeText={onChangePassword2}
+              onChangeText={setPassword2}
               placeholder="Repite la contraseña"
               secureTextEntry={true} // Para ocultar la contraseña
             />
@@ -59,16 +67,13 @@ const Register = ({ navigation }) => {
 
           <Button
             title="Registrar"
-
             onPress={() => {
-              if(password===password2){
-                signUp(user,password)
-                Alert.alert("Se ha registrado a ", user)
-              }else{
-                Alert.alert("Las contraseñas no coinciden")
+              if (password === password2) {
+                SavePerson();
+              } else {
+                Alert.alert("Las contraseñas no coinciden");
               }
             }}
-
           />
           <Button
             title="Cancelar"
