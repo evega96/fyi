@@ -2,31 +2,26 @@ import { NavigationContainer } from "@react-navigation/native";
 import GuessNav from "./stack/GuessNav";
 import ClientBottomNav from "./bottom/ClientBottom/ClientBottomNav";
 import TattooArtistNav from "./bottom/TattooArtistBottomNav";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthenticatedUserContext } from "../Context/AuthContextProdiver";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../app/firebase";
+const Navigation = () => {
+  const { user, setUser } = useContext(AuthenticatedUserContext);
 
+  useEffect(() => {
+    const unsubcribe = onAuthStateChanged(auth, async (authenticatedUser) => {
+      authenticatedUser ? setUser(authenticatedUser) : setUser(null);
+    });
 
-const index = () => {
-  const user = {
-    name: "Marcos",
-    Role: "TattooArtist",
-  };
-
-  const [userLogin, setuserLogin] = useState(user);
-
+    return () => unsubcribe();
+  }, [user]);
 
   return (
     <NavigationContainer>
-      {userLogin ? (
-        userLogin.Role === "Client" ? (
-          <ClientBottomNav />
-        ) : userLogin.Role === "TattooArtist" ? (
-          <TattooArtistNav />
-        ) : null
-      ) : (
-        <GuessNav />
-      )}
+      {user ? <ClientBottomNav /> : <GuessNav />}
     </NavigationContainer>
   );
 };
 
-export default index;
+export default Navigation;
