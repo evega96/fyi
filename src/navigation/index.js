@@ -11,7 +11,7 @@ const index = () => {
     Role: "TattooArtist",
   };
 
-  const [userLogin, setuserLogin] = useState(null);
+  const [userLogin, setuserLogin] = useState(user);
 
 
   return (

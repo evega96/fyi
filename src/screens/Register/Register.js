@@ -23,7 +23,7 @@ const Register = ({ navigation }) => {
   const SavePerson = async () => {
     try {
       await signUp(user, password);
-      Alert.alert("guardado");
+      Alert.alert("guardado", user);
     } catch (err) {
       Alert.alert(err);
     }
