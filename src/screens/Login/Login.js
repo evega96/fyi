@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 
 import {
@@ -18,6 +19,7 @@ const LoginButton = ({ navigation }) => {
   const [user, setUser] = useState();
   const [password, setPassword] = useState();
   const [animation] = useState(new Animated.Value(0));
+
 
   useEffect(() => {
     // Realiza la animación cuando el componente se monta
@@ -85,6 +87,7 @@ const LoginButton = ({ navigation }) => {
             secureTextEntry={true}
           >
           </TextInput>
+
         <Button
           title="Iniciar sesion"
           onPress={() => {
@@ -99,6 +102,7 @@ const LoginButton = ({ navigation }) => {
       </View>
       </Animated.View>
     </View>
+
   );
 };
 
