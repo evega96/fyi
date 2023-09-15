@@ -1,14 +1,22 @@
-import React from 'react'
-import { View, Text } from 'react-native'
-import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
+import React from "react";
+import { View, Text, Pressable, Button } from "react-native";
+import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
+import { logout } from "../../app/api";
 
-const Account = () => {
-    return (
-        <View>
-            <Text>Esto es el perfil</Text>
-            <Ionicons name="account" size={30} color="#6451a5" ></Ionicons>
-        </View>
-    )
-}
+const Account = ({ navigation, route }) => {
+  const onhandleLogout = () => {
+    logout();
+  };
+  return (
+    <View>
+      <Text>Screen: {route.name}</Text>
+      <Ionicons name="home" size={30} color="#6451a5" />
 
-export default Account
+      <Pressable onPress={onhandleLogout}>
+        <Text>Cerrar sesión</Text>
+      </Pressable>
+    </View>
+  );
+};
+
+export default Account;
