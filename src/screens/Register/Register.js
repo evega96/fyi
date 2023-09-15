@@ -8,12 +8,13 @@ import {
   TextInput,
   Alert,
   Image,
+  TouchableOpacity
 } from "react-native";
 import tinta from '../../../assets/tinta.mp4'
 import { Video } from 'expo-av';
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import { signUp } from "../../app/api";
+import { signUp, signUpTattooArtist } from "../../app/api";
 
 const Register = ({ navigation }) => {
   const [user, setUser] = React.useState("");
@@ -21,6 +22,9 @@ const Register = ({ navigation }) => {
   const [password2, setPassword2] = React.useState("");
   const [errores, setErrores] = useState();
   const [animation] = React.useState(new Animated.Value(0));
+  const [isTattooArtist, setIsTatooArtist] = useState(false);
+const [additionalInfo1, setAdditionalInfo1] = useState('');
+const [additionalInfo2, setAdditionalInfo2] = useState('');
 
   React.useEffect(() => {
     // Realiza la animación cuando el componente se monta
@@ -33,7 +37,7 @@ const Register = ({ navigation }) => {
 
   const SavePerson = async () => {
     try {
-      await signUp(user, password);
+      await signUp(user, password, isTattooArtist, additionalInfo1,additionalInfo2);
       Alert.alert("guardado", user);
     } catch (err) {
       Alert.alert(err);
@@ -96,9 +100,33 @@ const Register = ({ navigation }) => {
               secureTextEntry={true} // Para ocultar la contraseña
             />
            
-          
+           <TouchableOpacity style={{marginLeft:112}} onPress={() => setIsTatooArtist(!isTattooArtist)}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
+        <View
+          style={{
+            width: 24,
+            height: 24,
+            borderRadius: 12,
+            borderWidth: 2,
+            borderColor: isTattooArtist ? 'green' : 'gray',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          {isTattooArtist && <Icon name="check" size={16} color="green" />}
+        </View>
+        
+        <Text style={{ marginLeft: 8 , color: "#E4E4E4"}}>Soy tatuado</Text>
+      </View>
+    </TouchableOpacity>
 
-          <Button
+    {!isTattooArtist ? (<View>
+      <Button
             title="Registrar"
             onPress={() => {
               if (password === password2) {
@@ -109,10 +137,45 @@ const Register = ({ navigation }) => {
               }
             }}
           />
+          
+          
           <Button
             title="Cancelar"
             onPress={() => navigation.navigate("Login")}
           />
+      </View>):(
+      <View>
+        <TextInput
+              style={styles.input}
+              onChangeText={setAdditionalInfo1}
+              placeholder="Titulo Higenico sanitario"
+            />
+            <TextInput
+              style={styles.input}
+              onChangeText={setAdditionalInfo2}
+              placeholder="Cartilla de vacunas"
+            />
+            <Button
+            title="Registrar"
+            onPress={() => {
+              if (password === password2) {
+                SavePerson();
+                navigation.navigate("Login")
+              } else {
+                Alert.alert("Las contraseñas no coinciden");
+              }
+            }}
+          />
+          
+          
+          <Button
+            title="Cancelar"
+            onPress={() => navigation.navigate("Login")}
+          />
+      </View>
+    )}
+
+          
         </View>
       </Animated.View>
     </View>
@@ -169,4 +232,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
   },
+  checkmarkContainer:{
+    marginBottom: 0
+  }
 });

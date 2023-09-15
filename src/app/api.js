@@ -16,7 +16,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { db, auth } from "./firebase";
+import {  db, auth } from "./firebase";
 
 const collectionName = "chat";
 
@@ -68,15 +68,20 @@ const getArrayFromCollection = (collection) => {
 
 //Sign Up and Sign In
 
-export const signUp = async (email, password) => {
+export const signUp = async (email, password, isTattooArtist, sanitaryHygieneTitle, vaccines) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
+    const userData = {
+      isTattooArtist: isTattooArtist,
+      sanitaryHygieneTitle: sanitaryHygieneTitle,
+      vaccines: vaccines,
+    };
     const user = userCredential.user;
-    await setDoc(doc(db, "users", user.uid), {});
+    await setDoc(doc(db, "users", user.uid), userData);
     console.log(user);
     return user.uid;
   } catch (err) {
@@ -97,4 +102,5 @@ export const signIn = async (email, password) => {
 };
 
 export const getCurrentUserId = async () => await auth.currentUser?.uid;
+export const tattooArtist = async ( user ) => await auth.currentUser?.isTattooArtist;
 export const logout = async () => await signOut(auth);
