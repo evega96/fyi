@@ -4,12 +4,13 @@ import {
   Text,
   Button,
   StyleSheet,
-  ImageBackground,
+  Animated,
   TextInput,
   Alert,
   Image,
 } from "react-native";
-import image from "../../../assets/RegisterImage.png";
+import tinta from '../../../assets/tinta.mp4'
+import { Video } from 'expo-av';
 import Icon from "react-native-vector-icons/FontAwesome";
 
 import { signUp } from "../../app/api";
@@ -19,6 +20,16 @@ const Register = ({ navigation }) => {
   const [password, setPassword] = React.useState("");
   const [password2, setPassword2] = React.useState("");
   const [errores, setErrores] = useState();
+  const [animation] = React.useState(new Animated.Value(0));
+
+  React.useEffect(() => {
+    // Realiza la animación cuando el componente se monta
+    Animated.timing(animation, {
+      toValue: 1,
+      duration: 1000, // Duración de la animación en milisegundos
+      useNativeDriver: false, // Ajusta esta propiedad según tus necesidades
+    }).start();
+  }, []);
 
   const SavePerson = async () => {
     try {
@@ -31,56 +42,79 @@ const Register = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+    <Video
+      source={tinta}
+      style={styles.backgroundVideo}
+      isLooping={true}
+      shouldPlay={true}
+      resizeMode="cover"
+    />
+<Animated.View
+    style={[
+      styles.container,
+      {
+        opacity: animation, // Aplicar opacidad según el valor de la animación
+        transform: [
+          {
+            scale: animation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0.5, 1], // Escala de 0.5 a 1
+            }),
+          },
+        ],
+      },
+    ]}
+  >
         <View style={styles.main}>
           <Image
             style={styles.logo}
             source={require("../../../assets/Logo.png")}
           />
-          <View style={styles.inputContainer}>
+          
             <TextInput
               style={styles.input}
               onChangeText={setUser}
               placeholder="Correo electrónico o usuario"
             />
-            <Icon name="user" size={20} color="#000" style={styles.icon} />
-          </View>
-          <View style={styles.inputContainer}>
+            
+          
+          
             <TextInput
               style={styles.input}
               onChangeText={setPassword}
               placeholder="Contraseña"
               secureTextEntry={true} // Para ocultar la contraseña
             />
-            <Icon name="lock" size={20} color="#000" style={styles.icon} />
-          </View>
+           
+          
 
-          <View style={styles.inputContainer}>
+          
             <TextInput
               style={styles.input}
               onChangeText={setPassword2}
               placeholder="Repite la contraseña"
               secureTextEntry={true} // Para ocultar la contraseña
             />
-            <Icon name="lock" size={20} color="#000" style={styles.icon} />
-          </View>
+           
+          
 
           <Button
             title="Registrar"
             onPress={() => {
               if (password === password2) {
                 SavePerson();
+                navigation.navigate("Login")
               } else {
                 Alert.alert("Las contraseñas no coinciden");
               }
             }}
           />
           <Button
-            title="Iniciar sesion"
+            title="Cancelar"
             onPress={() => navigation.navigate("Login")}
           />
         </View>
-      </ImageBackground>
+      </Animated.View>
     </View>
   );
 };
@@ -108,26 +142,31 @@ const styles = StyleSheet.create({
     padding: 20, // Agrega espacio interno
     borderRadius: 10, // Agrega bordes redondeados
   },
-  inputContainer: {
-    flexDirection: "row", // Alinea el icono y el campo de entrada en fila
-    alignItems: "center", // Alinea verticalmente el icono y el campo de entrada
-    marginBottom: 10,
-    position: "relative",
+  main: {
+    flex:1,
+    justifyContent: "center",
   },
   icon: {
     marginLeft: 10, // Agrega espacio entre el icono y el campo de entrada
     position: "absolute",
   },
   input: {
-    flex: 1, // Ajusta el ancho del campo de entrada al espacio restante en la fila
-    height: 55,
+    alignContent: "center",
+    width: 205,
+    height: 25,
     backgroundColor: "#E4E4E4",
-    paddingLeft: 35, // Agrega un poco de espacio a la izquierda para el texto
-    borderRadius: 15,
-    borderWidth: 1,
-    borderColor: "#000000",
+    marginBottom: 10,
+    marginLeft: 112
   },
   logo: {
     marginBottom: 10,
+    marginLeft: 150
+  },
+  backgroundVideo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
 });

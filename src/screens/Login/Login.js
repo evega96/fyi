@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   View,
-  Text,
+  Animated,
   Button,
   StyleSheet,
   Image,
@@ -15,10 +15,20 @@ import { Video } from "expo-av";
 import { signIn } from "../../app/api";
 
 const LoginButton = ({ navigation }) => {
-  const [user, setUser] = useState("");
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState();
+  const [password, setPassword] = useState();
+  const [animation] = useState(new Animated.Value(0));
 
-  const LoginPerson = async () => {
+  useEffect(() => {
+    // Realiza la animación cuando el componente se monta
+    Animated.timing(animation, {
+      toValue: 1,
+      duration: 1000, // Duración de la animación en milisegundos
+      useNativeDriver: false, // Ajusta esta propiedad según tus necesidades
+    }).start();
+  }, []);
+
+  const LoginPerson = async ({ navigation }) => {
     try {
       await signIn(user, password);
       Alert.alert("sesion iniciada", user);
@@ -27,34 +37,54 @@ const LoginButton = ({ navigation }) => {
     }
   };
   return (
-    <View style={{ flex: 1 }}>
-      {/*  <Video
-        source={tinta} // o require('ruta/al/video.mp4') si está en tu proyecto
-        style={{ flex: 1 }}
+    <View style={{flex:1}} >
+      <Video
+        source={tinta}
+        style={styles.backgroundVideo}
         isLooping={true}
         shouldPlay={true}
-      ></Video> */}
-      <View style={styles.main}>
-        <Image
-          style={styles.logo}
-          source={require("../../../assets/Logo.png")}
-        />
-        <TextInput
-          style={styles.input}
-          onChangeText={setUser}
-          value={user}
-          type="text"
-          placeholder="Correo electronico o usuario"
-        ></TextInput>
+        resizeMode="cover"
+      />
+<Animated.View
+      style={[
+        styles.container,
+        {
+          opacity: animation, // Aplicar opacidad según el valor de la animación
+          transform: [
+            {
+              scale: animation.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0.5, 1], // Escala de 0.5 a 1
+              }),
+            },
+          ],
+        },
+      ]}
+    >
+      
+        <View style={styles.main}>
+          <Image
+            style={styles.logo}
+            source={require("../../../assets/Logo.png")}
+          />
+          <TextInput
+            style={styles.input}
+            onChangeText={setUser}
+            value={user}
+            type="text"
+            placeholder="Correo electronico o usuario"
+          >
+          </TextInput>
 
-        <TextInput
-          style={styles.input}
-          onChangeText={setPassword}
-          value={password}
-          secureTextEntry={true} // Para ocultar la contraseña
-          type="text"
-          placeholder="Contraseña"
-        ></TextInput>
+          <TextInput
+            style={styles.input}
+            onChangeText={setPassword}
+            value={password}
+            type="text"
+            placeholder="Contraseña"
+            secureTextEntry={true}
+          >
+          </TextInput>
         <Button
           title="Iniciar sesion"
           onPress={() => {
@@ -67,6 +97,7 @@ const LoginButton = ({ navigation }) => {
           onPress={() => navigation.navigate("Register")}
         />
       </View>
+      </Animated.View>
     </View>
   );
 };
