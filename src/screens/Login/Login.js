@@ -1,20 +1,27 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 
+import {
+  View,
+  Animated,
+  Button,
+  StyleSheet,
+  Image,
+  TextInput,
+  Alert,
+} from "react-native";
 
-import { View, Animated, Button, StyleSheet, Image, TextInput, Alert } from "react-native";
-
-import tinta from '../../../assets/tinta.mp4'
-import { Video } from 'expo-av';
-
+import tinta from "../../../assets/tinta.mp4";
+import { Video } from "expo-av";
+import { signIn } from "../../app/api";
 
 const LoginButton = ({ navigation }) => {
+  const [user, setUser] = useState();
+  const [password, setPassword] = useState();
+  const [animation] = useState(new Animated.Value(0));
 
-  const { user, onChangeUser } = React.useState();
-  const { password, onChangePassword } = React.useState(); 
-  const [animation] = React.useState(new Animated.Value(0));
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Realiza la animación cuando el componente se monta
     Animated.timing(animation, {
       toValue: 1,
@@ -22,6 +29,15 @@ const LoginButton = ({ navigation }) => {
       useNativeDriver: false, // Ajusta esta propiedad según tus necesidades
     }).start();
   }, []);
+
+  const LoginPerson = async ({ navigation }) => {
+    try {
+      await signIn(user, password);
+      Alert.alert("sesion iniciada", user);
+    } catch (err) {
+      Alert.alert(err);
+    }
+  };
   return (
     <View style={{flex:1}} >
       <Video
@@ -55,7 +71,7 @@ const LoginButton = ({ navigation }) => {
           />
           <TextInput
             style={styles.input}
-            onChangeText={onChangeUser}
+            onChangeText={setUser}
             value={user}
             type="text"
             placeholder="Correo electronico o usuario"
@@ -64,17 +80,28 @@ const LoginButton = ({ navigation }) => {
 
           <TextInput
             style={styles.input}
-            onChangeText={onChangePassword}
+            onChangeText={setPassword}
             value={password}
             type="text"
             placeholder="Contraseña"
+            secureTextEntry={true}
           >
           </TextInput>
-          <Button title="Iniciar sesion" onPress={() => Alert.alert("Boton pulsado iniciar sesion")} />
-          <Button title="Registrar" onPress={() => navigation.navigate("Register")} />
-        </View>
-        </Animated.View>
-        </View>
+
+        <Button
+          title="Iniciar sesion"
+          onPress={() => {
+            LoginPerson();
+          }}
+        />
+
+        <Button
+          title="Registrar"
+          onPress={() => navigation.navigate("Register")}
+        />
+      </View>
+      </Animated.View>
+    </View>
 
   );
 };
@@ -92,7 +119,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   main: {
-    flex:1,
+    flex: 1,
     justifyContent: "center",
   },
   input: {
@@ -101,7 +128,7 @@ const styles = StyleSheet.create({
     height: 25,
     backgroundColor: "#E4E4E4",
     marginBottom: 10,
-    marginLeft: 112
+    marginLeft: 112,
   },
   backgroundVideo: {
     position: "absolute",

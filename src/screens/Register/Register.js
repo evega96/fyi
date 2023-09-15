@@ -103,6 +103,7 @@ const Register = ({ navigation }) => {
             onPress={() => {
               if (password === password2) {
                 SavePerson();
+                navigation.navigate("Login")
               } else {
                 Alert.alert("Las contraseñas no coinciden");
               }

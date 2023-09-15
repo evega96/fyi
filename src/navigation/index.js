@@ -14,7 +14,6 @@ const Navigation = () => {
       authenticatedUser ? setUser(authenticatedUser) : setUser(null);
     });
 
-
     return () => unsubcribe();
   }, [user]);
 
