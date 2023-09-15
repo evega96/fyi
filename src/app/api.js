@@ -88,8 +88,10 @@ export const signUp = async (email, password) => {
 export const signIn = async (email, password) => {
   try {
     const result = await signInWithEmailAndPassword(auth, email, password);
+    console.log(result);
     return result.user.uid;
   } catch (err) {
+    console.log(err);
     return err.message;
   }
 };
