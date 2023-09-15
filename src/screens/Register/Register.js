@@ -109,7 +109,7 @@ const Register = ({ navigation }) => {
             }}
           />
           <Button
-            title="Cancelar"
+            title="Iniciar sesion"
             onPress={() => navigation.navigate("Login")}
           />
         </View>

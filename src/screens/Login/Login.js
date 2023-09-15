@@ -1,3 +1,4 @@
+
 import React from "react";
 
 
@@ -7,9 +8,8 @@ import tinta from '../../../assets/tinta.mp4'
 import { Video } from 'expo-av';
 
 
-
-
 const LoginButton = ({ navigation }) => {
+
   const { user, onChangeUser } = React.useState();
   const { password, onChangePassword } = React.useState(); 
   const [animation] = React.useState(new Animated.Value(0));
@@ -75,6 +75,7 @@ const LoginButton = ({ navigation }) => {
         </View>
         </Animated.View>
         </View>
+
   );
 };
 
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     marginLeft: 112
   },
   backgroundVideo: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     bottom: 0,
@@ -111,6 +112,6 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginBottom: 10,
-    marginLeft: 150
-  }
+    marginLeft: 150,
+  },
 });
