@@ -6,6 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthenticatedUserContext } from "../Context/AuthContextProdiver";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../app/firebase";
+import { isTattoArtist } from "../app/api"
 const Navigation = () => {
   const { user, setUser } = useContext(AuthenticatedUserContext);
 
@@ -19,7 +20,7 @@ const Navigation = () => {
 
   return (
     <NavigationContainer>
-      {user ? <ClientBottomNav /> : <GuessNav />}
+      { user ? <ClientBottomNav /> : <GuessNav />}
     </NavigationContainer>
   );
 };
