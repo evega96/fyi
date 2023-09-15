@@ -160,7 +160,6 @@ const [additionalInfo2, setAdditionalInfo2] = useState('');
             onPress={() => {
               if (password === password2) {
                 SavePerson();
-                navigation.navigate("Login")
               } else {
                 Alert.alert("Las contraseñas no coinciden");
               }

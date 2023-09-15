@@ -30,7 +30,7 @@ const LoginButton = ({ navigation }) => {
     }).start();
   }, []);
 
-  const LoginPerson = async ({ navigation }) => {
+  const LoginPerson = async () => {
     try {
       await signIn(user, password);
       Alert.alert("sesion iniciada", user);
