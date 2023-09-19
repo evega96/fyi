@@ -4,14 +4,15 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Animated,
-  Button,
+  Text,
   StyleSheet,
   Image,
   TextInput,
   Alert,
+  TouchableOpacity
 } from "react-native";
 
-import tinta from "../../../assets/tinta.mp4";
+import tinta from "../../../assets/RPReplay_Final1694678498.mp4";
 import { Video } from "expo-av";
 import { signIn } from "../../app/api";
 
@@ -30,6 +31,14 @@ const LoginButton = ({ navigation }) => {
     }).start();
   }, []);
 
+  const handlePress = () => {
+    navigation.navigate('Register'); // Reemplaza 'PantallaDestino' con el nombre de tu pantalla de destino
+  };
+
+  const handleLogin = () => {
+    LoginPerson();
+  }
+
   const LoginPerson = async () => {
     try {
       await signIn(user, password);
@@ -39,7 +48,7 @@ const LoginButton = ({ navigation }) => {
     }
   };
   return (
-    <View style={{flex:1}} >
+    <View style={{ flex: 1 }} >
       <Video
         source={tinta}
         style={styles.backgroundVideo}
@@ -47,23 +56,23 @@ const LoginButton = ({ navigation }) => {
         shouldPlay={true}
         resizeMode="cover"
       />
-<Animated.View
-      style={[
-        styles.container,
-        {
-          opacity: animation, // Aplicar opacidad según el valor de la animación
-          transform: [
-            {
-              scale: animation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0.5, 1], // Escala de 0.5 a 1
-              }),
-            },
-          ],
-        },
-      ]}
-    >
-      
+      <Animated.View
+        style={[
+          styles.container,
+          {
+            opacity: animation, // Aplicar opacidad según el valor de la animación
+            transform: [
+              {
+                scale: animation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.5, 1], // Escala de 0.5 a 1
+                }),
+              },
+            ],
+          },
+        ]}
+      >
+
         <View style={styles.main}>
           <Image
             style={styles.logo}
@@ -88,18 +97,15 @@ const LoginButton = ({ navigation }) => {
           >
           </TextInput>
 
-        <Button
-          title="Iniciar sesion"
-          onPress={() => {
-            LoginPerson();
-          }}
-        />
+          <TouchableOpacity onPress={handleLogin} style={styles.boton}>
+            <Text style={styles.textoBoton}>Iniciar sesion</Text>
+          </TouchableOpacity>
 
-        <Button
-          title="Registrar"
-          onPress={() => navigation.navigate("Register")}
-        />
-      </View>
+          <TouchableOpacity onPress={handlePress} style={styles.boton}>
+            <Text style={styles.textoBoton}>Registro</Text>
+          </TouchableOpacity>
+
+        </View>
       </Animated.View>
     </View>
 
@@ -141,4 +147,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 150,
   },
+  boton: {
+    backgroundColor: "#E4E4E4",
+    justifyContent: "center",
+    marginBottom: 10,
+    left: 110,
+    width: 205,
+    height: 20,
+    borderRadius: 5
+  },
+  textoBoton: {
+    textAlign: "center"
+  }
 });

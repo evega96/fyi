@@ -10,7 +10,7 @@ import {
   Image,
   TouchableOpacity
 } from "react-native";
-import tinta from '../../../assets/tinta.mp4'
+import tinta from "../../../assets/RPReplay_Final1694678498.mp4"
 import { Video } from 'expo-av';
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -18,13 +18,36 @@ import { signUp, signUpTattooArtist } from "../../app/api";
 
 const Register = ({ navigation }) => {
   const [user, setUser] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [birthday, setBirthday] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [password2, setPassword2] = React.useState("");
   const [errores, setErrores] = useState();
   const [animation] = React.useState(new Animated.Value(0));
   const [isTattooArtist, setIsTatooArtist] = useState(false);
-const [additionalInfo1, setAdditionalInfo1] = useState('');
-const [additionalInfo2, setAdditionalInfo2] = useState('');
+  const [additionalInfo1, setAdditionalInfo1] = useState('');
+  const [additionalInfo2, setAdditionalInfo2] = useState('');
+  const [isValidEmail, setIsValidEmail] = useState(true);
+
+  const handleEmailChange = (text) => {
+    setEmail(text);
+    // Expresión regular para validar el formato de correo electrónico
+    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    // Validar el correo electrónico y actualizar el estado isValidEmail
+    setIsValidEmail(emailPattern.test(text));
+  };
+
+  const handleEmailSubmit = () => {
+    if (isValidEmail) {
+      // El correo electrónico es válido, puedes realizar la acción deseada aquí
+      Alert.alert('Correo electrónico válido', '¡El correo electrónico es válido!');
+    } else {
+      // El correo electrónico no es válido
+      Alert.alert('Correo electrónico no válido', 'Por favor, introduce un correo electrónico válido.');
+    }
+  };
+
+
 
   React.useEffect(() => {
     // Realiza la animación cuando el componente se monta
@@ -35,10 +58,25 @@ const [additionalInfo2, setAdditionalInfo2] = useState('');
     }).start();
   }, []);
 
+  const handlePress = () => {
+    navigation.navigate('Login'); // Reemplaza 'PantallaDestino' con el nombre de tu pantalla de destino
+  };
+
+  const handleRegister = () => {
+    if (handleEmailSubmit) {
+      if (password === password2) {
+        SavePerson();
+      } else {
+        Alert.alert("Las contraseñas no coinciden")
+      }
+    } else {
+      Alert.alert("El correo es invalido")
+    }
+  }
+
   const SavePerson = async () => {
     try {
-      await signUp(user, password, isTattooArtist, additionalInfo1,additionalInfo2);
-      Alert.alert("guardado", user);
+      await signUp(email, password, user, birthday, isTattooArtist, additionalInfo1, additionalInfo2);
     } catch (err) {
       Alert.alert(err);
     }
@@ -46,135 +84,128 @@ const [additionalInfo2, setAdditionalInfo2] = useState('');
 
   return (
     <View style={styles.container}>
-    <Video
-      source={tinta}
-      style={styles.backgroundVideo}
-      isLooping={true}
-      shouldPlay={true}
-      resizeMode="cover"
-    />
-<Animated.View
-    style={[
-      styles.container,
-      {
-        opacity: animation, // Aplicar opacidad según el valor de la animación
-        transform: [
+      <Video
+        source={tinta}
+        style={styles.backgroundVideo}
+        isLooping={true}
+        shouldPlay={true}
+        resizeMode="cover"
+      />
+      <Animated.View
+        style={[
+          styles.container,
           {
-            scale: animation.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0.5, 1], // Escala de 0.5 a 1
-            }),
+            opacity: animation, // Aplicar opacidad según el valor de la animación
+            transform: [
+              {
+                scale: animation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.5, 1], // Escala de 0.5 a 1
+                }),
+              },
+            ],
           },
-        ],
-      },
-    ]}
-  >
+        ]}
+      >
         <View style={styles.main}>
           <Image
             style={styles.logo}
             source={require("../../../assets/Logo.png")}
           />
-          
-            <TextInput
-              style={styles.input}
-              onChangeText={setUser}
-              placeholder="Correo electrónico o usuario"
-            />
-            
-          
-          
-            <TextInput
-              style={styles.input}
-              onChangeText={setPassword}
-              placeholder="Contraseña"
-              secureTextEntry={true} // Para ocultar la contraseña
-            />
-           
-          
 
-          
-            <TextInput
-              style={styles.input}
-              onChangeText={setPassword2}
-              placeholder="Repite la contraseña"
-              secureTextEntry={true} // Para ocultar la contraseña
-            />
-           
-           <TouchableOpacity style={{marginLeft:112}} onPress={() => setIsTatooArtist(!isTattooArtist)}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-      >
-        <View
-          style={{
-            width: 24,
-            height: 24,
-            borderRadius: 12,
-            borderWidth: 2,
-            borderColor: isTattooArtist ? 'green' : 'gray',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          {isTattooArtist && <Icon name="check" size={16} color="green" />}
-        </View>
-        
-        <Text style={{ marginLeft: 8 , color: "#E4E4E4"}}>Soy tatuado</Text>
-      </View>
-    </TouchableOpacity>
+          <TextInput
+            style={[styles.input, !isValidEmail && styles.invalidInput]}
+            onChangeText={handleEmailChange}
+            placeholder="Correo electrónico"
+          />
 
-    {!isTattooArtist ? (<View>
-      <Button
-            title="Registrar"
-            onPress={() => {
-              if (password === password2) {
-                SavePerson();
-                navigation.navigate("Login")
-              } else {
-                Alert.alert("Las contraseñas no coinciden");
-              }
-            }}
+          <TextInput
+            style={styles.input}
+            onChangeText={setUser}
+            placeholder="Usuario"
           />
-          
-          
-          <Button
-            title="Iniciar sesion"
-            onPress={() => navigation.navigate("Login")}
-          />
-      </View>):(
-      <View>
-        <TextInput
-              style={styles.input}
-              onChangeText={setAdditionalInfo1}
-              placeholder="Titulo Higenico sanitario"
-            />
-            <TextInput
-              style={styles.input}
-              onChangeText={setAdditionalInfo2}
-              placeholder="Cartilla de vacunas"
-            />
-            <Button
-            title="Registrar"
-            onPress={() => {
-              if (password === password2) {
-                SavePerson();
-              } else {
-                Alert.alert("Las contraseñas no coinciden");
-              }
-            }}
-          />
-          
-          
-          <Button
-            title="Cancelar"
-            onPress={() => navigation.navigate("Login")}
-          />
-      </View>
-    )}
 
-          
+
+          <TextInput
+            style={styles.input}
+            onChangeText={setBirthday}
+            placeholder="Cumpleaños"
+
+          />
+
+          <TextInput
+            style={styles.input}
+            onChangeText={setPassword}
+            placeholder="Contraseña"
+            secureTextEntry={true} // Para ocultar la contraseña
+          />
+
+
+          <TextInput
+            style={styles.input}
+            onChangeText={setPassword2}
+            placeholder="Repite la contraseña"
+            secureTextEntry={true} // Para ocultar la contraseña
+          />
+
+
+
+          <TouchableOpacity style={{ marginLeft: 112 }} onPress={() => setIsTatooArtist(!isTattooArtist)}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <View
+                style={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: 12,
+                  borderWidth: 2,
+                  borderColor: isTattooArtist ? 'green' : 'gray',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                {isTattooArtist && <Icon name="check" size={16} color="green" />}
+              </View>
+
+              <Text style={{ marginLeft: 8, color: "#E4E4E4" }}>Soy tatuador</Text>
+            </View>
+          </TouchableOpacity>
+
+          {!isTattooArtist ? (<View>
+            <TouchableOpacity onPress={handleRegister} style={styles.boton}>
+              <Text style={styles.textoBoton}>Registar</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handlePress} style={styles.boton}>
+              <Text style={styles.textoBoton}>Cancelar</Text>
+            </TouchableOpacity>
+          </View>) : (
+            <View>
+              <TextInput
+                style={styles.input}
+                onChangeText={setAdditionalInfo1}
+                placeholder="Titulo Higenico sanitario"
+              />
+              <TextInput
+                style={styles.input}
+                onChangeText={setAdditionalInfo2}
+                placeholder="Cartilla de vacunas"
+              />
+              <TouchableOpacity onPress={handleRegister} style={styles.boton}>
+                <Text style={styles.textoBoton}>Registar</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={handlePress} style={styles.boton}>
+                <Text style={styles.textoBoton}>Cancelar</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+
         </View>
       </Animated.View>
     </View>
@@ -205,7 +236,7 @@ const styles = StyleSheet.create({
     borderRadius: 10, // Agrega bordes redondeados
   },
   main: {
-    flex:1,
+    flex: 1,
     justifyContent: "center",
   },
   icon: {
@@ -231,7 +262,19 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
   },
-  checkmarkContainer:{
+  checkmarkContainer: {
     marginBottom: 0
+  },
+  boton: {
+    backgroundColor: "#E4E4E4",
+    justifyContent: "center",
+    marginBottom: 10,
+    left: 110,
+    width: 205,
+    height: 20,
+    borderRadius: 5
+  },
+  textoBoton: {
+    textAlign: "center"
   }
 });
