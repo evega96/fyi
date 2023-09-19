@@ -125,10 +125,12 @@ const Register = ({ navigation }) => {
             placeholder="Usuario"
           />
 
+
           <TextInput
             style={styles.input}
             onChangeText={setBirthday}
             placeholder="Cumpleaños"
+
           />
 
           <TextInput
