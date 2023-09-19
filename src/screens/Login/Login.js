@@ -42,7 +42,6 @@ const LoginButton = ({ navigation }) => {
   const LoginPerson = async () => {
     try {
       await signIn(user, password);
-      Alert.alert("sesion iniciada", user);
     } catch (err) {
       Alert.alert(err);
     }
@@ -130,11 +129,13 @@ const styles = StyleSheet.create({
   },
   input: {
     alignContent: "center",
-    width: 205,
-    height: 25,
+    right: 55,
+    width: 314,
+    height: 50,
     backgroundColor: "#E4E4E4",
     marginBottom: 10,
     marginLeft: 112,
+    borderRadius: 15
   },
   backgroundVideo: {
     position: "absolute",
@@ -151,12 +152,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#E4E4E4",
     justifyContent: "center",
     marginBottom: 10,
-    left: 110,
-    width: 205,
-    height: 20,
-    borderRadius: 5
+    left: 55,
+    width: 314,
+    height: 50,
+    borderRadius: 30
   },
   textoBoton: {
-    textAlign: "center"
+    textAlign: "center",
+    color: "#374151"
   }
 });

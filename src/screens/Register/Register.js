@@ -171,12 +171,12 @@ const Register = ({ navigation }) => {
                 {isTattooArtist && <Icon name="check" size={16} color="green" />}
               </View>
 
-              <Text style={{ marginLeft: 8, color: "#E4E4E4" }}>Soy tatuador</Text>
+              <Text style={{ marginLeft: 8, color: "#FFFFFF" }}>Soy tatuador</Text>
             </View>
           </TouchableOpacity>
 
-          {!isTattooArtist ? (<View>
-            <TouchableOpacity onPress={handleRegister} style={styles.boton}>
+          {!isTattooArtist ? (<View styles={{ marginBottom: 10 }}>
+            <TouchableOpacity onPress={handleRegister} style={styles.botonRegister}>
               <Text style={styles.textoBoton}>Registar</Text>
             </TouchableOpacity>
 
@@ -186,7 +186,7 @@ const Register = ({ navigation }) => {
           </View>) : (
             <View>
               <TextInput
-                style={styles.input}
+                style={styles.inputCheckbox}
                 onChangeText={setAdditionalInfo1}
                 placeholder="Titulo Higenico sanitario"
               />
@@ -245,11 +245,13 @@ const styles = StyleSheet.create({
   },
   input: {
     alignContent: "center",
-    width: 205,
-    height: 25,
+    right: 55,
+    width: 314,
+    height: 50,
     backgroundColor: "#E4E4E4",
     marginBottom: 10,
-    marginLeft: 112
+    marginLeft: 112,
+    borderRadius: 15
   },
   logo: {
     marginBottom: 10,
@@ -269,12 +271,37 @@ const styles = StyleSheet.create({
     backgroundColor: "#E4E4E4",
     justifyContent: "center",
     marginBottom: 10,
-    left: 110,
-    width: 205,
-    height: 20,
-    borderRadius: 5
+    left: 55,
+    width: 314,
+    height: 50,
+    borderRadius: 30
   },
   textoBoton: {
-    textAlign: "center"
+    textAlign: "center",
+    color: "#374151"
+  },
+  checkbox: {
+    marginBottom: 10
+  },
+  inputCheckbox: {
+    alignContent: "center",
+    right: 55,
+    width: 314,
+    height: 50,
+    backgroundColor: "#E4E4E4",
+    marginBottom: 10,
+    marginLeft: 112,
+    borderRadius: 15,
+    marginTop: 10
+  },
+  botonRegister: {
+    marginTop: 10,
+    backgroundColor: "#E4E4E4",
+    justifyContent: "center",
+    marginBottom: 10,
+    left: 55,
+    width: 314,
+    height: 50,
+    borderRadius: 30
   }
 });
