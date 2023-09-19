@@ -16,7 +16,8 @@ import {
   createUserWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import {  db, auth } from "./firebase";
+import { db, auth } from "./firebase";
+import { beginAsyncEvent } from "react-native/Libraries/Performance/Systrace";
 
 const collectionName = "chat";
 
@@ -68,7 +69,7 @@ const getArrayFromCollection = (collection) => {
 
 //Sign Up and Sign In
 
-export const signUp = async (email, password, isTattooArtist, sanitaryHygieneTitle, vaccines) => {
+export const signUp = async (email, password, userLog, birthday, isTattooArtist, sanitaryHygieneTitle, vaccines) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -76,6 +77,8 @@ export const signUp = async (email, password, isTattooArtist, sanitaryHygieneTit
       password,
     );
     const userData = {
+      user: userLog,
+      birthday: birthday,
       isTattooArtist: isTattooArtist,
       sanitaryHygieneTitle: sanitaryHygieneTitle,
       vaccines: vaccines,
@@ -102,5 +105,5 @@ export const signIn = async (email, password) => {
 };
 
 export const getCurrentUserId = async () => await auth.currentUser?.uid;
-export const tattooArtist = async ( user ) => await auth.currentUser?.isTattooArtist;
+export const tattooArtist = async (user) => await auth.currentUser?.isTattooArtist;
 export const logout = async () => await signOut(auth);
