@@ -16,7 +16,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import {  db, auth } from "./firebase";
+import { db, auth } from "./firebase";
 
 const collectionName = "chat";
 
@@ -68,14 +68,22 @@ const getArrayFromCollection = (collection) => {
 
 //Sign Up and Sign In
 
-export const signUp = async (email, password, isTattooArtist, sanitaryHygieneTitle, vaccines) => {
+export const signUp = async (
+  email,
+  password,
+  role,
+  isTattooArtist,
+  sanitaryHygieneTitle,
+  vaccines
+) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
-      password,
+      password
     );
     const userData = {
+      role: role,
       isTattooArtist: isTattooArtist,
       sanitaryHygieneTitle: sanitaryHygieneTitle,
       vaccines: vaccines,
@@ -83,7 +91,14 @@ export const signUp = async (email, password, isTattooArtist, sanitaryHygieneTit
     const user = userCredential.user;
     await setDoc(doc(db, "users", user.uid), userData);
     console.log(user);
-    return user.uid;
+    //consult user for Role
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    const userDataFromFirestore = userDoc.data();
+
+    // Obtener el valor de 'role' de los datos consultados
+    const userRole = userDataFromFirestore.role;
+
+    return { userId: user.uid, role: userRole };
   } catch (err) {
     console.log(err);
     return err.message;
@@ -102,5 +117,6 @@ export const signIn = async (email, password) => {
 };
 
 export const getCurrentUserId = async () => await auth.currentUser?.uid;
-export const tattooArtist = async ( user ) => await auth.currentUser?.isTattooArtist;
+export const tattooArtist = async (user) =>
+  await auth.currentUser?.isTattooArtist;
 export const logout = async () => await signOut(auth);
