@@ -9,6 +9,7 @@ import { auth } from "../app/firebase";
 import { isTattoArtist } from "../app/api";
 const Navigation = () => {
   const { user, setUser } = useContext(AuthenticatedUserContext);
+  console.log("hsola", user);
 
   useEffect(() => {
     const unsubcribe = onAuthStateChanged(auth, async (authenticatedUser) => {

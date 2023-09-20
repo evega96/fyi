@@ -89,19 +89,14 @@ export const signUp = async (
       vaccines: vaccines,
     };
     const user = userCredential.user;
+    // Guardar los datos del usuario en la base de datos
     await setDoc(doc(db, "users", user.uid), userData);
-    console.log(user);
-    //consult user for Role
-    const userDoc = await getDoc(doc(db, "users", user.uid));
-    const userDataFromFirestore = userDoc.data();
+    // Retornar un objeto con el ID del usuario y el role
+    const result = { user: user, role: role };
 
-    // Obtener el valor de 'role' de los datos consultados
-    const userRole = userDataFromFirestore.role;
-
-    return { userId: user.uid, role: userRole };
+    return "Hola";
   } catch (err) {
-    console.log(err);
-    return err.message;
+    throw err;
   }
 };
 

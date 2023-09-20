@@ -54,9 +54,8 @@ const Register = ({ navigation }) => {
         additionalInfo1,
         additionalInfo2
       );
-
-      Alert.alert("guardado", user);
     } catch (err) {
+      console.log(err);
       setErrores(err);
     }
   };
