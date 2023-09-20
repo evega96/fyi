@@ -84,7 +84,6 @@ export const signUp = async (
     );
     const userData = {
       role: role,
-      isTattooArtist: isTattooArtist,
       sanitaryHygieneTitle: sanitaryHygieneTitle,
       vaccines: vaccines,
     };
@@ -94,7 +93,7 @@ export const signUp = async (
     // Retornar un objeto con el ID del usuario y el role
     const result = { user: user, role: role };
 
-    return "Hola";
+    return result;
   } catch (err) {
     throw err;
   }
@@ -115,3 +114,20 @@ export const getCurrentUserId = async () => await auth.currentUser?.uid;
 export const tattooArtist = async (user) =>
   await auth.currentUser?.isTattooArtist;
 export const logout = async () => await signOut(auth);
+
+//Making a consult to get the rol of the user
+export const getUserRole = async (userId) => {
+  try {
+    const docRef = doc(db, "users", userId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const userData = docSnap.data();
+      return userData.role;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("There is a problem to get the rol of the user:", error);
+    return null;
+  }
+};

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -17,7 +17,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { signUp, signUpTattooArtist } from "../../app/api";
 
 const Register = ({ navigation }) => {
-  const [user, setUser] = useState("");
+  const [userEmail, setuserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [errores, setErrores] = useState();
@@ -26,6 +26,9 @@ const Register = ({ navigation }) => {
   const [additionalInfo1, setAdditionalInfo1] = useState("");
   const [additionalInfo2, setAdditionalInfo2] = useState("");
   const [role, setRole] = useState("Client");
+  useEffect(() => {
+    console.log(user1);
+  }, []);
 
   useEffect(() => {
     // Realiza la animación cuando el componente se monta
@@ -46,14 +49,15 @@ const Register = ({ navigation }) => {
 
   const SavePerson = async () => {
     try {
-      await signUp(
-        user,
+      const resultado = await signUp(
+        userEmail,
         password,
         role,
-        isTattooArtist,
         additionalInfo1,
         additionalInfo2
       );
+
+      setUser1(resultado);
     } catch (err) {
       console.log(err);
       setErrores(err);
@@ -93,7 +97,7 @@ const Register = ({ navigation }) => {
 
           <TextInput
             style={styles.input}
-            onChangeText={setUser}
+            onChangeText={setuserEmail}
             placeholder="Correo electrónico o usuario"
           />
 

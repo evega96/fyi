@@ -1,29 +1,42 @@
 import { NavigationContainer } from "@react-navigation/native";
 import GuessNav from "./stack/GuessNav";
-import ClientBottomNav from "./bottom/ClientBottom/ClientBottomNav";
-import TattooArtistNav from "./bottom/TattooArtistBottomNav";
 import { useContext, useEffect, useState } from "react";
 import { AuthenticatedUserContext } from "../Context/AuthContextProdiver";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../app/firebase";
-import { isTattoArtist } from "../app/api";
 import ClientNav from "./stack/ClientNav";
 import TattoArtistNav from "./stack/TattooArtist";
+import { getUserRole } from "../app/api";
 const Navigation = () => {
   const { user, setUser } = useContext(AuthenticatedUserContext);
-  console.log("hsola", user);
+  const [userRole, setUserRole] = useState(null); // Estado para almacenar el rol del usuario
 
   useEffect(() => {
-    const unsubcribe = onAuthStateChanged(auth, async (authenticatedUser) => {
-      authenticatedUser ? setUser(authenticatedUser) : setUser(null);
+    const unsubscribe = onAuthStateChanged(auth, async (authenticatedUser) => {
+      if (authenticatedUser) {
+        setUser(authenticatedUser);
+        // make the consult with a function in api.js
+        const role = await getUserRole(authenticatedUser.uid);
+        setUserRole(role);
+      } else {
+        setUser(null);
+        setUserRole(null); // Limpia el estado del rol si el usuario no está autenticado
+      }
     });
 
-    return () => unsubcribe();
+    return () => unsubscribe();
   }, [user]);
-
   return (
     <NavigationContainer>
-      {user ? <ClientNav /> : <GuessNav />}
+      {user ? (
+        userRole === "Client" ? (
+          <ClientNav />
+        ) : (
+          <TattoArtistNav />
+        )
+      ) : (
+        <GuessNav />
+      )}
     </NavigationContainer>
   );
 };
