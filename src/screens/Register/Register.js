@@ -29,26 +29,6 @@ const Register = ({ navigation }) => {
   const [additionalInfo2, setAdditionalInfo2] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
 
-  const handleEmailChange = (text) => {
-    setEmail(text);
-    // Expresión regular para validar el formato de correo electrónico
-    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    // Validar el correo electrónico y actualizar el estado isValidEmail
-    setIsValidEmail(emailPattern.test(text));
-  };
-
-  const handleEmailSubmit = () => {
-    if (isValidEmail) {
-      // El correo electrónico es válido, puedes realizar la acción deseada aquí
-      Alert.alert('Correo electrónico válido', '¡El correo electrónico es válido!');
-    } else {
-      // El correo electrónico no es válido
-      Alert.alert('Correo electrónico no válido', 'Por favor, introduce un correo electrónico válido.');
-    }
-  };
-
-
-
   React.useEffect(() => {
     // Realiza la animación cuando el componente se monta
     Animated.timing(animation, {
@@ -59,18 +39,14 @@ const Register = ({ navigation }) => {
   }, []);
 
   const handlePress = () => {
-    navigation.navigate('Login'); // Reemplaza 'PantallaDestino' con el nombre de tu pantalla de destino
+    navigation.navigate('Login');
   };
 
   const handleRegister = () => {
-    if (handleEmailSubmit) {
-      if (password === password2) {
-        SavePerson();
-      } else {
-        Alert.alert("Las contraseñas no coinciden")
-      }
+    if (password === password2 && password.length > 6) {
+      SavePerson();
     } else {
-      Alert.alert("El correo es invalido")
+      Alert.alert("Las contraseñas no coinciden o es inferior a 6 digitos")
     }
   }
 

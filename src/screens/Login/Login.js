@@ -42,8 +42,12 @@ const LoginButton = ({ navigation }) => {
   const LoginPerson = async () => {
     try {
       await signIn(user, password);
+
     } catch (err) {
-      Alert.alert(err);
+      switch (err) {
+        case "Firebase: Error (auth/invalid-email).": return Alert.alert("Error al iniciar sesion, correo o contraseña no existen");
+        default: break;
+      }
     }
   };
   return (

@@ -89,7 +89,7 @@ export const signUp = async (email, password, userLog, birthday, isTattooArtist,
     return user.uid;
   } catch (err) {
     console.log(err);
-    return err.message;
+    throw err.message;
   }
 };
 
@@ -99,8 +99,9 @@ export const signIn = async (email, password) => {
     console.log(result);
     return result.user.uid;
   } catch (err) {
-    console.log(err);
-    return err.message;
+    console.log("Error codigo pablo: ", err);
+    throw err.message;
+
   }
 };
 
