@@ -12,7 +12,11 @@ const Stack = createStackNavigator();
 const ClientNav = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Tab" component={ClientBottomNav} />
+      <Stack.Screen
+        name="Tab"
+        component={ClientBottomNav}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="ForYou" component={ForYou} />
       <Stack.Screen name="Favorite" component={Favorite} />
