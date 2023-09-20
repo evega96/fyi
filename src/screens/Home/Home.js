@@ -1,107 +1,52 @@
-import {
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  View,
-  Image,
-} from "react-native";
+import React, { useEffect, useState } from 'react';
+import { View, Image, ScrollView, StyleSheet } from 'react-native';
+import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
 
-const Home = ({ navigation, route }) => {
+const HomeScreen = () => {
+  const [images, setImages] = useState([]);
+  const storage = getStorage();
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const imageRef = ref(storage); // Ref al directorio principal de Storage
+        const imageList = await listAll(imageRef);
+
+        const imageUrlArray = await Promise.all(
+          imageList.items.map(async (item) => {
+            const downloadURL = await getDownloadURL(item);
+            return { id: item.name, url: downloadURL };
+          })
+        );
+
+        setImages(imageUrlArray);
+      } catch (error) {
+        console.error('Error al obtener imágenes:', error);
+      }
+    };
+
+    fetchImages();
+  }, []);
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        style={styles.scrollView}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.cardContainer}>
-          <View style={styles.card}>
-            <Image
-              source={require("../../../assets/TattoImage/1.png")}
-              style={styles.cardImage}
-            />
-          </View>
-          <View style={styles.card}>
-            <Image
-              source={require("../../../assets/TattoImage/2.png")}
-              style={styles.cardImage}
-            />
-          </View>
-        </View>
-        <View style={styles.cardContainer}>
-          <View style={styles.card}>
-            <Image
-              source={require("../../../assets/TattoImage/3.png")}
-              style={styles.cardImage}
-            />
-          </View>
-          <View style={styles.card}>
-            <Image
-              source={require("../../../assets/TattoImage/4.png")}
-              style={styles.cardImage}
-            />
-          </View>
-        </View>
-        <View style={styles.cardContainer}>
-          <View style={styles.card}>
-            <Image
-              source={require("../../../assets/TattoImage/5.png")}
-              style={styles.cardImage}
-            />
-          </View>
-          <View style={styles.card}>
-            <Image
-              source={require("../../../assets/TattoImage/6.png")}
-              style={styles.cardImage}
-            />
-          </View>
-        </View>
-        <View style={styles.cardContainer}>
-          <View style={styles.card}>
-            <Image
-              source={require("../../../assets/TattoImage/7.png")}
-              style={styles.cardImage}
-            />
-          </View>
-          <View style={styles.card}>
-            <Image
-              source={require("../../../assets/TattoImage/8.png")}
-              style={styles.cardImage}
-            />
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <ScrollView contentContainerStyle={styles.container}>
+      {images.map((image) => (
+        <Image key={image.id} source={{ uri: image.url }} style={styles.image} />
+      ))}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "black",
-    flex: 1,
-    paddingTop: StatusBar.currentHeight,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
-  scrollView: {
-    marginHorizontal: 20,
-  },
-  cardContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
-  card: {
-    width: "48%", // 50% del ancho del contenedor
-    height: 300, // Altura fija de la tarjeta
-    borderRadius: 8, // Si deseas bordes redondeados
-    overflow: "hidden", // Para que la imagen no se desborde del contenedor
-  },
-  cardImage: {
-    flex: 1,
-    width: "100%", // Ocupa todo el ancho disponible dentro de la tarjeta
-    height: "100%", // Ocupa todo el alto disponible dentro de la tarjeta
-    resizeMode: "cover", // Ajusta la imagen al tamaño de la tarjeta sin recortarla ni estirarla
+  image: {
+    width: '50%', // Esto hará que las imágenes aparezcan en filas de 2
+    height: 200,   // Establece la altura deseada
+    resizeMode: 'cover', // Ajusta el modo de redimensionamiento según tus necesidades
   },
 });
 
-export default Home;
+export default HomeScreen;
