@@ -6,7 +6,9 @@ import {
   StatusBar,
   View,
   Image,
+  Button,
 } from "react-native";
+import Header from "../../components/Header";
 
 const Home = ({ navigation, route }) => {
   return (
@@ -15,6 +17,7 @@ const Home = ({ navigation, route }) => {
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >
+        <Header navigation={navigation} />
         <View style={styles.cardContainer}>
           <View style={styles.card}>
             <Image
@@ -78,7 +81,7 @@ const Home = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "black",
+    backgroundColor: "white",
     flex: 1,
     paddingTop: StatusBar.currentHeight,
   },

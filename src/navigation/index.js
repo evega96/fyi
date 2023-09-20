@@ -7,6 +7,8 @@ import { AuthenticatedUserContext } from "../Context/AuthContextProdiver";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../app/firebase";
 import { isTattoArtist } from "../app/api";
+import ClientNav from "./stack/ClientNav";
+import TattoArtistNav from "./stack/TattooArtist";
 const Navigation = () => {
   const { user, setUser } = useContext(AuthenticatedUserContext);
   console.log("hsola", user);
@@ -21,7 +23,7 @@ const Navigation = () => {
 
   return (
     <NavigationContainer>
-      {user ? <ClientBottomNav /> : <GuessNav />}
+      {user ? <ClientNav /> : <GuessNav />}
     </NavigationContainer>
   );
 };
