@@ -54,14 +54,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center", // Centra los botones horizontalmente
     alignItems: "center", // Centra los botones verticalmente
-   
   },
   centerButton: {
     marginHorizontal: 10,
-     backgroundColor: "white",
+    backgroundColor: "white",
     padding: 10,
     borderRadius: 30,
-    left: 80
+    left: 80,
   },
   buttonText: {
     color: "#4b74f2",

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { View, Image, ScrollView, StyleSheet } from 'react-native';
-import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
+import React, { useEffect, useState } from "react";
+import { View, Image, ScrollView, StyleSheet } from "react-native";
+import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 
 const HomeScreen = () => {
   const [images, setImages] = useState([]);
@@ -21,7 +21,7 @@ const HomeScreen = () => {
 
         setImages(imageUrlArray);
       } catch (error) {
-        console.error('Error al obtener imágenes:', error);
+        console.error("Error al obtener imágenes:", error);
       }
     };
 
@@ -31,7 +31,11 @@ const HomeScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {images.map((image) => (
-        <Image key={image.id} source={{ uri: image.url }} style={styles.image} />
+        <Image
+          key={image.id}
+          source={{ uri: image.url }}
+          style={styles.image}
+        />
       ))}
     </ScrollView>
   );
@@ -39,13 +43,13 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   image: {
-    width: '50%', // Esto hará que las imágenes aparezcan en filas de 2
-    height: 200,   // Establece la altura deseada
-    resizeMode: 'cover', // Ajusta el modo de redimensionamiento según tus necesidades
+    width: "50%", // Esto hará que las imágenes aparezcan en filas de 2
+    height: 200, // Establece la altura deseada
+    resizeMode: "cover", // Ajusta el modo de redimensionamiento según tus necesidades
   },
 });
 

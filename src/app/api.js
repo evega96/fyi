@@ -17,7 +17,6 @@ import {
   signOut,
 } from "firebase/auth";
 import { db, auth } from "./firebase";
-import { beginAsyncEvent } from "react-native/Libraries/Performance/Systrace";
 
 const collectionName = "chat";
 
@@ -69,12 +68,21 @@ const getArrayFromCollection = (collection) => {
 
 //Sign Up and Sign In
 
-export const signUp = async (email, password, userLog, birthday, isTattooArtist, sanitaryHygieneTitle, vaccines) => {
+export const signUp = async (
+  email,
+  password,
+  userLog,
+  birthday,
+  isTattooArtist,
+  sanitaryHygieneTitle,
+  vaccines,
+  role
+) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
-      password,
+      password
     );
     const userData = {
       user: userLog,
@@ -82,10 +90,12 @@ export const signUp = async (email, password, userLog, birthday, isTattooArtist,
       isTattooArtist: isTattooArtist,
       sanitaryHygieneTitle: sanitaryHygieneTitle,
       vaccines: vaccines,
+      role: role,
     };
     const user = userCredential.user;
+    // Guardar los datos del usuario en la base de datos
     await setDoc(doc(db, "users", user.uid), userData);
-    console.log(user);
+    // Retornar un objeto con el ID del usuario y el role
     return user.uid;
   } catch (err) {
     console.log(err);
@@ -101,10 +111,27 @@ export const signIn = async (email, password) => {
   } catch (err) {
     console.log("Error codigo pablo: ", err);
     throw err.message;
-
   }
 };
 
 export const getCurrentUserId = async () => await auth.currentUser?.uid;
-export const tattooArtist = async (user) => await auth.currentUser?.isTattooArtist;
+export const tattooArtist = async (user) =>
+  await auth.currentUser?.isTattooArtist;
 export const logout = async () => await signOut(auth);
+
+//Making a consult to get the rol of the user
+export const getUserRole = async (userId) => {
+  try {
+    const docRef = doc(db, "users", userId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const userData = docSnap.data();
+      return userData.role;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("There is a problem to get the rol of the user:", error);
+    return null;
+  }
+};

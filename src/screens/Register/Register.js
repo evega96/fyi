@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -8,28 +8,29 @@ import {
   TextInput,
   Alert,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
-import tinta from "../../../assets/RPReplay_Final1694678498.mp4"
-import { Video } from 'expo-av';
+import tinta from "../../../assets/RPReplay_Final1694678498.mp4";
+import { Video } from "expo-av";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 import { signUp, signUpTattooArtist } from "../../app/api";
 
 const Register = ({ navigation }) => {
-  const [user, setUser] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [birthday, setBirthday] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [password2, setPassword2] = React.useState("");
+  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [errores, setErrores] = useState();
-  const [animation] = React.useState(new Animated.Value(0));
+  const [animation] = useState(new Animated.Value(0));
   const [isTattooArtist, setIsTatooArtist] = useState(false);
-  const [additionalInfo1, setAdditionalInfo1] = useState('');
-  const [additionalInfo2, setAdditionalInfo2] = useState('');
+  const [additionalInfo1, setAdditionalInfo1] = useState("");
+  const [additionalInfo2, setAdditionalInfo2] = useState("");
+  const [role, setRole] = useState("Client");
   const [isValidEmail, setIsValidEmail] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Realiza la animación cuando el componente se monta
     Animated.timing(animation, {
       toValue: 1,
@@ -38,21 +39,38 @@ const Register = ({ navigation }) => {
     }).start();
   }, []);
 
+  useEffect(() => {
+    if (isTattooArtist) {
+      setRole("TattooArtist");
+    } else {
+      setRole("Client");
+    }
+  }, [isTattooArtist]);
+
   const handlePress = () => {
-    navigation.navigate('Login');
+    navigation.navigate("Login");
   };
 
   const handleRegister = () => {
     if (password === password2 && password.length > 6) {
       SavePerson();
     } else {
-      Alert.alert("Las contraseñas no coinciden o es inferior a 6 digitos")
+      Alert.alert("Las contraseñas no coinciden o es inferior a 6 digitos");
     }
-  }
+  };
 
   const SavePerson = async () => {
     try {
-      await signUp(email, password, user, birthday, isTattooArtist, additionalInfo1, additionalInfo2);
+      await signUp(
+        email,
+        password,
+        user,
+        birthday,
+        isTattooArtist,
+        additionalInfo1,
+        additionalInfo2,
+        role
+      );
     } catch (err) {
       Alert.alert(err);
     }
@@ -91,7 +109,7 @@ const Register = ({ navigation }) => {
 
           <TextInput
             style={[styles.input, !isValidEmail && styles.invalidInput]}
-            onChangeText={handleEmailChange}
+            onChangeText={setEmail}
             placeholder="Correo electrónico"
           />
 
@@ -101,12 +119,10 @@ const Register = ({ navigation }) => {
             placeholder="Usuario"
           />
 
-
           <TextInput
             style={styles.input}
             onChangeText={setBirthday}
             placeholder="Cumpleaños"
-
           />
 
           <TextInput
@@ -116,7 +132,6 @@ const Register = ({ navigation }) => {
             secureTextEntry={true} // Para ocultar la contraseña
           />
 
-
           <TextInput
             style={styles.input}
             onChangeText={setPassword2}
@@ -124,13 +139,14 @@ const Register = ({ navigation }) => {
             secureTextEntry={true} // Para ocultar la contraseña
           />
 
-
-
-          <TouchableOpacity style={{ marginLeft: 112 }} onPress={() => setIsTatooArtist(!isTattooArtist)}>
+          <TouchableOpacity
+            style={{ marginLeft: 112 }}
+            onPress={() => setIsTatooArtist(!isTattooArtist)}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
+                flexDirection: "row",
+                alignItems: "center",
               }}
             >
               <View
@@ -139,27 +155,36 @@ const Register = ({ navigation }) => {
                   height: 24,
                   borderRadius: 12,
                   borderWidth: 2,
-                  borderColor: isTattooArtist ? 'green' : 'gray',
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  borderColor: isTattooArtist ? "green" : "gray",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                {isTattooArtist && <Icon name="check" size={16} color="green" />}
+                {isTattooArtist && (
+                  <Icon name="check" size={16} color="green" />
+                )}
               </View>
 
-              <Text style={{ marginLeft: 8, color: "#FFFFFF" }}>Soy tatuador</Text>
+              <Text style={{ marginLeft: 8, color: "#FFFFFF" }}>
+                Soy tatuador
+              </Text>
             </View>
           </TouchableOpacity>
 
-          {!isTattooArtist ? (<View styles={{ marginBottom: 10 }}>
-            <TouchableOpacity onPress={handleRegister} style={styles.botonRegister}>
-              <Text style={styles.textoBoton}>Registar</Text>
-            </TouchableOpacity>
+          {!isTattooArtist ? (
+            <View styles={{ marginBottom: 10 }}>
+              <TouchableOpacity
+                onPress={handleRegister}
+                style={styles.botonRegister}
+              >
+                <Text style={styles.textoBoton}>Registar</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity onPress={handlePress} style={styles.boton}>
-              <Text style={styles.textoBoton}>Cancelar</Text>
-            </TouchableOpacity>
-          </View>) : (
+              <TouchableOpacity onPress={handlePress} style={styles.boton}>
+                <Text style={styles.textoBoton}>Cancelar</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
             <View>
               <TextInput
                 style={styles.inputCheckbox}
@@ -180,8 +205,6 @@ const Register = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           )}
-
-
         </View>
       </Animated.View>
     </View>
@@ -227,21 +250,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#E4E4E4",
     marginBottom: 10,
     marginLeft: 112,
-    borderRadius: 15
+    borderRadius: 15,
   },
   logo: {
     marginBottom: 10,
-    marginLeft: 150
+    marginLeft: 150,
   },
   backgroundVideo: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     bottom: 0,
     right: 0,
   },
   checkmarkContainer: {
-    marginBottom: 0
+    marginBottom: 0,
   },
   boton: {
     backgroundColor: "#E4E4E4",
@@ -250,14 +273,14 @@ const styles = StyleSheet.create({
     left: 55,
     width: 314,
     height: 50,
-    borderRadius: 30
+    borderRadius: 30,
   },
   textoBoton: {
     textAlign: "center",
-    color: "#374151"
+    color: "#374151",
   },
   checkbox: {
-    marginBottom: 10
+    marginBottom: 10,
   },
   inputCheckbox: {
     alignContent: "center",
@@ -268,7 +291,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 112,
     borderRadius: 15,
-    marginTop: 10
+    marginTop: 10,
   },
   botonRegister: {
     marginTop: 10,
@@ -278,6 +301,6 @@ const styles = StyleSheet.create({
     left: 55,
     width: 314,
     height: 50,
-    borderRadius: 30
-  }
+    borderRadius: 30,
+  },
 });
