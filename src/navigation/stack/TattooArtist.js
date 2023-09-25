@@ -5,6 +5,7 @@ import Favorite from "../../screens/Favorite/Favorite";
 import Account from "../../screens/Account/Account";
 import Message from "../../screens/Message/Message";
 import Add from "../../screens/Add/Add";
+import DetailScreen from "../stack/DetailsNav"
 const Stack = createStackNavigator();
 
 const TattoArtistNav = () => {
@@ -16,6 +17,7 @@ const TattoArtistNav = () => {
       <Stack.Screen name="Favorite" component={Favorite} />
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="Message" component={Message} />
+      <Stack.Screen name="DetailScreen" component={DetailScreen}/>
     </Stack.Navigator>
   );
 };
