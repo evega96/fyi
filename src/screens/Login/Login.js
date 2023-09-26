@@ -178,17 +178,18 @@ const styles = StyleSheet.create({
     color: "#374151"
   },
   botonGoogle: {
-    backgroundColor: "#E4E4E4",
-    justifyContent: "center",
-    marginBottom: 10,
+    flexDirection: 'row', // Para que la imagen y el texto estén en línea
+    alignItems: 'center', // Centra verticalmente los elementos
+    padding: 10,
+    backgroundColor: '#E4E4E4', // Cambia el color de fondo según tus preferencias
+    borderRadius: 30,
     left: 55,
     width: 314,
     height: 50,
-    borderRadius: 30,
   },
   googleImage: {
     width: 25, // Ancho de la imagen
     height: 25, // Alto de la imagen
     marginRight: 10
-  }
+  },
 });
