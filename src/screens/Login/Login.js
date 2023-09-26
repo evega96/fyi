@@ -15,6 +15,7 @@ import {
 import tinta from "../../../assets/RPReplay_Final1694678498.mp4";
 import { Video } from "expo-av";
 import { signIn } from "../../app/api";
+import googleLogo from "../../../assets/googleLogo.png"
 
 const LoginButton = ({ navigation }) => {
   const [user, setUser] = useState();
@@ -34,6 +35,10 @@ const LoginButton = ({ navigation }) => {
   const handlePress = () => {
     navigation.navigate('Register'); // Reemplaza 'PantallaDestino' con el nombre de tu pantalla de destino
   };
+
+  const handleLoginWithGoogle = () => {
+    Alert.alert("Inicio de sesion con google")
+  }
 
   const handleLogin = () => {
     LoginPerson();
@@ -107,6 +112,12 @@ const LoginButton = ({ navigation }) => {
           <TouchableOpacity onPress={handlePress} style={styles.boton}>
             <Text style={styles.textoBoton}>Registro</Text>
           </TouchableOpacity>
+          <TouchableOpacity onPress={handleLoginWithGoogle} style={styles.botonGoogle}>
+            <Image style={styles.googleImage} source={googleLogo} />
+            <View style={{ flex: 1 }}>
+              <Text style={{ textAlign: "center" }}> Inicia sesion con Google</Text>
+            </View>
+          </TouchableOpacity>
 
         </View>
       </Animated.View>
@@ -139,7 +150,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#E4E4E4",
     marginBottom: 10,
     marginLeft: 112,
-    borderRadius: 15
+    borderRadius: 15,
+    paddingLeft: 15
   },
   backgroundVideo: {
     position: "absolute",
@@ -164,5 +176,19 @@ const styles = StyleSheet.create({
   textoBoton: {
     textAlign: "center",
     color: "#374151"
+  },
+  botonGoogle: {
+    backgroundColor: "#E4E4E4",
+    justifyContent: "center",
+    marginBottom: 10,
+    left: 55,
+    width: 314,
+    height: 50,
+    borderRadius: 30,
+  },
+  googleImage: {
+    width: 25, // Ancho de la imagen
+    height: 25, // Alto de la imagen
+    marginRight: 10
   }
 });

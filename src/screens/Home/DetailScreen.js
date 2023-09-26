@@ -3,7 +3,10 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import ImageModal from '../../components/ImageModal'; // Asegúrate de importar el componente ImageModal
 
 const DetailScreen = ({ route, navigation }) => {
-  const { imageUrl, authorName, description } = route.params;
+
+  console.log("route: ", route)
+  console.log("params: ", route.params)
+  const { imageUrl, authorName, description, hashtags } = route.params;
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [isImageModalVisible, setIsImageModalVisible] = useState(false);
@@ -36,7 +39,7 @@ const DetailScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={openImageModal}>
-        <Image source={{uri: imageUrl}} style={styles.image} resizeMode="cover" />
+        <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="cover" />
       </TouchableOpacity>
       <View style={styles.infoContainer}>
         <Text style={styles.authorName} onPress={goToAuthorProfile}>
@@ -55,7 +58,7 @@ const DetailScreen = ({ route, navigation }) => {
         </TouchableOpacity>
       </View>
       <ImageModal isVisible={isImageModalVisible} imageUrl={imageUrl} onClose={closeImageModal} />
-  </View>
+    </View>
   );
 };
 

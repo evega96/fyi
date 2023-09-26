@@ -4,14 +4,13 @@ import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
 import ImageSize from 'react-native-image-size';
 import { useNavigation } from '@react-navigation/native'; // Importa useNavigation de React Navigation
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [images, setImages] = useState([]);
   const storage = getStorage();
   const screenWidth = Dimensions.get('window').width;
   const imageHeight = 200; // Establece la altura fija deseada para todas las imágenes
   const margin = 5; // Establece el margen deseado para todas las direcciones
 
-  const navigation = useNavigation(); // Obtiene el objeto de navegación
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -39,10 +38,13 @@ const HomeScreen = () => {
   const openDetailScreen = (imageData) => {
     // Navega a la pantalla de detalle y pasa los datos de la imagen como parámetros
     navigation.navigate('DetailScreen', {
-      imageUrl: imageData.url,
-      authorName: 'Nombre del autor', // Reemplaza con el nombre real del autor
-      description: 'Descripción de la imagen', // Reemplaza con la descripción real
-      hashtags: 'hasthtags',
+      screen: 'DetailScreen',
+      params: {
+        imageUrl: imageData.url,
+        authorName: 'Nombre del autor', // Reemplaza con el nombre real del autor
+        description: 'Descripción de la imagen', // Reemplaza con la descripción real
+        hashtags: 'hasthtags'
+      }
     });
   };
 
@@ -51,7 +53,8 @@ const HomeScreen = () => {
       {images.map((image) => (
         <TouchableOpacity key={image.id} onPress={() => {
           console.log("image: ", image)
-          openDetailScreen(image)}}>
+          openDetailScreen(image)
+        }}>
           <Image
             source={{ uri: image.url }}
             style={{
