@@ -6,6 +6,7 @@ import Account from "../../screens/Account/Account";
 import Message from "../../screens/Message/Message";
 import Add from "../../screens/Add/Add";
 import DetailScreen from "../stack/DetailsNav"
+import DetailsConfig from "../../screens/Home/details-config";
 const Stack = createStackNavigator();
 
 const TattoArtistNav = () => {

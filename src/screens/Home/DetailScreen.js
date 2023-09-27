@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import ImageModal from '../../components/ImageModal'; // Asegúrate de importar el componente ImageModal
 
 const DetailScreen = ({ route, navigation }) => {
-
-  console.log("route: ", route)
-  console.log("params: ", route.params)
   const { imageUrl, authorName, description, hashtags } = route.params;
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
-  const [isImageModalVisible, setIsImageModalVisible] = useState(false);
 
   const handleLikePress = () => {
     setIsLiked(!isLiked);
@@ -28,36 +23,29 @@ const DetailScreen = ({ route, navigation }) => {
     // Puedes usar navigation.navigate('AuthorProfile', { authorId: authorId }) por ejemplo
   };
 
-  const openImageModal = () => {
-    setIsImageModalVisible(true);
-  };
-
-  const closeImageModal = () => {
-    setIsImageModalVisible(false);
-  };
-
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={openImageModal}>
+      <View style={styles.imageContainer}>
         <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="cover" />
-      </TouchableOpacity>
+        <View style={styles.overlayButtons}>
+          <TouchableOpacity onPress={handleLikePress} style={styles.overlayButton}>
+            <Text>{isLiked ? 'Unlike' : 'Like'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleSavePress} style={styles.overlayButton}>
+            <Text>{isSaved ? 'Remove from Favorites' : 'Add to Favorites'}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleSharePress} style={styles.overlayButton}>
+            <Text>Share</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
       <View style={styles.infoContainer}>
         <Text style={styles.authorName} onPress={goToAuthorProfile}>
           {authorName}
         </Text>
         <Text style={styles.description}>{description}</Text>
         <Text style={styles.description}>{hashtags}</Text>
-        <TouchableOpacity onPress={handleLikePress}>
-          <Text>{isLiked ? 'Unlike' : 'Like'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleSavePress}>
-          <Text>{isSaved ? 'Remove from Favorites' : 'Add to Favorites'}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleSharePress}>
-          <Text>Share</Text>
-        </TouchableOpacity>
       </View>
-      <ImageModal isVisible={isImageModalVisible} imageUrl={imageUrl} onClose={closeImageModal} />
     </View>
   );
 };
@@ -66,24 +54,48 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  imageContainer: {
+    flex: 1,
+  },
   image: {
+    flex: 1,
     width: '100%',
-    height: 300,
-    resizeMode: 'cover',
+    height: '100%',
+    position: 'absolute',
+  },
+  overlayButtons: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    flexDirection: 'row',
+  },
+  overlayButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+    marginHorizontal: 5,
   },
   infoContainer: {
     paddingHorizontal: 20,
     paddingVertical: 10,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   authorName: {
     fontWeight: 'bold',
     fontSize: 16,
     marginBottom: 5,
     textDecorationLine: 'underline',
+    color: 'white',
   },
   description: {
     fontSize: 14,
     marginBottom: 10,
+    color: 'white',
   },
 });
 

@@ -9,9 +9,11 @@ import {
   Image,
   TextInput,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
+  Button,
+  Linking
 } from "react-native";
-
+import Modal from "react-native-modal";
 import tinta from "../../../assets/RPReplay_Final1694678498.mp4";
 import { Video } from "expo-av";
 import { signIn } from "../../app/api";
@@ -20,6 +22,8 @@ import googleLogo from "../../../assets/googleLogo.png"
 const LoginButton = ({ navigation }) => {
   const [user, setUser] = useState();
   const [password, setPassword] = useState();
+  const [isGoogleModalVisible, setIsGoogleModalVisible] = useState(false);
+  const [googleLoginError, setGoogleLoginError] = useState("");
   const [animation] = useState(new Animated.Value(0));
 
 
@@ -36,9 +40,35 @@ const LoginButton = ({ navigation }) => {
     navigation.navigate('Register'); // Reemplaza 'PantallaDestino' con el nombre de tu pantalla de destino
   };
 
+  const toggleGoogleModal = () => {
+    setIsGoogleModalVisible(!isGoogleModalVisible);
+  };
+  
   const handleLoginWithGoogle = () => {
-    Alert.alert("Inicio de sesion con google")
-  }
+    // Aquí puedes agregar tu lógica de inicio de sesión con Google
+    
+    // Si ocurre un error durante el inicio de sesión, configura el mensaje de error
+    setGoogleLoginError("Hubo un error al iniciar sesión con Google");
+  
+    // Muestra el modal
+    toggleGoogleModal();
+  };
+
+  const openGoogleLoginInBrowser = () => {
+    const googleLoginUrl = 'https://744259670184-q41o2ucfe7l5h0ep9ga0kf7fkm0rpnj2.apps.googleusercontent.com'; // Reemplaza con la URL real de inicio de sesión de Google
+  
+    Linking.openURL(googleLoginUrl)
+      .then((result) => {
+        // La URL se abrió correctamente en el navegador
+        console.log('URL abierta en el navegador:', result);
+      })
+      .catch((error) => {
+        // Hubo un error al abrir la URL
+        console.error('Error al abrir la URL en el navegador:', error);
+      });
+  };
+  
+  
 
   const handleLogin = () => {
     LoginPerson();
@@ -118,7 +148,15 @@ const LoginButton = ({ navigation }) => {
               <Text style={{ textAlign: "center" }}> Inicia sesion con Google</Text>
             </View>
           </TouchableOpacity>
+          <Modal isVisible={isGoogleModalVisible}>
+            <View style={styles.modalContent}>
+              {/* Aquí puedes agregar el contenido del modal */}
+              <Text>Se va abrir otra ventana para iniciar sesion con google</Text>
+              <Button title="Cerrar" onPress={toggleGoogleModal} />
+              <Button title="Continuar con google" onPress={openGoogleLoginInBrowser} />
 
+            </View>
+          </Modal>
         </View>
       </Animated.View>
     </View>
@@ -192,4 +230,10 @@ const styles = StyleSheet.create({
     height: 25, // Alto de la imagen
     marginRight: 10
   },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+  },
+  
 });
