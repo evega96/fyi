@@ -12,13 +12,15 @@ const Stack = createStackNavigator();
 const TattoArtistNav = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Tab" component={TattooArtistBottomNav} />
+      <Stack.Screen name="Inicio" component={TattooArtistBottomNav}
+        options={{ headerShown: false }} />
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Add" component={Add} />
       <Stack.Screen name="Favorite" component={Favorite} />
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="Message" component={Message} />
-      <Stack.Screen name="DetailScreen" component={DetailScreen}/>
+      <Stack.Screen name="DetailScreen" component={DetailScreen}
+        options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };
