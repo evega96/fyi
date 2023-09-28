@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import {
-    createItem,
-    updateItem,
-    getItems,
-    getItemsByCondition,
-    getItemById,
-    deleteItem,
-} from '../app/api';
+import {createItem, updateItem, getItems, getItemsByCondition, getItemById, deleteItem,} from '../app/api';
 
 const ChatComponent = () => {
     const [message, setMessage] = useState('');

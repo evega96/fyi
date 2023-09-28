@@ -4,7 +4,7 @@ import img from '../../../assets/save-line.png';
 import { Image } from "react-native";
 
 const Favorite = {
-    name: "Favorite",
+    name: "Favoritos",
     component: Fav,
     options: {
         headerTitle: 'Favorite',

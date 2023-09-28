@@ -7,6 +7,7 @@ import Message from "../../screens/Message/Message";
 import ForYou from "../../screens/ForYou/Add";
 import ParaTi from "../../screens/Parati/Parati"
 import Destacados from "../../screens/Destacados/Destacados";
+import Editar from "../../EditarPerfil/Editarperfil";
 
 
 const Stack = createStackNavigator();
@@ -26,6 +27,7 @@ const ClientNav = () => {
       <Stack.Screen name="Message" component={Message} />
       <Stack.Screen name="ParaTi" component={ParaTi} />
       <Stack.Screen name="Destacados" component={Destacados} />
+      <Stack.Screen name="EditarPerfil" component={Editar} /> 
     </Stack.Navigator>
   );
 };
