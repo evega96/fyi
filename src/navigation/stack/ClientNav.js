@@ -5,7 +5,9 @@ import Favorite from "../../screens/Favorite/Favorite";
 import Account from "../../screens/Account/Account";
 import Message from "../../screens/Message/Message";
 import ForYou from "../../screens/ForYou/Add";
-import Header from "../../components/Header";
+import ParaTi from "../../screens/Parati/Parati"
+import Destacados from "../../screens/Destacados/Destacados";
+
 
 const Stack = createStackNavigator();
 
@@ -22,6 +24,8 @@ const ClientNav = () => {
       <Stack.Screen name="Favorite" component={Favorite} />
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="Message" component={Message} />
+      <Stack.Screen name="ParaTi" component={ParaTi} />
+      <Stack.Screen name="Destacados" component={Destacados} />
     </Stack.Navigator>
   );
 };

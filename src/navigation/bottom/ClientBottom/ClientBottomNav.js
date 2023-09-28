@@ -7,7 +7,7 @@ import BottomConfig from "../TattooArtistBottom-config";
 import HomeConfig from "../../../screens/Home/home-config";
 import PageConfig from "../../../screens/Favorite/favorite-config";
 import MessageConfig from "../../../screens/Message/message-config";
-import AccountConfig from "../../../screens/Account/account-config";
+import AccountConfig from "../../../screens/Account/Account-config";
 import Add from "../../../screens/Add/Add";
 import AddConfig from "../../../screens/Add/add-config";
 

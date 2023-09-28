@@ -1,12 +1,12 @@
 import React from "react";
-import { Image, StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import { Image, StyleSheet, View, TouchableOpacity, Text, ScrollView } from "react-native";
 import Home from "./Home"; // Asegúrate de que la ruta sea correcta
 import Ionicons from "react-native-vector-icons/Ionicons";
 import home from "../../../assets/home.png"; // Asegúrate de que la ruta sea correcta
 
 // Define la configuración de la pantalla "Home"
 const HomeConfig = {
-  name: "Home",
+  name: "Inicio",
   component: Home,
   options: ({ navigation }) => ({
     tabBarIcon: () => <Image source={home} />,
@@ -32,15 +32,13 @@ const HomeConfig = {
     ),
     headerTitle: () => (
       <View style={styles.headerButtonsContainer}>
-        <TouchableOpacity
-          style={styles.centerButton}
-          onPress={() => navigation.navigate("ParaTiScreen")}
-        >
+        <TouchableOpacity style={styles.centerButton}
+          onPress={() => navigation.navigate("ParaTi")}>
           <Text style={styles.buttonText}>Para Ti</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.centerButton}
-          onPress={() => navigation.navigate("DestacadosScreen")}
+          onPress={() => navigation.navigate("Destacados")}
         >
           <Text style={styles.buttonText}>Destacados</Text>
         </TouchableOpacity>
