@@ -16,7 +16,8 @@ import {
   createUserWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { db, auth } from "./firebase";
+import { db, auth, storage } from "./firebase";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const collectionName = "chat";
 
@@ -133,5 +134,26 @@ export const getUserRole = async (userId) => {
   } catch (error) {
     console.error("There is a problem to get the rol of the user:", error);
     return null;
+  }
+};
+//storage
+
+export const uploadImageToFirebase = async (imageUri) => {
+  try {
+    const response = await fetch(imageUri);
+    const blob = await response.blob();
+
+    // Genera un nombre único para la imagen o utiliza el nombre original
+    const uniqueImageName = `${Math.random()}-${new Date().getTime()}.jpg`;
+
+    const storageRef = ref(storage, uniqueImageName); // Utiliza la instancia de Firebase Storage
+
+    await uploadBytes(storageRef, blob);
+
+    const imageUrl = await getDownloadURL(storageRef);
+    return imageUrl;
+  } catch (error) {
+    console.error("Error al subir la imagen a Firebase Storage:", error);
+    throw error;
   }
 };

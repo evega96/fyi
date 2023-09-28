@@ -7,16 +7,30 @@ import {
   Image,
   TouchableOpacity,
   StyleSheet,
+  ScrollView,
+  SectionList,
+  Button,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import * as MediaLibrary from "expo-media-library";
 import * as ImagePicker from "expo-image-picker";
 import DownArrow from "../../components/Icons/DownArrow";
+import Cancel from "../../components/Icons/Cancel";
+import Expand from "../../components/Icons/Expand";
+import { useNavigation } from "@react-navigation/native";
 
 const Add = () => {
   const [lastImage, setLastImage] = useState(null);
   const [recentImages, setRecentImages] = useState([]);
   const [numColumns, setNumColumns] = useState(3); // Estado para el número de columnas
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    async () => {
+      await MediaLibrary.requestPermissionsAsync();
+    };
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -51,16 +65,38 @@ const Add = () => {
     });
     if (!result.cancelled) {
       setLastImage(result.uri);
+
+      // Navegar a la pantalla AddDetails con la imagen seleccionada como parámetro
+      navigation.navigate("AddDetails", { selectedImage: result.uri });
     }
   };
 
-  // Función para cambiar el número de columnas
+  // Function to change the number of colunms
   const changeNumColumns = (columns) => {
     setNumColumns(columns);
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+      <View style={styles.header}>
+        <View style={styles.subheader}>
+          <TouchableOpacity onPress={() => navigation.navigate("Favorite")}>
+            <Cancel />
+          </TouchableOpacity>
+          <Text>Nueva publicación</Text>
+
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("AddDetails", { selectedImage: lastImage })
+            }
+          >
+            <Text>Siguiente</Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <Expand />
+        </View>
+      </View>
       <View>
         <Text>Last image: </Text>
         {lastImage && (
@@ -76,9 +112,8 @@ const Add = () => {
           <DownArrow />
         </View>
 
-        {/* Cambia la clave (key) de FlatList cuando cambias el número de columnas */}
+        {/* Utiliza FlatList para las imágenes recientes */}
         <FlatList
-          key={numColumns}
           data={recentImages}
           keyExtractor={(item) => item.id}
           numColumns={numColumns}
@@ -92,23 +127,20 @@ const Add = () => {
           )}
         />
       </View>
-      {/* Botones para cambiar el número de columnas */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => changeNumColumns(2)}>
-          <Text>2 Columnas</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => changeNumColumns(3)}>
-          <Text>3 Columnas</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => changeNumColumns(4)}>
-          <Text>4 Columnas</Text>
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  subheader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "40%",
+  },
   image: {
     width: 150,
     height: 150,

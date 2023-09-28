@@ -1,12 +1,14 @@
 import React from "react";
-import { View, Text, Pressable, Button } from "react-native";
+import { View, Text, Pressable, Button, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
 import { logout } from "../../app/api";
+import { useNavigation } from "@react-navigation/native";
 
-const Account = ({ navigation, route }) => {
+const Account = ({ route }) => {
   const onhandleLogout = () => {
     logout();
   };
+  const navigation = useNavigation();
   return (
     <View>
       <Text>Screen: {route.name}</Text>
