@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, Pressable, Button, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
 import { logout } from "../../app/api";
 import { useNavigation } from "@react-navigation/native";
+import { AuthenticatedUserContext } from "../../Context/AuthContextProdiver";
 
 const Account = ({ route }) => {
   const onhandleLogout = () => {
