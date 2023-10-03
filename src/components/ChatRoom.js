@@ -1,65 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
-import {
-    createItem,
-    updateItem,
-    getItems,
-    getItemsByCondition,
-    getItemById,
-    deleteItem,
-} from '../app/api';
+import { useState, useRef, useEffect } from 'react';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { createMsg, onMsgsUpdated, getOrCreateRoom } from '../app/api';
+import { View } from 'react-native';
+import { Button, Input } from 'react-native-elements';
 
-const ChatComponent = () => {
-    const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]);
+function ChatRoom() {
+    const [msgs, setMsgs] = useState([]);
+    const [roomCode, setRoomCode] = useState();
+    const [userId, setUserId] = useState();
+    const msgRef = useRef();
 
     useEffect(() => {
-        loadChatHistory();
-    }, []);
+        if (roomCode) {
+            onMsgsUpdated(roomCode, (data) => {
+                console.log(data)
+                setMsgs(data)
+            });
+        }
+    }, [roomCode]);
 
-    const loadChatHistory = async () => {
-        const chatMessages = await getItems();
-        setMessages(chatMessages);
-    };
+    const sendRoomCode = () => {
+        getOrCreateRoom(roomCode);
+    }
 
     const sendMessage = async () => {
-        if (message.trim() !== '') {
-            const newMessageId = await createItem({ text: message, timestamp: Date.now() });
-            setMessage('');
-            setMessages([...messages, { id: newMessageId, text: message, timestamp: Date.now() }]);
-        }
-    };
-
-    const deleteMessage = async (id) => {
-        await deleteItem(id);
-        const updatedMessages = messages.filter((msg) => msg.id !== id);
-        setMessages(updatedMessages);
-    };
-
-    const onPress = async () => {
-        sendMessage();
-        loadChatHistory();
+        const msg = msgRef.current.value;
+        await createMsg(roomCode, userId, msg);
+        msgRef.current.value = '';
     }
 
     return (
         <View>
-            <Text>Chat en tiempo real</Text>
-            <View>
-                {messages.map((message) => (
-                    <View key={message.id}>
-                        <Text>{message.text}</Text>
-                        <Button title="Eliminar" onPress={() => deleteMessage(message.id)} />
-                    </View>
-                ))}
-            </View>
-            <TextInput
-                placeholder="Escribe tu mensaje"
-                value={message}
-                onChangeText={(text) => setMessage(text)}
-            />
-            <Button title="Enviar" onPress={onPress} />
-        </View>
-    );
-};
+            <Input type="text" placeholder='UserId' onChange={e => setUserId(e.target.value)} />
+            <Input type="text" placeholder='RoomCode' onChange={e => setRoomCode(e.target.value)} />
+            <TouchableOpacity onPress={sendRoomCode}>
+                <Text>Create Room if not exist</Text>
+            </TouchableOpacity>
 
-export default ChatComponent;
+            {
+                msgs.map(msg => <Msg key={msg.id} isOwnMsg={msg.userId === userId}>{msg.msg}</Msg>)
+            }
+
+            <Input type="text" placeholder='Message Text' ref={msgRef} />
+            <TouchableOpacity onPress={sendMessage}>
+                <Text>Send Message</Text>
+            </TouchableOpacity>
+        </View>
+    )
+}
+
+export default ChatRoom;
+
+const styles = StyleSheet.create({
+    button: {
+
+    }
+});

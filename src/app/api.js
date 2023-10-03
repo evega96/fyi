@@ -6,19 +6,21 @@ import {
   getDoc,
   addDoc,
   deleteDoc,
+  onSnapshot,
   updateDoc,
   setDoc,
-  where,
+  where
 } from "firebase/firestore";
 
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signOut,
-  signInWithPopup,
-  GoogleAuthProvider
+  signOut
 } from "firebase/auth";
-import { db, auth } from "./firebase";
+
+import { db, auth, storage } from "./firebase";
+
+const collectionNameMsgs = 'msgs';
 
 const collectionName = "chat";
 
@@ -87,6 +89,7 @@ export const signUp = async (
       password
     );
     const userData = {
+      id: auth.currentUser.uid,
       user: userLog,
       birthday: birthday,
       isTattooArtist: isTattooArtist,
@@ -116,7 +119,10 @@ export const signIn = async (email, password) => {
   }
 };
 
-export const getCurrentUserId = async () => await auth.currentUser?.uid;
+export const getCurrentUserId = async () => await auth.currentUser.uid;
+
+
+
 export const tattooArtist = async (user) =>
   await auth.currentUser?.isTattooArtist;
 export const logout = async () => await signOut(auth);
@@ -137,3 +143,74 @@ export const getUserRole = async (userId) => {
     return null;
   }
 };
+
+
+export const createImageLike = async (obj) => {
+  const id = await getCurrentUserId();
+  const colRef = collection(db, 'users', id, 'like');
+  const data = await addDoc(colRef, obj);
+  return data.id;
+};
+
+export const createImageFav = async (obj) => {
+  const id = await getCurrentUserId();
+  const colRef = collection(db, 'users', id, 'fav');
+  const data = await addDoc(colRef, obj);
+  return data.id;
+};
+
+
+
+export const getMsgs = async () => {
+  const colRef = collection(db, collectionNameMsgs);
+  const result = await getDocs(query(colRef));
+  return getArrayFromCollection(result);
+}
+
+export const createMsg = async (roomCode, userId, msg) => {
+  try {
+    const colRef = collection(db, 'rooms', roomCode, collectionName);
+    const data = await addDoc(colRef, { userId, msg, date: Date.now() });
+    return data.id;
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+const getArrayFromCollectionMsg = (collection) => {
+  const msgs = collection.docs.map(doc => {
+    return { ...doc.data(), id: doc.id };
+  });
+
+  return msgs.sort(function (a, b) {
+    // Turn your strings into dates, and then subtract them
+    // to get a value that is either negative, positive, or zero.
+    return new Date(a.date) - new Date(b.date);
+  });
+}
+
+
+export const onMsgsUpdated = (roomId, callback) => onSnapshot(collection(db, 'rooms', roomId, 'msgs'), (docs) => {
+  callback(getArrayFromCollection(docs));
+});
+
+
+export const getOrCreateRoom = async (roomCode) => {
+  try {
+    const roomCodeIfExists = await getRoomById(roomCode);
+    if (!roomCodeIfExists) {
+      const docRef = doc(db, 'rooms', roomCode);
+      await setDoc(docRef, {});
+    }
+    return roomCode;
+
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const getRoomById = async (roomId) => {
+  const docRef = doc(db, 'rooms', roomId);
+  const result = await getDoc(docRef);
+  return result.data();
+}

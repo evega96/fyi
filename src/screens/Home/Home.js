@@ -40,7 +40,7 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('DetailScreen', {
       screen: 'DetailScreen',
       params: {
-        imageUrl: imageData.url,
+        imageUrl: imageData,
         authorName: 'Nombre del autor', // Reemplaza con el nombre real del autor
         description: 'Descripción de la imagen', // Reemplaza con la descripción real
         hashtags: 'hasthtags'
@@ -52,7 +52,6 @@ const HomeScreen = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.container}>
       {images.map((image) => (
         <TouchableOpacity key={image.id} onPress={() => {
-          console.log("image: ", image)
           openDetailScreen(image)
         }}>
           <Image
