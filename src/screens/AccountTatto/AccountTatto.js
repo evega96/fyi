@@ -7,13 +7,18 @@ import { AuthenticatedUserContext } from "../../Context/AuthContextProdiver";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import { getUser } from "../../app/api";
 import ConfigurationIcon from "../../components/configurationIcon";
-const Account = ({ navigation, route }) => {
+import { Modal } from "react-native";
+const AccountTatto = ({ navigation, route }) => {
   const { userid, setUserid } = useContext(AuthenticatedUserContext);
   const [userName, setUserName] = useState(""); // Estado para almacenar el nombre de usuario
   const [images, setImages] = useState([]);
   const storage = getStorage();
+  const [isModalVisible, setModalVisible] = useState(false);
   console.log(userName)
   
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  }
 
   useEffect(() => {
     const user = async ()=>{
@@ -68,36 +73,32 @@ const Account = ({ navigation, route }) => {
           style={styles.button}
           onPress={() => navigation.navigate("EditarPerfil")}
 >
-          <Text style={styles.buttonText}>Editar Perfil</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("AccountTatto")}
->
-          <Text style={styles.buttonText}>TATTOPAGE</Text>
+          <Text style={styles.buttonText}>Mensaje</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}  onPress={() => {
           alert("");}}>
-          <Text style={styles.buttonText}>Compartir</Text>
+          <Text style={styles.buttonText}>Seguir</Text>
         </TouchableOpacity>
         
       </View>
-      <View style={styles.Text}>
-      <Text style={{ color: 'white' }}> Fan de los tatuajes</Text>
-      <Text style={{ color: 'white' }}> BARCELONA</Text>
+      <View style={styles.Texts}>
+      <Text style={{ color: 'white' }}> TATUAJE TRADICIONAL <Text style={{ color: 'blue' }}>@savannahngu</Text></Text>
+      <Text style={{ color: 'white' }}>TATUADO EN <Text style={{ color: 'blue' }}>@seny_tattos</Text></Text>
+      <Text style={{ color: 'white' }}> BASED IN BARCELONA </Text>
+
       <View style={styles.tatuajes}>
       <TouchableOpacity style={styles.buttons} onPress={() => {
           
           alert("");
         }}>
-          <Text style={styles.buttonText}>Mis Tatuajes</Text>
+          <Text style={styles.buttonText}> Publicaciones</Text>
       </TouchableOpacity>
       
       <TouchableOpacity style={styles.buttons} onPress={() => {
 
         alert("");
       }}>
-          <Text style={styles.buttonText}>Colecciones</Text>
+          <Text style={styles.buttonText}> Opiniones</Text>
       </TouchableOpacity>
       </View>
       </View>
@@ -153,10 +154,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center"
   },
-  Text: {
+  Texts: {
     justifyContent: "center",
     alignItems: "center",
-    left: 40
+    left: 40,
+    color: "#EEEEEE"
+
   },
   tatuajes:{ 
     flexDirection: "row",
@@ -181,8 +184,9 @@ const styles = StyleSheet.create({
     resizeMode: "cover", // Ajusta el modo de redimensionamiento según tus necesidades
   },
   Configuration: {
-    left: 350
+    left: 350,
+    color: "#EEEEEE"
   }
 });
 
-export default Account;
+export default AccountTatto;

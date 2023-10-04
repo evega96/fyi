@@ -8,7 +8,7 @@ import Add from "../../screens/Add/Add";
 import ParaTi from "../../screens/Parati/Parati"
 import Destacados from "../../screens/Destacados/Destacados";
 import Editar from "../../EditarPerfil/Editarperfil";
-
+import AccountTatto from "../../screens/AccountTatto/AccountTatto";
 const Stack = createStackNavigator();
 
 const TattoArtistNav = () => {
@@ -24,6 +24,8 @@ const TattoArtistNav = () => {
       <Stack.Screen name="ParaTi" component={ParaTi} />
       <Stack.Screen name="Destacados" component={Destacados} />
       <Stack.Screen name="EditarPerfil" component={Editar} />
+      <Stack.Screen name="AccountTatto" component={AccountTatto} />
+
     </Stack.Navigator>
   );
 };

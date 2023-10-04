@@ -135,3 +135,24 @@ export const getUserRole = async (userId) => {
     return null;
   }
 };
+
+//get name
+
+
+//Making a consult to get the rol of the user
+export const getUser = async (userId) => {
+  try {
+    const docRef = doc(db, "users", userId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const userData = docSnap.data();
+      return userData;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("There is a problem to get the rol of the user:", error);
+    return null;
+  }
+};
+
