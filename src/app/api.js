@@ -214,3 +214,24 @@ export const getRoomById = async (roomId) => {
   const result = await getDoc(docRef);
   return result.data();
 }
+
+export const getAuthorIdByName = async (authorName) => {
+  try {
+    const usersCollectionRef = collection(db, 'users');
+    const querySnapshot = await getDocs(usersCollectionRef);
+
+    for (const doc of querySnapshot.docs) {
+      const userData = doc.data();
+      console.log(authorName);
+      if (userData.user === authorName) {
+        return doc.id; // Devuelve la ID del usuario con el nombre especificado
+      }
+    }
+
+    // Si no se encuentra ningún usuario con ese nombre, puedes devolver null o algún otro valor indicativo.
+    return null;
+  } catch (error) {
+    console.error("Error al buscar el ID del usuario por nombre:", error);
+    return null;
+  }
+}

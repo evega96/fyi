@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Share } from 'react-native';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import { createImageLike, createImageFav, getCurrentUserId } from '../../app/api';
+import { createImageLike, createImageFav, getCurrentUserId, getAuthorIdByName } from '../../app/api';
 
 const DetailScreen = ({ route, navigation }) => {
   const { imageUrl, authorName, description, hashtags } = route.params;
@@ -10,28 +10,43 @@ const DetailScreen = ({ route, navigation }) => {
 
   const handleLikePress = () => {
     setIsLiked(!isLiked);
-    createImageLike(imageUrl.url);
+    createImageLike(imageUrl);
 
 
   };
 
   const handleSavePress = () => {
     setIsSaved(!isSaved);
-    createImageFav(imageUrl.url);
+    createImageFav(imageUrl);
 
   };
 
-  const handleSharePress = () => {
-    // Implementa la lógica para compartir la imagen
+  const handleSharePress = async () => {
+    try {
+      const options = {
+        title: 'Compartir imagen', // Título del diálogo de compartir
+        message: 'Mira esta imagen de la aplicacionc Fynk:', // Mensaje que se compartirá
+        url: imageUrl, // URL de la imagen a compartir
+      };
+
+      await Share.share(options);
+    } catch (error) {
+      console.error('Error al compartir la imagen:', error.message);
+    }
   };
 
-  const goToAuthorProfile = () => {
-    // Supongamos que tienes un autorId que deseas pasar a la pantalla de perfil del autor
-    //const authorId = '123'; // Esto debe ser el ID del autor actual
+  const goToAuthorProfile = async () => {
+    try {
+      // Realiza una solicitud para obtener la ID del autor por nombre
+      const authorId = await getAuthorIdByName(authorName);
 
-    // Navega a la pantalla de perfil del autor y pasa el parámetro 'authorId'
-    //navigation.navigate('AuthorProfile', { authorId });
+      // Navega a la pantalla de perfil del autor y pasa el parámetro 'authorId'
+      navigation.navigate('AuthorProfile', { authorId });
+    } catch (error) {
+      console.error('Error al obtener la ID del autor:', error.message);
+    }
   };
+
 
 
   return (
