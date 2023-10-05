@@ -20,7 +20,7 @@ const AddDetails = ({ route, navigation }) => {
     // Obtener la imagen seleccionada de las props de navegación
     const { selectedImage } = route.params;
     const user = useContext(AuthenticatedUserContext);
-    console.log(user);
+    /*  console.log(user); */
 
     const uploadImage = async () => {
         try {
@@ -62,29 +62,50 @@ const AddDetails = ({ route, navigation }) => {
                 </View>
             </View>
             <View style={styles.moreInformation}>
-                <Persons />
-                <Text style={styles.moreInformationText}>
-                    Etiquetar Personas
-                </Text>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("TagPerson")}
+                >
+                    <Persons />
+                    <Text style={styles.moreInformationText}>
+                        Etiquetar Persona1
+                    </Text>
+                </TouchableOpacity>
             </View>
             <View style={styles.moreInformation}>
-                <Ubication />
-                <Text style={styles.moreInformationText}>Añadir Ubicación</Text>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("Favorite")}
+                >
+                    <Ubication />
+                    <Text style={styles.moreInformationText}>
+                        Añadir Ubicación
+                    </Text>
+                </TouchableOpacity>
             </View>
             <View style={styles.moreInformation}>
-                <Tags />
-                <Text style={styles.moreInformationText}>Tags</Text>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("Favorite")}
+                >
+                    <Tags />
+                    <Text style={styles.moreInformationText}>Tags</Text>
+                </TouchableOpacity>
             </View>
             <View style={styles.moreInformation}>
-                <Price />
-                <Text style={styles.moreInformationText}>
-                    Precio Orientativo
-                </Text>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("Favorite")}
+                >
+                    <Price />
+                    <Text style={styles.moreInformationText}>
+                        Precio Orientativo
+                    </Text>
+                </TouchableOpacity>
             </View>
 
             {/* Aquí puedes agregar más elementos y lógica para subir la imagen a Firebase */}
-            <TouchableOpacity onPress={uploadImage}>
-                <Text> uploadImage</Text>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => uploadImage()}
+            >
+                <Text>Siguiente</Text>
             </TouchableOpacity>
         </View>
     );
@@ -143,6 +164,15 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         fontSize: 20,
         color: "#FFFFFF",
+    },
+    button: {
+        position: "absolute",
+        alignItems: "center",
+        top: 250,
+        padding: 20,
+        backgroundColor: "#4B74F2",
+        color: "#FFFFFF",
+        borderRadius: 20,
     },
 });
 
