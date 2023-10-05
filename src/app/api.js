@@ -18,7 +18,7 @@ import {
     updateProfile,
 } from "firebase/auth";
 import { db, auth, storage } from "./firebase";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 // CREATE
 export const createItem = async (obj, collectionName) => {
@@ -87,14 +87,7 @@ export const signUp = async (
         await updateProfile(auth.currentUser, {
             displayName: userLog, // Aquí puedes asignar el displayName que desees
         });
-        const userData = {
-            user: userLog,
-            birthday: birthday,
-            isTattooArtist: isTattooArtist,
-            sanitaryHygieneTitle: sanitaryHygieneTitle,
-            vaccines: vaccines,
-            role: role,
-        };
+
         const user = userCredential.user;
         // Guardar los datos del usuario en la base de datos
         await setDoc(doc(db, "users", user.uid), userData);
@@ -142,15 +135,31 @@ export const getUserRole = async (userId) => {
 
 export const uploadImageToFirebase = async (imageUri) => {
     try {
-        const response = await fetch(imageUri);
-        const blob = await response.blob();
+        const blobImage = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                resolve(xhr.response);
+            };
+            xhr.onerror = function () {
+                reject(TypeError("Network request failed"));
+            };
+            xhr.responseType = "blob";
+            xhr.open("GET", imageUri, true);
+            xhr.send(null);
+        });
+
+        // Set data type
+        /** @type{any}*/
+        const metadata = {
+            contentType: "image/jpeg",
+        };
 
         // Genera un nombre único para la imagen o utiliza el nombre original
         const uniqueImageName = `${Math.random()}-${new Date().getTime()}.jpg`;
 
         const storageRef = ref(storage, `images/ ${uniqueImageName}`); // Utiliza la instancia de Firebase Storage
 
-        await uploadBytes(storageRef, blob);
+        await uploadBytesResumable(storageRef, blobImage, metadata);
 
         const imageUrl = await getDownloadURL(storageRef);
 
@@ -177,11 +186,65 @@ export const uploadImageToFirebase = async (imageUri) => {
         // Obtiene el ID del documento recién creado
         const documentid = newDocumentRef.id;
 
-        const result = { imageUrl, documentid };
-
         return { imageUrl, documentid };
     } catch (error) {
         console.error("Error al subir la imagen a Firebase Storage:", error);
         throw error;
     }
+};
+
+export const uploadImage = async (image) => {
+    const blobImage = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            resolve(xhr.response);
+        };
+        xhr.onerror = function () {
+            reject(TypeError("Network request failed"));
+        };
+        xhr.responseType = "blob";
+        xhr.open("GET", image, true);
+        xhr.send(null);
+    });
+
+    // Set data type
+    /** @type{any}*/
+    const metadata = {
+        contentType: "image/jpeg",
+    };
+    // Upload image to storage
+    const storageRef = ref(storage, "images/" + Date.now());
+    const uploadTask = uploadBytesResumable(storageRef, blobImage, metadata);
+    let rr = "";
+    // Listen for state changes, errors, and completion of the upload.
+    const p = await uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+                case "paused":
+                    console.log("Upload is paused");
+                    break;
+                case "running":
+                    console.log("Upload is running");
+                    break;
+            }
+        },
+        (error) => {
+            // Handle errors
+            console.error("Upload error:", error);
+        },
+        async () => {
+            // Upload completed successfully, now we can get the download URL
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+
+            console.log("File available at", downloadURL);
+            rr = downloadURL;
+            return downloadURL;
+        }
+    );
+    console.log("11111111111111", p);
 };

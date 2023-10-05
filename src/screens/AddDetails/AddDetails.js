@@ -16,13 +16,15 @@ import Persons from "../../components/Icons/Persons";
 import Ubication from "../../components/Icons/Ubication";
 import Tags from "../../components/Icons/Tags";
 import Price from "../../components/Icons/Price";
+import Image1 from "../../../assets/ProfileImage.png";
+
 const AddDetails = ({ route, navigation }) => {
     // Obtener la imagen seleccionada de las props de navegación
     const { selectedImage } = route.params;
     const user = useContext(AuthenticatedUserContext);
     /*  console.log(user); */
 
-    const uploadImage = async () => {
+    const uploadImage2 = async () => {
         try {
             const result = await uploadImageToFirebase(selectedImage);
             // Ahora puedes usar imageUrl, que es la URL de la imagen cargada en Firebase
@@ -73,17 +75,17 @@ const AddDetails = ({ route, navigation }) => {
             </View>
             <View style={styles.moreInformation}>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate("Favorite")}
+                    onPress={() => navigation.navigate("AddUbication")}
                 >
                     <Ubication />
                     <Text style={styles.moreInformationText}>
-                        Añadir Ubicación
+                        Añadir Ubicación 2
                     </Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.moreInformation}>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate("Favorite")}
+                    onPress={() => navigation.navigate("AddTags")}
                 >
                     <Tags />
                     <Text style={styles.moreInformationText}>Tags</Text>
@@ -103,7 +105,7 @@ const AddDetails = ({ route, navigation }) => {
             {/* Aquí puedes agregar más elementos y lógica para subir la imagen a Firebase */}
             <TouchableOpacity
                 style={styles.button}
-                onPress={() => uploadImage()}
+                onPress={() => uploadImage2()}
             >
                 <Text>Siguiente</Text>
             </TouchableOpacity>
@@ -161,14 +163,16 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     moreInformationText: {
-        paddingLeft: 15,
+        paddingLeft: 50,
         fontSize: 20,
+        marginTop: -20,
         color: "#FFFFFF",
     },
     button: {
         position: "absolute",
         alignItems: "center",
-        top: 250,
+        marginLeft: 150,
+        top: 700,
         padding: 20,
         backgroundColor: "#4B74F2",
         color: "#FFFFFF",
