@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, ScrollView,userID } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, ScrollView,userID} from "react-native";
 import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
 import { getItemById, logout } from "../../app/api"; // Asegúrate de importar getItemById correctamente
 import img from "../../../assets/FotodePerfil.jpg";
@@ -7,13 +7,32 @@ import { AuthenticatedUserContext } from "../../Context/AuthContextProdiver";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import { getUser } from "../../app/api";
 import ConfigurationIcon from "../../components/configurationIcon";
+import Modal from "react-native-modal"; // Importar la biblioteca react-native-modal+
+import Count from "../../components/Cuenta";
+import Privacidad from "../../components/Privacidad";
+import Contein from "../../components/Contenido";
+import Not from "../../components/Notificaciones";
+import Langua from "../../components/Idiomas";
+import Pagos from "../../components/Pagos";
+import Reser from "../../components/Reservas";
+import Ayu from "../../components/Ayudas";
+
 const Account = ({ navigation, route }) => {
   const { userid, setUserid } = useContext(AuthenticatedUserContext);
   const [userName, setUserName] = useState(""); // Estado para almacenar el nombre de usuario
   const [images, setImages] = useState([]);
   const storage = getStorage();
+  const [isModalVisible, setModalVisible] = useState(false);
+
   console.log(userName)
-  
+
+  const showModal = () => {
+    setModalVisible(true);
+  };
+
+  const hideModal = () => {
+    setModalVisible(false);
+  };
 
   useEffect(() => {
     const user = async ()=>{
@@ -47,18 +66,35 @@ const Account = ({ navigation, route }) => {
   }, []);
 
   return (
-    
     <View style={styles.container}>
-     
-      <ScrollView contentContainerStyle={styles.contenido}>
-        <View>
-          <TouchableOpacity  onPress={() => {
-          alert("");}}>
-          <ConfigurationIcon  style={styles.Configuration} />
+    <ScrollView contentContainerStyle={styles.contenido}>
+      <TouchableOpacity onPress={showModal}>
+        <ConfigurationIcon style={styles.Configuration} />
+      </TouchableOpacity>
     
-          </TouchableOpacity>
-          
+  
+      <Modal isVisible={isModalVisible}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalTexts}>
+            <View>
+            
+            <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Count/>   </Text>
+            
+            <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}> <Privacidad />  </Text>
+            <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Contein />    </Text>
+            <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Not />  </Text>
+            <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}> <Langua /></Text>
+            <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Pagos  />  </Text>
+            <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}> <Reser /> </Text>
+            <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Ayu /> </Text>
+            </View>
+            </View>
+            <TouchableOpacity onPress={hideModal}>
+              <Text style={{ color: "white" }}>CERRAR</Text>
+            </TouchableOpacity>
           </View>
+        </Modal>
+        
           
       
       <View style={styles.HeaderButton}>
@@ -181,8 +217,13 @@ const styles = StyleSheet.create({
     resizeMode: "cover", // Ajusta el modo de redimensionamiento según tus necesidades
   },
   Configuration: {
-    left: 350
-  }
+    left: 350,
+  },
+  modalContent: {
+    backgroundColor: "grey",
+    padding: 20,
+    borderRadius: 10,
+  },
 });
 
 export default Account;

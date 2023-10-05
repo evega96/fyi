@@ -10,4 +10,4 @@ const Editar = () => {
   )
 }
 
-export default Editar
+export default Editar;
