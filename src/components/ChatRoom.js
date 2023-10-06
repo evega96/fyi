@@ -1,26 +1,33 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { createMsg, onMsgsUpdated, getOrCreateRoom } from '../app/api';
+import { createMsg, onMsgsUpdated, getOrCreateRoom, getUserChatRooms } from '../app/api'; // Agrega getUserChatRooms a tu import
 import { View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 
-function ChatRoom() {
+function ChatRoom({route}) {
+    const {roomCodeId} = route.params;
     const [msgs, setMsgs] = useState([]);
     const [roomCode, setRoomCode] = useState();
     const [userId, setUserId] = useState();
     const msgRef = useRef();
 
     useEffect(() => {
-        if (roomCode) {
-            onMsgsUpdated(roomCode, (data) => {
+        if (roomCodeId) {
+            onMsgsUpdated(roomCodeId, (data) => {
                 console.log(data)
                 setMsgs(data)
             });
         }
-    }, [roomCode]);
+    }, [roomCodeId]);
 
-    const sendRoomCode = () => {
-        getOrCreateRoom(roomCode);
+    const sendRoomCode = async () => {
+        // Agrega aquí la lógica para verificar si la sala de chat pertenece al usuario actual antes de establecer roomCode
+        const userChatRooms = await getUserChatRooms(userId);
+        if (userChatRooms.includes(roomCode)) {
+            setRoomCode(roomCode);
+        } else {
+            console.log("No tienes acceso a esta sala de chat.");
+        }
     }
 
     const sendMessage = async () => {

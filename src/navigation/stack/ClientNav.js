@@ -14,7 +14,7 @@ const ClientNav = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Home"
+        name="Inicio"
         component={ClientBottomNav}
         options={{ headerShown: false }}
       />
@@ -23,7 +23,8 @@ const ClientNav = () => {
       <Stack.Screen name="Favorite" component={Favorite} />
       <Stack.Screen name="Account" component={Account} />
       <Stack.Screen name="Message" component={Message} />
-      <Stack.Screen name="DetailScreen" component={DetailScreen} {...DetailsConfig}/>
+      <Stack.Screen name="DetailScreen" component={DetailScreen} 
+        options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 };

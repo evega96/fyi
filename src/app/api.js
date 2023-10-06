@@ -77,10 +77,10 @@ export const signUp = async (
   password,
   userLog,
   birthday,
-  isTattooArtist,
   sanitaryHygieneTitle,
   vaccines,
-  role
+  role,
+  preferences
 ) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
@@ -88,14 +88,15 @@ export const signUp = async (
       email,
       password
     );
+    console.log(auth.currentUser.uid, userLog, birthday, sanitaryHygieneTitle, vaccines, role, preferences)
     const userData = {
       id: auth.currentUser.uid,
       user: userLog,
       birthday: birthday,
-      isTattooArtist: isTattooArtist,
       sanitaryHygieneTitle: sanitaryHygieneTitle,
       vaccines: vaccines,
       role: role,
+      preferences: preferences
     };
     const user = userCredential.user;
     // Guardar los datos del usuario en la base de datos
@@ -171,11 +172,17 @@ export const createMsg = async (roomCode, userId, msg) => {
   try {
     const colRef = collection(db, 'rooms', roomCode, collectionName);
     const data = await addDoc(colRef, { userId, msg, date: Date.now() });
+
+    // Actualiza la información de la sala de chat para almacenar el ID del usuario que la creó
+    const roomDocRef = doc(db, 'rooms', roomCode);
+    await setDoc(roomDocRef, { createdBy: userId }, { merge: true });
+
     return data.id;
   } catch (e) {
     console.log(e)
   }
 }
+
 
 const getArrayFromCollectionMsg = (collection) => {
   const msgs = collection.docs.map(doc => {
@@ -235,3 +242,27 @@ export const getAuthorIdByName = async (authorName) => {
     return null;
   }
 }
+
+export const getUserChatRooms = async (userId) => {
+  try {
+    const userChatRooms = [];
+
+    // Consulta las salas de chat donde el usuario actual es miembro
+    const chatRoomsQuery = query(
+      collection(db, "rooms"),
+      where("members", "array-contains", userId) // Supongamos que tienes un campo "members" en tus salas de chat
+    );
+
+    const querySnapshot = await getDocs(chatRoomsQuery);
+
+    // Recorre los resultados y agrega los códigos de sala a la lista
+    querySnapshot.forEach((doc) => {
+      userChatRooms.push(doc.id);
+    });
+
+    return userChatRooms;
+  } catch (error) {
+    console.error("Error al obtener las salas de chat del usuario:", error);
+    return [];
+  }
+};
