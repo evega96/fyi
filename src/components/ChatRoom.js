@@ -4,21 +4,20 @@ import { createMsg, onMsgsUpdated, getOrCreateRoom, getUserChatRooms } from '../
 import { View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 
-function ChatRoom({route}) {
-    const {roomCodeId} = route.params;
+function ChatRoom({}) {
     const [msgs, setMsgs] = useState([]);
     const [roomCode, setRoomCode] = useState();
     const [userId, setUserId] = useState();
     const msgRef = useRef();
 
     useEffect(() => {
-        if (roomCodeId) {
-            onMsgsUpdated(roomCodeId, (data) => {
+        if (roomCode) {
+            onMsgsUpdated(roomCode, (data) => {
                 console.log(data)
                 setMsgs(data)
             });
         }
-    }, [roomCodeId]);
+    }, [roomCode]);
 
     const sendRoomCode = async () => {
         // Agrega aquí la lógica para verificar si la sala de chat pertenece al usuario actual antes de establecer roomCode

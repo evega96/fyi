@@ -88,7 +88,6 @@ export const signUp = async (
       email,
       password
     );
-    console.log(auth.currentUser.uid, userLog, birthday, sanitaryHygieneTitle, vaccines, role, preferences)
     const userData = {
       id: auth.currentUser.uid,
       user: userLog,
@@ -247,13 +246,14 @@ export const getUserChatRooms = async (userId) => {
   try {
     const userChatRooms = [];
 
-    // Consulta las salas de chat donde el usuario actual es miembro
+    // Query chat rooms where the user is a member
     const chatRoomsQuery = query(
       collection(db, "rooms"),
-      where("members", "array-contains", userId) // Supongamos que tienes un campo "members" en tus salas de chat
+      where("id", "in", [`private_qKCU6Cbm7dbe47ZozlJcsvM0oRi2_06041996`]) // Add the chat room IDs you want to query
     );
 
     const querySnapshot = await getDocs(chatRoomsQuery);
+    console.log('query: ', querySnapshot)
 
     // Recorre los resultados y agrega los códigos de sala a la lista
     querySnapshot.forEach((doc) => {

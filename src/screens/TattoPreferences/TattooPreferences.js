@@ -11,7 +11,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { signUp } from "../../app/api";
 
 const TattooPreferences = ({ route }) => {
-  const { email, password, user, birthday, isTattoArtist, additionalInfo1, additionalInfo2, role} = route.params;
+  const { email, password, user, birthday, additionalInfo1, additionalInfo2, role} = route.params;
   const [preferences, setPreferences] = useState({
   
     japoneses: {

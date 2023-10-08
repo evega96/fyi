@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, ScrollView, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Image, ScrollView, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
 import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
 import ImageSize from 'react-native-image-size';
-import { useNavigation } from '@react-navigation/native'; // Importa useNavigation de React Navigation
+import { getCurrentUserId, getOrCreateRoom } from '../../app/api';
 
 const HomeScreen = ({ navigation }) => {
   const [images, setImages] = useState([]);
@@ -47,6 +47,26 @@ const HomeScreen = ({ navigation }) => {
       }
     });
   };
+  const handleContactButtonClick = async (otherUserId) => {
+    console.log('111111111111',otherUserId)
+    try {
+      // Obtén el ID del usuario actual (puedes usar la función adecuada para esto)
+      const currentUserId = await getCurrentUserId();
+  
+      // Crea una sala de chat privada y obtén el código de sala
+      const roomCode = await getOrCreateRoom(`private_${currentUserId}_${otherUserId}`);
+
+      console.log('222222222222', roomCode)
+      
+      navigation.navigate("Message", {
+        roomCodeId: roomCode,
+        userId: currentUserId
+      })
+
+    } catch (error) {
+      console.error("Error al iniciar el chat privado:", error);
+    }
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -66,6 +86,10 @@ const HomeScreen = ({ navigation }) => {
           />
         </TouchableOpacity>
       ))}
+      
+      <TouchableOpacity onPress={() => handleContactButtonClick('3252732')} style={{marginTop: 200}}>
+          <Text>Contactar</Text>
+        </TouchableOpacity>
     </ScrollView>
   );
 };
