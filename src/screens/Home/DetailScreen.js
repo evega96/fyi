@@ -47,9 +47,9 @@ const DetailScreen = ({ route, navigation }) => {
     }
   };
 
-  
 
-  
+
+
 
   return (
     <View style={styles.container}>

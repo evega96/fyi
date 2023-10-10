@@ -246,7 +246,8 @@ export const getUserChatRooms = async (userId) => {
   try {
     const userChatRooms = [];
 
-    // Query chat rooms where the user is a member
+    console.log('777777777', userId)
+    // Consulta las salas de chat donde el usuario actual es miembro
     const chatRoomsQuery = query(
       collection(db, "rooms"),
       where("id", "in", [`private_qKCU6Cbm7dbe47ZozlJcsvM0oRi2_06041996`]) // Add the chat room IDs you want to query
