@@ -47,34 +47,9 @@ const DetailScreen = ({ route, navigation }) => {
     }
   };
 
-  
 
-  const handleContactButtonClick = async (otherUserId) => {
-    console.log('111111111111',otherUserId)
-    try {
-      // Obtén el ID del usuario actual (puedes usar la función adecuada para esto)
-      const currentUserId = await getCurrentUserId();
-  
-      // Crea una sala de chat privada y obtén el código de sala
-      const roomCode = await getOrCreateRoom(`private_${currentUserId}_${otherUserId}`);
 
-      console.log('222222222222', roomCode)
-      
-      navigation.navigate("Message", {
-        params:{
-          roomCodeId: roomCode
-        }
-      })
-      // Redirige a la sala de chat correspondiente
-      // Aquí debes implementar la navegación de tu aplicación
-      // Por ejemplo, utilizando React Router o alguna otra biblioteca de navegación.
-      // Esto dependerá de cómo esté configurada tu aplicación.
-      // Aquí te muestro una redirección de ejemplo usando React Router:
-      // history.push(`/chat/${roomCode}`);
-    } catch (error) {
-      console.error("Error al iniciar el chat privado:", error);
-    }
-  }
+
 
   return (
     <View style={styles.container}>
@@ -97,9 +72,6 @@ const DetailScreen = ({ route, navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity onPress={handleSharePress} style={styles.overlayButton}>
           <FontAwesomeIcon name="share" size={40} color="blue" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleContactButtonClick('3252732')} style={styles.overlayButton}>
-          <Text>Contactar</Text>
         </TouchableOpacity>
       </View>
     </View>

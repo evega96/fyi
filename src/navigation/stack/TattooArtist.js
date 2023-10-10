@@ -7,6 +7,7 @@ import Message from "../../screens/Message/Message";
 import Add from "../../screens/Add/Add";
 import DetailScreen from "../stack/DetailsNav"
 import DetailsConfig from "../../screens/Home/details-config";
+import ChatRoom from '../../components/ChatRoom';
 const Stack = createStackNavigator();
 
 const TattoArtistNav = () => {
@@ -21,6 +22,7 @@ const TattoArtistNav = () => {
       <Stack.Screen name="Message" component={Message} />
       <Stack.Screen name="DetailScreen" component={DetailScreen}
         options={{ headerShown: false }} />
+      <Stack.Screen name='ChatRooms' component={ChatRoom} />
     </Stack.Navigator>
   );
 };
