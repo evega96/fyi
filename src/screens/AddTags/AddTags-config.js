@@ -1,7 +1,7 @@
-import Add from "./Add";
+import AddTags from "./AddTags";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const AddConfig = {
+const AddUbicationConfig = {
     name: "Add",
     component: Add,
     options: {
@@ -18,4 +18,4 @@ const AddConfig = {
     },
 };
 
-export default AddConfig;
+export default AddUbicationConfig;
