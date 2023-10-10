@@ -7,6 +7,8 @@ import {
     TouchableOpacity,
     StyleSheet,
     TextInput,
+    TouchableWithoutFeedback,
+    Keyboard,
 } from "react-native";
 import { uploadImageToFirebase } from "../../app/api";
 import BackArrow from "../../components/Icons/BackArrow";
@@ -22,11 +24,26 @@ const AddDetails = ({ route, navigation }) => {
     // Obtener la imagen seleccionada de las props de navegación
     const { selectedImage } = route.params;
     const user = useContext(AuthenticatedUserContext);
-    /*  console.log(user); */
+    const [text, setText] = useState("");
+    console.log(user.user.uid);
+
+    const documentInformation = {
+        user_id: user.user.uid,
+        ubicacion: "Barcelona",
+        PersonasTags: "",
+        Tags: "",
+        Price: "",
+        coments: "",
+        favorite: "",
+        text: text,
+    };
 
     const uploadImage2 = async () => {
         try {
-            const result = await uploadImageToFirebase(selectedImage);
+            const result = await uploadImageToFirebase(
+                selectedImage,
+                documentInformation
+            );
             // Ahora puedes usar imageUrl, que es la URL de la imagen cargada en Firebase
             console.log("Imagen cargada con éxito:", result);
             navigation.navigate("Publication", { result });
@@ -36,80 +53,83 @@ const AddDetails = ({ route, navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <BackArrow />
-                </TouchableOpacity>
-                <Text style={styles.textHeader}>Nueva publicación</Text>
-            </View>
-            <View style={styles.imageInformation}>
-                <View style={styles.userInformation}>
-                    <Image
-                        source={{ uri: selectedImage }}
-                        style={styles.imageuser}
-                    />
-                    <TextInput
-                        placeholder="Escribe una descripción"
-                        style={styles.textInput}
-                        multiline={true}
-                        placeholderTextColor="#9CA3AF"
-                    />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <BackArrow />
+                    </TouchableOpacity>
+                    <Text style={styles.textHeader}>Nueva publicación</Text>
                 </View>
-                <View style={styles.imageContainer}>
-                    <Image
-                        source={{ uri: selectedImage }}
-                        style={styles.image}
-                    />
+                <View style={styles.imageInformation}>
+                    <View style={styles.userInformation}>
+                        <Image
+                            source={{ uri: selectedImage }}
+                            style={styles.imageuser}
+                        />
+                        <TextInput
+                            placeholder="Escribe una descripción"
+                            style={styles.textInput}
+                            multiline={true}
+                            placeholderTextColor="#9CA3AF"
+                            onChangeText={setText}
+                        />
+                    </View>
+                    <View style={styles.imageContainer}>
+                        <Image
+                            source={{ uri: selectedImage }}
+                            style={styles.image}
+                        />
+                    </View>
                 </View>
-            </View>
-            <View style={styles.moreInformation}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("TagPerson")}
-                >
-                    <Persons />
-                    <Text style={styles.moreInformationText}>
-                        Etiquetar Persona1
-                    </Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.moreInformation}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("AddUbication")}
-                >
-                    <Ubication />
-                    <Text style={styles.moreInformationText}>
-                        Añadir Ubicación 2
-                    </Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.moreInformation}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("AddTags")}
-                >
-                    <Tags />
-                    <Text style={styles.moreInformationText}>Tags</Text>
-                </TouchableOpacity>
-            </View>
-            <View style={styles.moreInformation}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("Favorite")}
-                >
-                    <Price />
-                    <Text style={styles.moreInformationText}>
-                        Precio Orientativo
-                    </Text>
-                </TouchableOpacity>
-            </View>
+                <View style={styles.moreInformation}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("TagPerson")}
+                    >
+                        <Persons />
+                        <Text style={styles.moreInformationText}>
+                            Etiquetar Persona
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.moreInformation}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("AddUbication")}
+                    >
+                        <Ubication />
+                        <Text style={styles.moreInformationText}>
+                            Añadir Ubicación
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.moreInformation}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("AddTags")}
+                    >
+                        <Tags />
+                        <Text style={styles.moreInformationText}>Tags</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.moreInformation}>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("Favorite")}
+                    >
+                        <Price />
+                        <Text style={styles.moreInformationText}>
+                            Precio Orientativo
+                        </Text>
+                    </TouchableOpacity>
+                </View>
 
-            {/* Aquí puedes agregar más elementos y lógica para subir la imagen a Firebase */}
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => uploadImage2()}
-            >
-                <Text>Siguiente</Text>
-            </TouchableOpacity>
-        </View>
+                {/* Aquí puedes agregar más elementos y lógica para subir la imagen a Firebase */}
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => uploadImage2()}
+                >
+                    <Text>Siguiente</Text>
+                </TouchableOpacity>
+            </View>
+        </TouchableWithoutFeedback>
     );
 };
 
@@ -120,8 +140,13 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: "row",
-        justifyContent: "space-around",
         margin: 10,
+    },
+    textHeader: {
+        justifyContent: "center",
+        marginLeft: 60,
+        fontSize: 16,
+        color: "white",
     },
     imageInformation: {
         padding: 20,

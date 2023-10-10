@@ -12,91 +12,85 @@ import {
     Button,
     TextInput,
     Alert,
+    TouchableWithoutFeedback,
+    Keyboard,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MagnifierIcon from "../../components/Icons/MagnifierIcon";
 import Cancel from "../../components/Icons/Cancel";
 import ImageUser from "../../../assets/ProfileImage.png";
+import Label from "../../components/Icons/Label";
 
 const AddTags = () => {
+    const [isInputFocused, setInputFocused] = useState(false);
     const navigation = useNavigation();
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Cancel />
-                </TouchableOpacity>
-                <Text style={styles.textHeader}>Selecciona una persona</Text>
-            </View>
-            <View style={styles.middleTols}>
-                <View style={styles.inputContainer}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <SafeAreaView
+                style={
+                    isInputFocused ? styles.containerFocused : styles.container
+                }
+            >
+                <View style={styles.header}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <Cancel />
+                    </TouchableOpacity>
+                    <Text style={styles.textHeader}>
+                        Selecciona las categorías
+                    </Text>
+                </View>
+                <View style={styles.middleTols}>
+                    <View style={styles.inputContainer}>
+                        <TouchableOpacity
+                            onPress={() =>
+                                Alert.alert(
+                                    "Mensaje de alerta",
+                                    "Hola, esta es una alerta"
+                                )
+                            }
+                        >
+                            <MagnifierIcon style={styles.icon} />
+                        </TouchableOpacity>
+                        <TextInput
+                            placeholder="Añadir Etiquetas "
+                            style={[
+                                styles.textInput,
+                                // Cambiar el estilo del TextInput cuando está enfocado
+                                isInputFocused ? styles.focusedInput : null,
+                            ]}
+                            multiline={true}
+                            placeholderTextColor="#9CA3AF"
+                            textAlignVertical="center"
+                            onFocus={() => setInputFocused(true)} // Manejar el enfoque
+                            onBlur={() => setInputFocused(false)} // Manejar la pérdida de enfoque
+                        />
+                    </View>
+                </View>
+
+                <View style={styles.user}>
+                    <View style={styles.image}>
+                        <Label />
+                    </View>
+                    <View style={styles.information}>
+                        <Text style={{ color: "white" }}>Tradicional</Text>
+                        <Text style={{ color: "white" }}>1,5M posts</Text>
+                    </View>
+                </View>
+                <View style={styles.buttonContainer}>
                     <TouchableOpacity
+                        style={styles.button}
                         onPress={() =>
-                            Alert.alert(
-                                "Mensaje de alerta",
-                                "Hola, esta es una alerta"
-                            )
+                            navigation.navigate("AddDetails", {
+                                selectedImage: lastImage,
+                            })
                         }
                     >
-                        <MagnifierIcon style={styles.icon} />
+                        <Text>Siguiente</Text>
                     </TouchableOpacity>
-                    <TextInput
-                        placeholder="Añadir Etiquetas"
-                        style={styles.textInput}
-                        multiline={true}
-                        placeholderTextColor="#9CA3AF"
-                        textAlignVertical="center"
-                    />
                 </View>
-            </View>
-            <View style={styles.user}>
-                <View style={styles.image}>
-                    <Image
-                        source={{ uri: ImageUser }}
-                        style={styles.imageuser}
-                    />
-                </View>
-                <View style={styles.information}>
-                    <Text style={{ color: "white" }}>Marta Ribota</Text>
-                    <Text style={{ color: "white" }}>@ribotamartaa</Text>
-                </View>
-                <View style={styles.icon}>
-                    <Cancel />
-                </View>
-            </View>
-
-            <View style={styles.user}>
-                <View style={styles.image}>
-                    <Image
-                        source={{ uri: ImageUser }}
-                        style={styles.imageuser}
-                    />
-                </View>
-                <View style={styles.information}>
-                    <Text style={{ color: "white" }}>Marta Ribota</Text>
-                    <Text style={{ color: "white" }}>@ribotamartaa</Text>
-                </View>
-                <View style={styles.icon}>
-                    <Cancel />
-                </View>
-            </View>
-            <View style={styles.user}>
-                <View style={styles.image}>
-                    <Image
-                        source={{ uri: ImageUser }}
-                        style={styles.imageuser}
-                    />
-                </View>
-                <View style={styles.information}>
-                    <Text style={{ color: "white" }}>Marta Ribota</Text>
-                    <Text style={{ color: "white" }}>@ribotamartaa</Text>
-                </View>
-                <View style={styles.icon}>
-                    <Cancel />
-                </View>
-            </View>
-        </SafeAreaView>
+            </SafeAreaView>
+        </TouchableWithoutFeedback>
     );
 };
 
@@ -107,11 +101,12 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: "row",
-        justifyContent: "space-around",
         margin: 10,
     },
     textHeader: {
         justifyContent: "center",
+        marginLeft: 40,
+        fontSize: 16,
         color: "white",
     },
     middleTols: {
@@ -149,7 +144,7 @@ const styles = StyleSheet.create({
         borderColor: "red",
         height: 43,
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "space-around",
         marginTop: 15,
     },
     image: {
@@ -165,8 +160,31 @@ const styles = StyleSheet.create({
         borderColor: "blue",
     },
     imageuser: {
-        width: 50,
-        height: 50,
+        width: 43,
+        height: 43,
+        borderRadius: 20,
+    },
+    containerFocused: {
+        flex: 1,
+        backgroundColor: "#000000", // Cambia el color de fondo a negro cuando está enfocado
+    },
+    buttonContainer: {
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 16,
+        backgroundColor: "transparent", // Cambia el color de fondo según tus preferencias
+    },
+    button: {
+        position: "relative",
+        right: 0,
+        width: 100,
+        padding: 15,
+        backgroundColor: "#4B74F2",
         borderRadius: 20,
     },
 });

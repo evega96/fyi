@@ -12,6 +12,8 @@ import {
     Button,
     TextInput,
     Alert,
+    TouchableWithoutFeedback,
+    Keyboard,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MagnifierIcon from "../../components/Icons/MagnifierIcon";
@@ -22,81 +24,62 @@ const AddUbication = () => {
     const navigation = useNavigation();
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Cancel />
-                </TouchableOpacity>
-                <Text style={styles.textHeader}>Selecciona una persona</Text>
-            </View>
-            <View style={styles.middleTols}>
-                <View style={styles.inputContainer}>
-                    <TouchableOpacity
-                        onPress={() =>
-                            Alert.alert(
-                                "Mensaje de alerta",
-                                "Hola, esta es una alerta"
-                            )
-                        }
-                    >
-                        <MagnifierIcon style={styles.icon} />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <SafeAreaView style={styles.container}>
+                <View style={styles.header}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <Cancel />
                     </TouchableOpacity>
-                    <TextInput
-                        placeholder="Añadir Ubicación"
-                        style={styles.textInput}
-                        multiline={true}
-                        placeholderTextColor="#9CA3AF"
-                        textAlignVertical="center"
-                    />
+                    <Text style={styles.textHeader}>
+                        Selecciona una ubicación
+                    </Text>
                 </View>
-            </View>
-            <View style={styles.user}>
-                <View style={styles.image}>
-                    <Image
-                        source={{ uri: ImageUser }}
-                        style={styles.imageuser}
-                    />
+                <View style={styles.middleTols}>
+                    <View style={styles.inputContainer}>
+                        <TouchableOpacity
+                            onPress={() =>
+                                Alert.alert(
+                                    "Mensaje de alerta",
+                                    "Hola, esta es una alerta"
+                                )
+                            }
+                        >
+                            <MagnifierIcon style={styles.icon} />
+                        </TouchableOpacity>
+                        <TextInput
+                            placeholder="Añadir Ubicación"
+                            style={styles.textInput}
+                            multiline={true}
+                            placeholderTextColor="#9CA3AF"
+                            textAlignVertical="center"
+                        />
+                    </View>
                 </View>
-                <View style={styles.information}>
-                    <Text style={{ color: "white" }}>Marta Ribota</Text>
-                    <Text style={{ color: "white" }}>@ribotamartaa</Text>
-                </View>
-                <View style={styles.icon}>
-                    <Cancel />
-                </View>
-            </View>
 
-            <View style={styles.user}>
-                <View style={styles.image}>
-                    <Image
-                        source={{ uri: ImageUser }}
-                        style={styles.imageuser}
-                    />
+                <View style={styles.user}>
+                    <View style={styles.information}>
+                        <Text style={{ color: "white" }}>Barcelona</Text>
+                        <Text style={{ color: "white" }}>5,6 km</Text>
+                    </View>
                 </View>
-                <View style={styles.information}>
-                    <Text style={{ color: "white" }}>Marta Ribota</Text>
-                    <Text style={{ color: "white" }}>@ribotamartaa</Text>
+                <View style={styles.user}>
+                    <View style={styles.information}>
+                        <Text style={{ color: "white" }}>
+                            Sant Andreu de Palomar
+                        </Text>
+                        <Text style={{ color: "white" }}>5,6 km</Text>
+                    </View>
                 </View>
-                <View style={styles.icon}>
-                    <Cancel />
+                <View style={styles.user}>
+                    <View style={styles.information}>
+                        <Text style={{ color: "white" }}>
+                            Sant Andreu, Cataluna Spain
+                        </Text>
+                        <Text style={{ color: "white" }}>5,6 km</Text>
+                    </View>
                 </View>
-            </View>
-            <View style={styles.user}>
-                <View style={styles.image}>
-                    <Image
-                        source={{ uri: ImageUser }}
-                        style={styles.imageuser}
-                    />
-                </View>
-                <View style={styles.information}>
-                    <Text style={{ color: "white" }}>Marta Ribota</Text>
-                    <Text style={{ color: "white" }}>@ribotamartaa</Text>
-                </View>
-                <View style={styles.icon}>
-                    <Cancel />
-                </View>
-            </View>
-        </SafeAreaView>
+            </SafeAreaView>
+        </TouchableWithoutFeedback>
     );
 };
 
@@ -107,11 +90,12 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: "row",
-        justifyContent: "space-around",
         margin: 10,
     },
     textHeader: {
         justifyContent: "center",
+        marginLeft: 40,
+        fontSize: 16,
         color: "white",
     },
     middleTols: {
@@ -159,8 +143,9 @@ const styles = StyleSheet.create({
         borderColor: "blue",
     },
     information: {
-        width: 150,
+        width: 320,
         height: 43,
+        marginLeft: 40,
         borderWidth: 1,
         borderColor: "blue",
     },

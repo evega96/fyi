@@ -20,11 +20,14 @@ import MultiSelect from "../../components/Icons/MultiSelect";
 import Expand from "../../components/Icons/Expand";
 import { useNavigation } from "@react-navigation/native";
 import Camara from "../../components/Icons/Camara";
+import { useContext } from "react";
+import { AuthenticatedUserContext } from "../../Context/AuthContextProdiver";
 
 const Add = () => {
     const [lastImage, setLastImage] = useState(null);
     const [recentImages, setRecentImages] = useState([]);
     const [numColumns, setNumColumns] = useState(3); // Estado para el número de columnas
+    const { user, setUser } = useContext(AuthenticatedUserContext);
 
     const navigation = useNavigation();
 
@@ -112,7 +115,7 @@ const Add = () => {
                 </View>
             </View>
 
-            <View>
+            <View style={styles.imagesContainer}>
                 {/* Utiliza FlatList para las imágenes recientes */}
                 <FlatList
                     data={recentImages}
@@ -133,16 +136,18 @@ const Add = () => {
                         </TouchableOpacity>
                     )}
                 />
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() =>
-                        navigation.navigate("AddDetails", {
-                            selectedImage: lastImage,
-                        })
-                    }
-                >
-                    <Text>Siguiente</Text>
-                </TouchableOpacity>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() =>
+                            navigation.navigate("AddDetails", {
+                                selectedImage: lastImage,
+                            })
+                        }
+                    >
+                        <Text>Siguiente</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </SafeAreaView>
     );
@@ -167,18 +172,14 @@ const styles = StyleSheet.create({
     },
     imageImage: {
         width: "100%",
-        height: 398,
+        height: 320,
         objectFit: "contain",
     },
     image: {
         width: 150,
         height: 150,
     },
-    buttonContainer: {
-        flexDirection: "row",
-        justifyContent: "space-around",
-        marginTop: 10,
-    },
+
     middleTols: {
         flexDirection: "row",
         justifyContent: "space-around",
@@ -199,13 +200,29 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         color: "white",
     },
-    button: {
+    imagesContainer: {
+        position: "relative",
+        height: 430,
+        borderWidth: 1,
+        borderColor: "red",
+    },
+    buttonContainer: {
         position: "absolute",
-        marginLeft: 150,
-        top: 250,
-        padding: 20,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 16,
+        backgroundColor: "transparent", // Cambia el color de fondo según tus preferencias
+    },
+    button: {
+        position: "relative",
+        right: 0,
+        width: 100,
+        padding: 15,
         backgroundColor: "#4B74F2",
-        color: "#FFFFFF",
         borderRadius: 20,
     },
 });

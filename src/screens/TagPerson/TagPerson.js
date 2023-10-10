@@ -12,91 +12,89 @@ import {
     Button,
     TextInput,
     Alert,
+    TouchableWithoutFeedback,
+    Keyboard,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import MagnifierIcon from "../../components/Icons/MagnifierIcon";
 import Cancel from "../../components/Icons/Cancel";
 import ImageUser from "../../../assets/ProfileImage.png";
+import { getPersonByName } from "../../app/api";
 
 const TagPerson = () => {
+    const [users, setUsers] = useState([]);
+    const [data, setData] = useState("");
     const navigation = useNavigation();
 
-    return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Cancel />
-                </TouchableOpacity>
-                <Text style={styles.textHeader}>Selecciona una persona</Text>
-            </View>
-            <View style={styles.middleTols}>
-                <View style={styles.inputContainer}>
-                    <TouchableOpacity
-                        onPress={() =>
-                            Alert.alert(
-                                "Mensaje de alerta",
-                                "Hola, esta es una alerta"
-                            )
-                        }
-                    >
-                        <MagnifierIcon style={styles.icon} />
-                    </TouchableOpacity>
-                    <TextInput
-                        placeholder="Buscar una persona"
-                        style={styles.textInput}
-                        multiline={true}
-                        placeholderTextColor="#9CA3AF"
-                        textAlignVertical="center"
-                    />
-                </View>
-            </View>
-            <View style={styles.user}>
-                <View style={styles.image}>
-                    <Image
-                        source={{ uri: ImageUser }}
-                        style={styles.imageuser}
-                    />
-                </View>
-                <View style={styles.information}>
-                    <Text style={{ color: "white" }}>Marta Ribota</Text>
-                    <Text style={{ color: "white" }}>@ribotamartaa</Text>
-                </View>
-                <View style={styles.icon}>
-                    <Cancel />
-                </View>
-            </View>
+    // Llamar a getResult cuando data cambie
+    useEffect(() => {
+        if (data.length >= 1) {
+            getResult();
+        } else {
+            setUsers([]); // Limpiar la lista de usuarios si la entrada es demasiado corta
+        }
+    }, [data]);
 
-            <View style={styles.user}>
-                <View style={styles.image}>
-                    <Image
-                        source={{ uri: ImageUser }}
-                        style={styles.imageuser}
-                    />
+    const handleUserChange = (text) => {
+        setData(text); // Actualiza el estado user con el texto ingresado en el TextInput
+    };
+
+    const getResult = async () => {
+        const result = await getPersonByName(data);
+        // Limitar la lista a los primeros 10 registros
+        setUsers(result.slice(0, 10));
+    };
+
+    return (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <SafeAreaView style={styles.container}>
+                <View style={styles.header}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
+                        <Cancel />
+                    </TouchableOpacity>
+                    <Text style={styles.textHeader}>
+                        Selecciona una persona
+                    </Text>
                 </View>
-                <View style={styles.information}>
-                    <Text style={{ color: "white" }}>Marta Ribota</Text>
-                    <Text style={{ color: "white" }}>@ribotamartaa</Text>
+                <View style={styles.middleTols}>
+                    <View style={styles.inputContainer}>
+                        <TouchableOpacity onPress={() => getResult()}>
+                            <MagnifierIcon style={styles.icon} />
+                        </TouchableOpacity>
+                        <TextInput
+                            placeholder="Buscar una persona"
+                            style={styles.textInput}
+                            multiline={true}
+                            placeholderTextColor="#9CA3AF"
+                            textAlignVertical="center"
+                            onChangeText={handleUserChange}
+                        />
+                    </View>
                 </View>
-                <View style={styles.icon}>
-                    <Cancel />
-                </View>
-            </View>
-            <View style={styles.user}>
-                <View style={styles.image}>
-                    <Image
-                        source={{ uri: ImageUser }}
-                        style={styles.imageuser}
-                    />
-                </View>
-                <View style={styles.information}>
-                    <Text style={{ color: "white" }}>Marta Ribota</Text>
-                    <Text style={{ color: "white" }}>@ribotamartaa</Text>
-                </View>
-                <View style={styles.icon}>
-                    <Cancel />
-                </View>
-            </View>
-        </SafeAreaView>
+                {users &&
+                    users.map((user) => (
+                        <View key={user.id} style={styles.user}>
+                            <View style={styles.image}>
+                                {/* <Image
+                                    source={{ uri: ImageUser }}
+                                    style={styles.imageuser}
+                                /> */}
+                            </View>
+                            <View style={styles.information}>
+                                <Text style={{ color: "white" }}>
+                                    {user.data.displayName}
+                                </Text>
+                                <Text style={{ color: "white" }}>
+                                    @{user.data.displayName}
+                                </Text>
+                            </View>
+                            <View style={styles.icon}>
+                                <Cancel />
+                            </View>
+                        </View>
+                    ))}
+            </SafeAreaView>
+        </TouchableWithoutFeedback>
     );
 };
 
@@ -107,11 +105,12 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: "row",
-        justifyContent: "space-around",
         margin: 10,
     },
     textHeader: {
         justifyContent: "center",
+        marginLeft: 40,
+        fontSize: 16,
         color: "white",
     },
     middleTols: {

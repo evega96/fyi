@@ -71,9 +71,8 @@ const getArrayFromCollection = (collection) => {
 export const signUp = async (
     email,
     password,
-    userLog,
+    displayName,
     birthday,
-    isTattooArtist,
     sanitaryHygieneTitle,
     vaccines,
     role
@@ -85,8 +84,16 @@ export const signUp = async (
             password
         );
         await updateProfile(auth.currentUser, {
-            displayName: userLog, // Aquí puedes asignar el displayName que desees
+            displayName: displayName, // Aquí puedes asignar el displayName que desees
         });
+        const userData = {
+            email,
+            displayName,
+            birthday,
+            sanitaryHygieneTitle,
+            vaccines,
+            role,
+        };
 
         const user = userCredential.user;
         // Guardar los datos del usuario en la base de datos
@@ -133,7 +140,7 @@ export const getUserRole = async (userId) => {
 };
 //storage
 
-export const uploadImageToFirebase = async (imageUri) => {
+export const uploadImageToFirebase = async (imageUri, documentInformation) => {
     try {
         const blobImage = await new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -161,18 +168,12 @@ export const uploadImageToFirebase = async (imageUri) => {
 
         await uploadBytesResumable(storageRef, blobImage, metadata);
 
-        const imageUrl = await getDownloadURL(storageRef);
+        // documentation
 
-        const documentInformation = {
-            user: "",
-            ubicacion: "Barcelona",
-            PersonasTags: "",
-            Tags: "",
-            Price: "",
-            coments: "",
-            favorite: "",
-            imageUrl,
-        };
+        const imageUrl = await getDownloadURL(storageRef);
+        // Agrega la URL de la imagen a los datos del documento
+
+        documentInformation.imageUrl = imageUrl;
 
         // Crea una referencia a una colección en Firestore (puedes cambiar "publications" por el nombre de tu colección)
         const collectionRef = collection(db, "publications");
@@ -246,5 +247,35 @@ export const uploadImage = async (image) => {
             return downloadURL;
         }
     );
-    console.log("11111111111111", p);
+};
+
+//get name By name
+
+export const getPersonByName = async (name) => {
+    const usersRef = collection(db, "users");
+
+    // Consulta para buscar usuarios cuyos nombres comiencen con la cadena 'name'
+    const consult = query(
+        usersRef,
+        where("displayName", ">=", name),
+        where("displayName", "<", name + "z") // 'z' es un carácter máximo, puedes ajustarlo según tus necesidades
+    );
+
+    try {
+        const querySnapshot = await getDocs(consult);
+        const results = [];
+
+        querySnapshot.forEach((doc) => {
+            const result = {
+                id: doc.id,
+                data: doc.data(),
+            };
+            results.push(result);
+        });
+
+        return results;
+    } catch (error) {
+        console.error("Error al obtener documentos:", error);
+        throw error;
+    }
 };
