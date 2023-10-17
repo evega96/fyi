@@ -49,27 +49,6 @@ const HomeScreen = ({ navigation }) => {
     });
   };
   const handleContactButtonClick = async (otherUserId) => {
-    console.log('111111111111',otherUserId)
-    try {
-      // Obtén el ID del usuario actual (puedes usar la función adecuada para esto)
-      const currentUserId = await getCurrentUserId();
-  
-      // Crea una sala de chat privada y obtén el código de sala
-      const roomCode = await getOrCreateRoom(`private_${currentUserId}_${otherUserId}`);
-
-      console.log('222222222222', roomCode)
-      
-      navigation.navigate("Message", {
-        roomCodeId: roomCode,
-        userId: currentUserId
-      })
-
-    } catch (error) {
-      console.error("Error al iniciar el chat privado:", error);
-    }
-  }
-
-  const handleContactButtonClick = async (otherUserId) => {
     console.log('111111111111', otherUserId)
     try {
       // Obtén el ID del usuario actual (puedes usar la función adecuada para esto)
@@ -82,9 +61,9 @@ const HomeScreen = ({ navigation }) => {
 
       navigation.navigate("Message", {
         roomCodeId: roomCode,
-
-
+        userId: currentUserId
       })
+
     } catch (error) {
       console.error("Error al iniciar el chat privado:", error);
     }
