@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { View, Image, ScrollView, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
 import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
@@ -6,14 +7,13 @@ import { useNavigation } from '@react-navigation/native'; // Importa useNavigati
 import { getCurrentUserId, getOrCreateRoom } from '../../app/api';
 
 const HomeScreen = ({ navigation }) => {
-  const [images, setImages] = useState([]);
-  const storage = getStorage();
-  const screenWidth = Dimensions.get('window').width;
-  const imageHeight = 200; // Establece la altura fija deseada para todas las imágenes
-  const margin = 5; // Establece el margen deseado para todas las direcciones
+    const [images, setImages] = useState([]);
+    const storage = getStorage();
+    const screenWidth = Dimensions.get("window").width;
+    const imageHeight = 200; // Establece la altura fija deseada para todas las imágenes
+    const margin = 5; // Establece el margen deseado para todas las direcciones
 
-
-  useEffect(() => {
+    /* useEffect(() => {
     const fetchImages = async () => {
       try {
         const imageRef = ref(storage); // Ref al directorio principal de Storage
@@ -34,7 +34,7 @@ const HomeScreen = ({ navigation }) => {
     };
 
     fetchImages();
-  }, []);
+  }, []); */
 
   const openDetailScreen = (imageData) => {
     // Navega a la pantalla de detalle y pasa los datos de la imagen como parámetros
@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
   overlayButton: {
     marginTop: 200
   }
+
 });
 
 export default HomeScreen;
