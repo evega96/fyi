@@ -34,7 +34,7 @@ const ChatComponent = () => {
         loadChatHistory();
     }
 
-    return (
+    return (  
         <View>
             <Text>Chat en tiempo real</Text>
             <View>

@@ -1,70 +1,94 @@
-import React from "react";
-import { Image, StyleSheet, View, TouchableOpacity, Text, ScrollView } from "react-native";
-import Home from "./Home"; // Asegúrate de que la ruta sea correcta
+import React, { useState } from "react";
+import { Image, StyleSheet, View, TouchableOpacity, Text, TextInput, ScrollView } from "react-native";
+import Home from "./Home";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import home from "../../../assets/home.png"; // Asegúrate de que la ruta sea correcta
+import home from "../../../assets/home.png";
 
-// Define la configuración de la pantalla "Home"
 const HomeConfig = {
   name: "Inicio",
   component: Home,
-  options: ({ navigation }) => ({
-    tabBarIcon: () => <Image source={home} />,
-    headerStyle: {
-      backgroundColor: "black", // Fondo blanco
-    },
-    headerTitleStyle: {
-      display: "none", // Oculta el título "Home"
-    },
-    headerTransparent: true,
-    headerShown: true,
-    headerRight: () => (
-      <TouchableOpacity
-        style={styles.searchButton}
-        onPress={() => {
-          // Agrega aquí la lógica para la acción "Se Busca"
-          // Por ejemplo, podrías abrir un cuadro de diálogo de búsqueda
-          alert("Se Busca");
-        }}
-      >
-        <Ionicons name="search" size={24} color="#4b74f2" />
-      </TouchableOpacity>
-    ),
-    headerTitle: () => (
-      <View style={styles.headerButtonsContainer}>
-        <TouchableOpacity style={styles.centerButton}
-          onPress={() => navigation.navigate("ParaTi")}>
-          <Text style={styles.buttonText}>Para Ti</Text>
+  options: ({ navigation }) => {
+    const [showSearchBar, setShowSearchBar] = useState(false);
+    const [searchText, setSearchText] = useState("");
+
+    const toggleSearchBar = () => {
+      setShowSearchBar(!showSearchBar);
+    };
+
+    // Define headerLeft here
+    const headerLeft = showSearchBar ? (
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Buscar..."
+        onChangeText={(text) => setSearchText(text)}
+        value={searchText}
+        autoFocus
+        onBlur={toggleSearchBar}
+      />
+    ) : null;
+
+    return {
+      tabBarIcon: () => <Image source={home} />,
+      headerStyle: {
+        backgroundColor: "black",
+      },
+      headerTitleStyle: {
+        display: "none",
+      },
+      headerTransparent: true,
+      headerShown: true,
+      headerRight: () => (
+        <TouchableOpacity style={styles.searchButton} onPress={toggleSearchBar}>
+          <Ionicons name="search" size={24} color="#4b74f2" />
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.centerButton}
-          onPress={() => navigation.navigate("Destacados")}
-        >
-          <Text style={styles.buttonText}>Destacados</Text>
-        </TouchableOpacity>
-      </View>
-    ),
-  }),
+      ),
+      headerTitle: () => (
+        <View style={styles.headerButtonsContainer}>
+          <TouchableOpacity style={styles.centerButton} onPress={() => navigation.navigate("ParaTi")}>
+            <Text style={styles.buttonText}>Para Ti</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.centerButton} onPress={() => navigation.navigate("Destacados")}>
+            <Text style={styles.buttonText}>Destacados</Text>
+          </TouchableOpacity>
+        </View>
+      ),
+      headerRightContainerStyle: { paddingRight: 20 },
+      // Include headerLeft here
+      headerLeft: () => headerLeft,
+    };
+  },
 };
 
 const styles = StyleSheet.create({
   headerButtonsContainer: {
     flexDirection: "row",
-    justifyContent: "center", // Centra los botones horizontalmente
-    alignItems: "center", // Centra los botones verticalmente
+    justifyContent: "center",
+    alignItems: "center",
   },
   centerButton: {
     marginHorizontal: 10,
     backgroundColor: "white",
     padding: 10,
-    borderRadius: 30,
-    left: 80,
+    borderRadius: 20,
+    left: 40,
+    width: 100,
+    height: 44,
+    
   },
   buttonText: {
     color: "#4b74f2",
+    textAlign: "center"
   },
   searchButton: {
     marginRight: 10,
+  },
+  searchInput: {
+    flex: 1,
+    marginLeft: 10,
+    marginRight: 10,
+    backgroundColor: "white",
+    borderRadius: 30,
+    paddingLeft: 10,
   },
 });
 

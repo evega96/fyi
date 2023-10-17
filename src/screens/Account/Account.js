@@ -6,7 +6,7 @@ import img from "../../../assets/FotodePerfil.jpg";
 import { AuthenticatedUserContext } from "../../Context/AuthContextProdiver";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import { getUser } from "../../app/api";
-import ConfigurationIcon from "../../components/configurationIcon";
+import Configuration from "../../components/ConfigorationIcon";
 import Modal from "react-native-modal"; // Importar la biblioteca react-native-modal+
 import Count from "../../components/Cuenta";
 import Privacidad from "../../components/Privacidad";
@@ -15,8 +15,10 @@ import Not from "../../components/Notificaciones";
 import Langua from "../../components/Idiomas";
 import Pagos from "../../components/Pagos";
 import Reser from "../../components/Reservas";
-import Ayu from "../../components/Ayudas";
-
+import Ay from "../../components/Ayudas";
+import Ajustes from "../../components/Ajustes";
+import LineIcon from "../../components/Linea";
+import Closed from "../../components/Cerrar";
 const Account = ({ navigation, route }) => {
   const { userid, setUserid } = useContext(AuthenticatedUserContext);
   const [userName, setUserName] = useState(""); // Estado para almacenar el nombre de usuario
@@ -69,7 +71,7 @@ const Account = ({ navigation, route }) => {
     <View style={styles.container}>
     <ScrollView contentContainerStyle={styles.contenido}>
       <TouchableOpacity onPress={showModal}>
-        <ConfigurationIcon style={styles.Configuration} />
+        <Configuration style={styles.Configuration} />
       </TouchableOpacity>
     
   
@@ -77,8 +79,16 @@ const Account = ({ navigation, route }) => {
           <View style={styles.modalContent}>
             <View style={styles.modalTexts}>
             <View>
-            
-            <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Count/>   </Text>
+            <Text style={{ color: "white", padding: 20, margin: "auto", left: 90,padding: 30}}> <Ajustes />   </Text>
+
+     <View style={styles.headerModal}> 
+     <Text style={styles.LineIcon}>
+     <LineIcon /> 
+     </Text>
+     
+     </View>
+     <View style={styles.Iconos}>
+     <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Count/>   </Text>
             
             <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}> <Privacidad />  </Text>
             <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Contein />    </Text>
@@ -86,12 +96,18 @@ const Account = ({ navigation, route }) => {
             <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}> <Langua /></Text>
             <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Pagos  />  </Text>
             <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}> <Reser /> </Text>
-            <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Ayu /> </Text>
+            <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Ay /> </Text>
+     </View>
+      
+            
+      
             </View>
             </View>
+            <View>
             <TouchableOpacity onPress={hideModal}>
-              <Text style={{ color: "white" }}>CERRAR</Text>
+              <Text style={{ color: "#ffffff"  }}>  <Closed /> </Text>
             </TouchableOpacity>
+            </View>
           </View>
         </Modal>
         
@@ -154,7 +170,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "black"
+    backgroundColor: "black",
   },
   profileImage: {
     width: 120,
@@ -172,7 +188,7 @@ const styles = StyleSheet.create({
     position: "relative",
     alignItems: "center",
     marginTop: 40,
-    left: 75,
+    right: -55,
     width: 200,
     
   },
@@ -182,7 +198,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginHorizontal: 10,
     marginBottom: 5,
-   
+   width:171 ,
+   height: 44,
   },
   buttonText: {
     color: "#fff",
@@ -192,7 +209,7 @@ const styles = StyleSheet.create({
   Text: {
     justifyContent: "center",
     alignItems: "center",
-    left: 40
+    left: -40
   },
   tatuajes:{ 
     flexDirection: "row",
@@ -204,7 +221,9 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginHorizontal: 10,
     marginBottom: 5,
-    right: 5
+    right: -10,
+    width:171 ,
+   height: 44,
   },
   contenido: {
     flexDirection: "row",
@@ -224,6 +243,20 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
   },
+  modalTexts: {
+    alignItems: "center",
+    margin: "auto",
+  },
+  headerModal: {
+        left: -40, 
+        flexDirection: "row",
+       
+  },
+
+LineIcon: {
+  marginHorizontal: -79
+},
+
 });
 
 export default Account;
