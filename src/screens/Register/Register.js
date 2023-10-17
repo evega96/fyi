@@ -61,21 +61,21 @@ const Register = ({ navigation }) => {
         }
     };
 
-    const SavePerson = async () => {
-        try {
-            await signUp(
-                email,
-                password,
-                user,
-                birthday,
-                additionalInfo1,
-                additionalInfo2,
-                role
-            );
-        } catch (err) {
-            Alert.alert(err);
-        }
-    };
+
+  const SavePerson =  () => {
+    
+      navigation.navigate("TattoPreferences",{
+        
+        email: email,
+        password: password,
+        user: user,
+        birthday: birthday,
+        additionalInfo1: additionalInfo1,
+        additionalInfo2: additionalInfo2,
+        role: role
+      });
+  };
+
 
     return (
         <View style={styles.container}>

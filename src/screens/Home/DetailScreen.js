@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Share } from 'react-native';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import { createImageLike, createImageFav, getCurrentUserId, getAuthorIdByName, getOrCreateRoom } from '../../app/api';
 
 const DetailScreen = ({ route, navigation }) => {
   const { imageUrl, authorName, description, hashtags } = route.params;
@@ -8,36 +10,51 @@ const DetailScreen = ({ route, navigation }) => {
 
   const handleLikePress = () => {
     setIsLiked(!isLiked);
+    createImageLike(imageUrl);
+
+
   };
 
   const handleSavePress = () => {
     setIsSaved(!isSaved);
+    createImageFav(imageUrl);
+
   };
 
-  const handleSharePress = () => {
-    // Implementa la lógica para compartir la imagen
+  const handleSharePress = async () => {
+    try {
+      const options = {
+        title: 'Compartir imagen', // Título del diálogo de compartir
+        message: 'Mira esta imagen de la aplicacionc Fynk:', // Mensaje que se compartirá
+        url: imageUrl, // URL de la imagen a compartir
+      };
+
+      await Share.share(options);
+    } catch (error) {
+      console.error('Error al compartir la imagen:', error.message);
+    }
   };
 
-  const goToAuthorProfile = () => {
-    // Navega a la pantalla de perfil del autor
-    // Puedes usar navigation.navigate('AuthorProfile', { authorId: authorId }) por ejemplo
+  const goToAuthorProfile = async () => {
+    try {
+      // Realiza una solicitud para obtener la ID del autor por nombre
+      const authorId = await getAuthorIdByName(authorName);
+
+      // Navega a la pantalla de perfil del autor y pasa el parámetro 'authorId'
+      navigation.navigate('AuthorProfile', { authorId:authorId });
+    } catch (error) {
+      console.error('Error al obtener la ID del autor:', error.message);
+    }
   };
+
+
+
+
 
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="cover" />
-        <View style={styles.overlayButtons}>
-          <TouchableOpacity onPress={handleLikePress} style={styles.overlayButton}>
-            <Text>{isLiked ? 'Unlike' : 'Like'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleSavePress} style={styles.overlayButton}>
-            <Text>{isSaved ? 'Remove from Favorites' : 'Add to Favorites'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleSharePress} style={styles.overlayButton}>
-            <Text>Share</Text>
-          </TouchableOpacity>
-        </View>
+        <Image source={{ uri: imageUrl.url }} style={styles.image} resizeMode="cover" />
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.authorName} onPress={goToAuthorProfile}>
@@ -45,6 +62,17 @@ const DetailScreen = ({ route, navigation }) => {
         </Text>
         <Text style={styles.description}>{description}</Text>
         <Text style={styles.description}>{hashtags}</Text>
+      </View>
+      <View style={styles.overlayButtons}>
+        <TouchableOpacity onPress={handleLikePress} style={styles.overlayButton}>
+          <FontAwesomeIcon name={isLiked ? 'heart' : 'heart-o'} size={40} color="red" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleSavePress} style={styles.overlayButton}>
+          <FontAwesomeIcon name={isSaved ? 'star' : 'star-o'} size={40} color="gold" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleSharePress} style={styles.overlayButton}>
+          <FontAwesomeIcon name="share" size={40} color="blue" />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -62,19 +90,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'absolute',
-  },
-  overlayButtons: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    flexDirection: 'row',
-  },
-  overlayButton: {
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 5,
-    marginHorizontal: 5,
   },
   infoContainer: {
     paddingHorizontal: 20,
@@ -96,6 +111,18 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 10,
     color: 'white',
+  },
+  overlayButtons: {
+    position: 'absolute',
+    bottom: 0,
+    right: 10,
+    flexDirection: 'column',
+    alignItems: 'flex-end', // Alinea los iconos a la derecha
+    marginBottom: 200
+  },
+  overlayButton: {
+    backgroundColor: 'transparent',
+    marginBottom: 25,
   },
 });
 

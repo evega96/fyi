@@ -1,65 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
-import {
-    createItem,
-    updateItem,
-    getItems,
-    getItemsByCondition,
-    getItemById,
-    deleteItem,
-} from '../app/api';
+import { View, Text, FlatList, TextInput, Button } from 'react-native';
+import { createMsg, onMsgsUpdated, getCurrentUserId, getMsgs } from '../app/api'; // Reemplaza 'tuRutaDeApi' con la ruta real a tus funciones API
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const ChatComponent = () => {
-    const [message, setMessage] = useState('');
+const PrivateChatScreen = ({ route }) => {
+    const { roomCodeId } = route.params;
     const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState('');
 
     useEffect(() => {
-        loadChatHistory();
-    }, []);
+        // Obtener los mensajes existentes de la sala de chat privada al cargar la pantalla
 
-    const loadChatHistory = async () => {
-        const chatMessages = await getItems();
-        setMessages(chatMessages);
-    };
+        const fetchMessages = async () => {
+            try {
+                console.log('11111111111111111roomCode: ', roomCodeId)
+                const msgs = await getMsgs(roomCodeId);
+                setMessages(msgs);
+            } catch (error) {
+                console.error('Error al obtener los mensajes:', error);
+            }
+        };
 
-    const sendMessage = async () => {
-        if (message.trim() !== '') {
-            const newMessageId = await createItem({ text: message, timestamp: Date.now() });
-            setMessage('');
-            setMessages([...messages, { id: newMessageId, text: message, timestamp: Date.now() }]);
+        fetchMessages();
+
+        // Escuchar actualizaciones en tiempo real de los mensajes en la sala de chat privada
+        const unsubscribe = onMsgsUpdated(roomCodeId, (updatedMessages) => {
+            setMessages(updatedMessages);
+        });
+
+        return () => {
+            // Desinscribirse de las actualizaciones al desmontar la pantalla
+            unsubscribe();
+        };
+    }, [roomCodeId]);
+
+    const handleSendMessage = async () => {
+        // Enviar el nuevo mensaje a la sala de chat privada
+        try {
+            await createMsg(roomCodeId, getCurrentUserId(), newMessage);
+            setNewMessage('');
+        } catch (error) {
+            console.error('Error al enviar el mensaje:', error);
         }
     };
 
-    const deleteMessage = async (id) => {
-        await deleteItem(id);
-        const updatedMessages = messages.filter((msg) => msg.id !== id);
-        setMessages(updatedMessages);
-    };
-
-    const onPress = async () => {
-        sendMessage();
-        loadChatHistory();
-    }
-
     return (
-        <View>
-            <Text>Chat en tiempo real</Text>
-            <View>
-                {messages.map((message) => (
-                    <View key={message.id}>
-                        <Text>{message.text}</Text>
-                        <Button title="Eliminar" onPress={() => deleteMessage(message.id)} />
-                    </View>
-                ))}
-            </View>
-            <TextInput
-                placeholder="Escribe tu mensaje"
-                value={message}
-                onChangeText={(text) => setMessage(text)}
+        <View style={{ flex: 1 }}>
+            <FlatList
+                data={messages}
+                keyExtractor={(message) => message.id}
+                renderItem={({ item }) => (
+                    <Text>{item.msg}</Text>
+                    // Renderiza otros detalles del mensaje según tu estructura de datos
+                )}
             />
-            <Button title="Enviar" onPress={onPress} />
+            <View>
+                <TextInput
+                    placeholder="Escribe un mensaje"
+                    value={newMessage}
+                    onChangeText={(text) => setNewMessage(text)}
+                />
+                <TouchableOpacity style={{ marginBottom: 25, marginLeft: 200 }} onPress={handleSendMessage}><Text>Enviar</Text></TouchableOpacity>
+            </View>
         </View>
     );
 };
 
-export default ChatComponent;
+export default PrivateChatScreen;
