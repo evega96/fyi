@@ -12,7 +12,7 @@ const Message = ({ route, navigation }) => {
         const fetchData = async () => {
             try {
                 const userId = await getCurrentUserId();
-                const rooms = await getUserRoomsByUserId(userId);
+                const rooms = await getUserChatRooms(userId);
                 setUserChatRooms(rooms);
             } catch (error) {
                 console.error('Error al obtener las salas de chat:', error);

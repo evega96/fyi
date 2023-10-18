@@ -9,6 +9,7 @@ import { VITE_PROJECT_ID, VITE_API_KEY } from '@env'
 
 // import {...} from "firebase/database";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: VITE_API_KEY,

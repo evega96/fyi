@@ -9,9 +9,6 @@ import MasonryList from "react-native-masonry-list";
 const HomeScreen = ({ navigation }) => {
   const [images, setImages] = useState([]);
   const storage = getStorage();
-  const screenWidth = Dimensions.get('window').width;
-  const imageHeight = 200; // Establece la altura fija deseada para todas las imágenes
-  const margin = 5; // Establece el margen deseado para todas las direcciones
 
 
   /*useEffect(() => {
