@@ -13,7 +13,7 @@ import AddUbication from "../../screens/AddUbication/AddUbication";
 import AddTags from "../../screens/AddTags/AddTags";
 
 import ChatRoom from "../../components/ChatRoom"
-import DetailScreen from '../../screens/Home/DetailsScreen';
+import DetailScreen from '../../screens/Home/DetailScreen';
 
 
 const Stack = createStackNavigator();

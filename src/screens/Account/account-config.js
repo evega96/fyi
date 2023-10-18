@@ -6,7 +6,7 @@ const AccountConfig = {
     component: Account,
     options: {
         headerTitle: 'Account',
-        tabBarIcon: () => <Ionicons name="account" size={30} color="#6451a5" ></Ionicons>
+        tabBarIcon: () => <Ionicons name="account" size={44} color="#6451a5" ></Ionicons>
     }
 }
 

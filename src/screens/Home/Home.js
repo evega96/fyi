@@ -75,7 +75,7 @@ const HomeScreen = ({ navigation }) => {
         }}
 
       />
-      <TouchableOpacity onPress={handleContactButtonClick('796r896375')}><Text>Contactar</Text></TouchableOpacity>
+      <TouchableOpacity style={styles.overlayButton} onPress={() => handleContactButtonClick('Marta')}><Text>Contactar</Text></TouchableOpacity>
     </View>
   );
 };
