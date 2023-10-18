@@ -5,7 +5,7 @@ import { AuthenticatedUserContext } from "../Context/AuthContextProdiver";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../app/firebase";
 import ClientNav from "./stack/ClientNav";
-import TattoArtistNav from "./stack/TattooArtist";
+import TattoArtistNav from "./stack/TattooArtistNav";
 import { getUserRole } from "../app/api";
 const Navigation = () => {
   const { user, setUser } = useContext(AuthenticatedUserContext);

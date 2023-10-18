@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
@@ -7,11 +8,13 @@ import { getCurrentUserId, getOrCreateRoom, getTwoHumansRoomId } from '../../app
 import MasonryList from "react-native-masonry-list";
 
 const HomeScreen = ({ navigation }) => {
+
   const [images, setImages] = useState([]);
   const storage = getStorage();
 
 
   /*useEffect(() => {
+
     const fetchImages = async () => {
       try {
         const imageRef = ref(storage);
@@ -32,7 +35,9 @@ const HomeScreen = ({ navigation }) => {
     };
 
     fetchImages();
+
   }, []);*/
+
 
   const openDetailScreen = (imageData) => {
     // Navega a la pantalla de detalle y pasa los datos de la imagen como parámetros
@@ -79,6 +84,7 @@ const styles = StyleSheet.create({
   overlayButton: {
     marginTop: 200,
   },
+
 });
 
 export default HomeScreen;
