@@ -12,6 +12,10 @@ import TagPerson from "../../screens/TagPerson/TagPerson";
 import AddUbication from "../../screens/AddUbication/AddUbication";
 import AddTags from "../../screens/AddTags/AddTags";
 
+import ChatRoom from "../../components/ChatRoom"
+import DetailScreen from '../../screens/Home/DetailsScreen';
+
+
 const Stack = createStackNavigator();
 
 const TattoArtistNav = () => {
@@ -32,6 +36,11 @@ const TattoArtistNav = () => {
             <Stack.Screen name="TagPerson" component={TagPerson} />
             <Stack.Screen name="AddUbication" component={AddUbication} />
             <Stack.Screen name="AddTags" component={AddTags} />
+
+            <Stack.Screen name="ChatRooms" component={ChatRoom} />
+            <Stack.Screen name="DetailScreen" component={DetailScreen}
+                options={{ headerShown: false }} />
+
         </Stack.Navigator>
     );
 };

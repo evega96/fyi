@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/AntDesign';
 import Chat from '../../components/ChatRoom';
-import { getUserChatRooms, getCurrentUserId, getRoomById } from '../../app/api';
+import { getUserChatRooms, getCurrentUserId, getRoomById, getUserRoomsByUserId } from '../../app/api';
 
 const Message = ({ route, navigation }) => {
-    const { roomCodeId } = route.params;
     const [roomData, setRoomData] = useState(null);
     const [userChatRooms, setUserChatRooms] = useState([]);
 
@@ -31,7 +30,7 @@ const Message = ({ route, navigation }) => {
     };
 
     const renderChatRoom = ({ item }) => (
-        <TouchableOpacity onPress={() => handleChatRoomPress(item)}>
+        <TouchableOpacity style={{ height: 25, width: 3000, borderRadius: 30 }} onPress={() => handleChatRoomPress(item)}>
             <Text>{item}</Text>
         </TouchableOpacity>
     );
