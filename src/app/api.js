@@ -25,7 +25,7 @@ const collectionNameMsgs = 'msgs';
 const collectionName = "chat";
 
 // CREATE
-export const createItem = async (obj) => {
+export const createItem = async (obj, collectionName) => {
   const colRef = collection(db, collectionName);
   const data = await addDoc(colRef, obj);
   return data.id;
@@ -63,13 +63,6 @@ export const deleteItem = async (id) => {
   const docRef = doc(db, collectionName, id);
   await deleteDoc(docRef);
 };
-
-const getArrayFromCollection = (collection) => {
-  return collection.docs.map((doc) => {
-    return { ...doc.data(), id: doc.id };
-  });
-};
-
 //Sign Up and Sign In
 
 export const signUp = async (
@@ -143,6 +136,147 @@ export const getUserRole = async (userId) => {
     return null;
   }
 };
+//storage
+
+export const uploadImageToFirebase = async (imageUri, documentInformation) => {
+  try {
+    const blobImage = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function () {
+        reject(TypeError("Network request failed"));
+      };
+      xhr.responseType = "blob";
+      xhr.open("GET", imageUri, true);
+      xhr.send(null);
+    });
+
+    // Set data type
+    /** @type{any}*/
+    const metadata = {
+      contentType: "image/jpeg",
+    };
+
+    // Genera un nombre único para la imagen o utiliza el nombre original
+    const uniqueImageName = `${Math.random()}-${new Date().getTime()}.jpg`;
+
+    const storageRef = ref(storage, `images/ ${uniqueImageName}`); // Utiliza la instancia de Firebase Storage
+
+    await uploadBytesResumable(storageRef, blobImage, metadata);
+
+    // documentation
+
+    const imageUrl = await getDownloadURL(storageRef);
+    // Agrega la URL de la imagen a los datos del documento
+
+    documentInformation.imageUrl = imageUrl;
+
+    // Crea una referencia a una colección en Firestore (puedes cambiar "publications" por el nombre de tu colección)
+    const collectionRef = collection(db, "publications");
+
+    // Agrega un nuevo documento con ID generado automáticamente
+    const newDocumentRef = doc(collectionRef);
+
+    // Establece los datos en el nuevo documento
+    await setDoc(newDocumentRef, documentInformation);
+
+    // Obtiene el ID del documento recién creado
+    const documentid = newDocumentRef.id;
+
+    return { imageUrl, documentid };
+  } catch (error) {
+    console.error("Error al subir la imagen a Firebase Storage:", error);
+    throw error;
+  }
+};
+
+export const uploadImage = async (image) => {
+  const blobImage = await new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      resolve(xhr.response);
+    };
+    xhr.onerror = function () {
+      reject(TypeError("Network request failed"));
+    };
+    xhr.responseType = "blob";
+    xhr.open("GET", image, true);
+    xhr.send(null);
+  });
+
+  // Set data type
+  /** @type{any}*/
+  const metadata = {
+    contentType: "image/jpeg",
+  };
+  // Upload image to storage
+  const storageRef = ref(storage, "images/" + Date.now());
+  const uploadTask = uploadBytesResumable(storageRef, blobImage, metadata);
+  let rr = "";
+  // Listen for state changes, errors, and completion of the upload.
+  const p = await uploadTask.on(
+    "state_changed",
+    (snapshot) => {
+      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+      const progress =
+        (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log("Upload is " + progress + "% done");
+      switch (snapshot.state) {
+        case "paused":
+          console.log("Upload is paused");
+          break;
+        case "running":
+          console.log("Upload is running");
+          break;
+      }
+    },
+    (error) => {
+      // Handle errors
+      console.error("Upload error:", error);
+    },
+    async () => {
+      // Upload completed successfully, now we can get the download URL
+      const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+
+      console.log("File available at", downloadURL);
+      rr = downloadURL;
+      return downloadURL;
+    }
+  );
+};
+
+//get name By name
+
+export const getPersonByName = async (name) => {
+  const usersRef = collection(db, "users");
+
+  // Consulta para buscar usuarios cuyos nombres comiencen con la cadena 'name'
+  const consult = query(
+    usersRef,
+    where("displayName", ">=", name),
+    where("displayName", "<", name + "z") // 'z' es un carácter máximo, puedes ajustarlo según tus necesidades
+  );
+
+  try {
+    const querySnapshot = await getDocs(consult);
+    const results = [];
+
+    querySnapshot.forEach((doc) => {
+      const result = {
+        id: doc.id,
+        data: doc.data(),
+      };
+      results.push(result);
+    });
+
+    return results;
+  } catch (error) {
+    console.error("Error al obtener documentos:", error);
+    throw error;
+  }
+};
 
 
 export const createImageLike = async (obj) => {
@@ -160,47 +294,6 @@ export const createImageFav = async (obj) => {
 };
 
 
-
-export const getMsgs = async () => {
-  const colRef = collection(db, collectionNameMsgs);
-  const result = await getDocs(query(colRef));
-  return getArrayFromCollection(result);
-}
-
-export const createMsg = async (roomCode, userId, msg) => {
-  try {
-    const colRef = collection(db, 'rooms', roomCode, collectionName);
-    const data = await addDoc(colRef, { userId, msg, date: Date.now() });
-
-    // Actualiza la información de la sala de chat para almacenar el ID del usuario que la creó
-    const roomDocRef = doc(db, 'rooms', roomCode);
-    await setDoc(roomDocRef, { createdBy: userId }, { merge: true });
-
-    return data.id;
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-
-const getArrayFromCollectionMsg = (collection) => {
-  const msgs = collection.docs.map(doc => {
-    return { ...doc.data(), id: doc.id };
-  });
-
-  return msgs.sort(function (a, b) {
-    // Turn your strings into dates, and then subtract them
-    // to get a value that is either negative, positive, or zero.
-    return new Date(a.date) - new Date(b.date);
-  });
-}
-
-
-export const onMsgsUpdated = (roomId, callback) => onSnapshot(collection(db, 'rooms', roomId, 'msgs'), (docs) => {
-  callback(getArrayFromCollection(docs));
-});
-
-
 export const getOrCreateRoom = async (roomCode) => {
   try {
     const roomCodeIfExists = await getRoomById(roomCode);
@@ -213,12 +306,6 @@ export const getOrCreateRoom = async (roomCode) => {
   } catch (e) {
     console.log(e)
   }
-}
-
-export const getRoomById = async (roomId) => {
-  const docRef = doc(db, 'rooms', roomId);
-  const result = await getDoc(docRef);
-  return result.data();
 }
 
 export const getAuthorIdByName = async (authorName) => {
@@ -250,7 +337,7 @@ export const getUserChatRooms = async (userId) => {
     // Consulta las salas de chat donde el usuario actual es miembro
     const chatRoomsQuery = query(
       collection(db, "rooms"),
-      where("id", "in", [`private_qKCU6Cbm7dbe47ZozlJcsvM0oRi2_06041996`]) // Add the chat room IDs you want to query
+      where("id", "contains", userId) // Add the chat room IDs you want to query
     );
 
     const querySnapshot = await getDocs(chatRoomsQuery);
@@ -267,3 +354,107 @@ export const getUserChatRooms = async (userId) => {
     return [];
   }
 };
+
+
+export const login = async (userName) => {
+  const colRef = collection(db, 'users');
+  const result = await getDocs(query(colRef, where('name', '==', userName)));
+  if (result.empty) {
+    const data = await addDoc(colRef, { name: userName });
+    return data.id;
+  }
+  const arr = getArrayFromCollection(result);
+  return arr[0].id;
+}
+
+export const getAllRooms = async () => {
+  const colRef = collection(db, 'rooms');
+  const result = await getDocs(query(colRef));
+  return getArrayFromCollection(result);
+}
+
+export const getMsgs = async () => {
+  const colRef = collection(db, collectionName);
+  const result = await getDocs(query(colRef));
+  return getArrayFromCollection(result);
+}
+
+export const createMsg = async (roomCode, userId, msg) => {
+  try {
+    const colRef = collection(db, 'rooms', roomCode, collectionName);
+    const data = await addDoc(colRef, { userId, msg, date: Date.now() });
+    return data.id;
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+const getArrayFromCollection = (collection) => {
+  const msgs = collection.docs.map(doc => {
+    return { ...doc.data(), id: doc.id };
+  });
+
+  return msgs.sort(function (a, b) {
+    // Turn your strings into dates, and then subtract them
+    // to get a value that is either negative, positive, or zero.
+    return new Date(a.date) - new Date(b.date);
+  });
+}
+
+
+export const onMsgsUpdated = (roomId, callback) => onSnapshot(collection(db, 'rooms', roomId, 'msgs'), (docs) => {
+  callback(getArrayFromCollection(docs));
+});
+
+
+export const getAllUsers = async () => {
+  const colRef = collection(db, 'users');
+  const r = await getDocs(query(colRef));
+  const r2 = getArrayFromCollection(r);
+  return r2;
+
+}
+
+export const getUserRoomsByUserId = async (userId) => {
+  try {
+    const roomsRef = collection(db, 'rooms');
+    const result = await getDocs(query(roomsRef, where('members', 'array-contains', userId)));
+    if (result.empty) {
+      return null;
+    } else {
+      const r = getArrayFromCollection(result);
+      return r;
+    }
+  } catch (error) {
+    console.error('userId: ', userId, error);
+    return false;
+  }
+}
+
+export const createRoom = async (roomMembersIds) => {
+  try {
+    const roomsRef = collection(db, 'rooms');
+    await addDoc(roomsRef, { members: roomMembersIds });
+  } catch (error) {
+    console.error('Error al crear la room:', error);
+    return false;
+  }
+}
+
+export const getRoomById = async (roomId) => {
+  const docRef = doc(db, 'rooms', roomId);
+  const result = await getDoc(docRef);
+  return result.data();
+}
+
+export const getTwoHumansRoomId = async (userId1, userId2) => {
+  const roomsRef = collection(db, 'rooms');
+  const result = await getDocs(query(roomsRef, where('members', 'array-contains', userId1)));
+  const r = getArrayFromCollection(result);
+  const room = r.find(room => room.members.includes(userId2));
+  if (!room) {
+    const data = await addDoc(roomsRef, { members: [userId1, userId2] });
+    return data.id;
+  }
+  return room.id;
+}

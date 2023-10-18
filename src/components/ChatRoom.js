@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TextInput, Button } from 'react-native';
 import { createMsg, onMsgsUpdated, getCurrentUserId, getMsgs } from '../app/api'; // Reemplaza 'tuRutaDeApi' con la ruta real a tus funciones API
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 const PrivateChatScreen = ({ route }) => {
     const { roomCodeId } = route.params;
@@ -13,13 +15,13 @@ const PrivateChatScreen = ({ route }) => {
 
         const fetchMessages = async () => {
             try {
-                console.log('11111111111111111roomCode: ', roomCodeId)
-                const msgs = await getMsgs(roomCodeId);
-                setMessages(msgs);
+                const msgs = await getMsgs();
+
             } catch (error) {
                 console.error('Error al obtener los mensajes:', error);
             }
         };
+
 
         fetchMessages();
 
@@ -35,14 +37,17 @@ const PrivateChatScreen = ({ route }) => {
     }, [roomCodeId]);
 
     const handleSendMessage = async () => {
-        // Enviar el nuevo mensaje a la sala de chat privada
         try {
-            await createMsg(roomCodeId, getCurrentUserId(), newMessage);
+            const userId = await getCurrentUserId(); // Espera a que se resuelva la promesa
+            await createMsg(roomCodeId, userId, newMessage);
+
             setNewMessage('');
         } catch (error) {
             console.error('Error al enviar el mensaje:', error);
         }
     };
+
+
 
     return (
         <View style={{ flex: 1 }}>
@@ -54,13 +59,16 @@ const PrivateChatScreen = ({ route }) => {
                     // Renderiza otros detalles del mensaje según tu estructura de datos
                 )}
             />
-            <View>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 50, marginLeft: 25, marginRight: 25 }}>
                 <TextInput
+                    style={{ flex: 1, marginRight: 8 }} // Utiliza flex para que el input ocupe el espacio restante
                     placeholder="Escribe un mensaje"
                     value={newMessage}
                     onChangeText={(text) => setNewMessage(text)}
                 />
-                <TouchableOpacity style={{ marginBottom: 25, marginLeft: 200 }} onPress={handleSendMessage}><Text>Enviar</Text></TouchableOpacity>
+                <TouchableOpacity onPress={handleSendMessage}>
+                    <Icon name="send" size={24} color="blue" />
+                </TouchableOpacity>
             </View>
         </View>
     );

@@ -41,7 +41,7 @@ const DetailScreen = ({ route, navigation }) => {
       const authorId = await getAuthorIdByName(authorName);
 
       // Navega a la pantalla de perfil del autor y pasa el parámetro 'authorId'
-      navigation.navigate('AuthorProfile', { authorId:authorId });
+      navigation.navigate('AuthorProfile', { authorId: authorId });
     } catch (error) {
       console.error('Error al obtener la ID del autor:', error.message);
     }
