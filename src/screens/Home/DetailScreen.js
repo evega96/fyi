@@ -4,7 +4,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { createImageLike, createImageFav, getCurrentUserId, getAuthorIdByName, getOrCreateRoom } from '../../app/api';
 
 const DetailScreen = ({ route, navigation }) => {
-  const { imageUrl, authorName, description, hashtags } = route.params;
+  const { imageUrl, authorName, description, hashtags } = route.params.params;
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
@@ -14,6 +14,7 @@ const DetailScreen = ({ route, navigation }) => {
 
 
   };
+
 
   const handleSavePress = () => {
     setIsSaved(!isSaved);

@@ -8,12 +8,15 @@ const Message = ({ route, navigation }) => {
     const [roomData, setRoomData] = useState(null);
     const [userChatRooms, setUserChatRooms] = useState([]);
 
+    var chatRooms = [];
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const userId = await getCurrentUserId();
-                const rooms = await getUserChatRooms(userId);
-                setUserChatRooms(rooms);
+                chatRooms = await getUserRoomsByUserId(userId);
+                console.log('555555555555', chatRooms)
+                setUserChatRooms(chatRooms);
             } catch (error) {
                 console.error('Error al obtener las salas de chat:', error);
             }
@@ -29,21 +32,21 @@ const Message = ({ route, navigation }) => {
         });
     };
 
-    const renderChatRoom = ({ item }) => (
-        <TouchableOpacity style={{ height: 25, width: 3000, borderRadius: 30 }} onPress={() => handleChatRoomPress(item)}>
-            <Text>{item}</Text>
-        </TouchableOpacity>
-    );
+    const handleButtonChat = (roomId) => {
+        navigation.navigate('ChatRooms', {
+            roomCodeId: roomId,
+        });
+    };
 
     return (
-        <View style={{ flex: 1 }}>
-            <FlatList
-                data={userChatRooms}
-                keyExtractor={(item) => item}
-                renderItem={renderChatRoom}
-                ListEmptyComponent={<Text>No tienes salas de chat.</Text>}
-            />
-            {/* Otros elementos de la pantalla de mensajes */}
+        <View>
+            <Text style={styles.sectionTitle}>Salas de Chat:</Text>
+            {userChatRooms.map((room) => (
+                <TouchableOpacity key={room.id} style={styles.sectionTitle} onPress={() => handleButtonChat(room.id)}>
+                    <Text style={styles.roomText}>ID de la Sala: {room.id}</Text>
+                    <Text style={styles.roomText}>Miembros: {room.members.join(', ')}</Text>
+                </TouchableOpacity>
+            ))}
         </View>
     );
 };
@@ -58,5 +61,20 @@ const styles = StyleSheet.create({
         backgroundColor: '#E4E4E4',
         marginBottom: 10,
         marginLeft: 112,
+    },
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    roomContainer: {
+        backgroundColor: '#E4E4E4',
+        borderRadius: 10,
+        padding: 10,
+        marginBottom: 10,
+    },
+    roomText: {
+        fontSize: 16,
+        color: 'black',
     },
 });

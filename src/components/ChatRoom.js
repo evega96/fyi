@@ -15,12 +15,13 @@ const PrivateChatScreen = ({ route }) => {
 
         const fetchMessages = async () => {
             try {
-                const msgs = await getMsgs();
-
+                const msgs = await getMsgs(roomCodeId);
+                setMessages(msgs);
             } catch (error) {
                 console.error('Error al obtener los mensajes:', error);
             }
         };
+
 
 
         fetchMessages();

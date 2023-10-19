@@ -13,7 +13,7 @@ const HomeScreen = ({ navigation }) => {
   const storage = getStorage();
 
 
-  /*useEffect(() => {
+  useEffect(() => {
 
     const fetchImages = async () => {
       try {
@@ -36,11 +36,11 @@ const HomeScreen = ({ navigation }) => {
 
     fetchImages();
 
-  }, []);*/
+  }, []);
 
 
   const openDetailScreen = (imageData) => {
-    // Navega a la pantalla de detalle y pasa los datos de la imagen como parámetros
+    // Navega a la pantalla de detalle y pasa los datos de la imagen como parámetros imageData, imageData.url)
     navigation.navigate('DetailScreen', {
       screen: 'DetailScreen',
       params: {
@@ -65,18 +65,15 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <View>
-      <MasonryList
-        images={images}
-        spacing={5}
-        containerStyle={{ padding: 5 }}
-        onPressImage={(image, index) => {
-          openDetailScreen(image);
-        }}
+    <MasonryList
+      images={images}
+      spacing={5}
+      containerStyle={{ padding: 5 }}
+      onPressImage={(image, index) => {
+        openDetailScreen(image);
+      }}
 
-      />
-      <TouchableOpacity onPress={handleContactButtonClick('796r896375')}><Text>Contactar</Text></TouchableOpacity>
-    </View>
+    />
   );
 };
 
