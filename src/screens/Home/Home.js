@@ -13,7 +13,7 @@ const HomeScreen = ({ navigation }) => {
   const storage = getStorage();
 
 
-  useEffect(() => {
+  /*useEffect(() => {
 
     const fetchImages = async () => {
       try {
@@ -36,7 +36,7 @@ const HomeScreen = ({ navigation }) => {
 
     fetchImages();
 
-  }, []);
+  }, []);*/
 
 
   const openDetailScreen = (imageData) => {
