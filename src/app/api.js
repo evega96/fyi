@@ -472,3 +472,24 @@ export const getTwoHumansRoomId = async (userId1, userId2) => {
   }
   return room.id;
 }
+
+export const getNameById = async (userId) => {
+  try {
+    const usersRef = collection(db, "users");
+    const querySnapshot = await getDocs(usersRef);
+
+    for (const doc of querySnapshot.docs) {
+      const userData = doc.data();
+      if (doc.id === userId) {
+        return userData.user; // Cambia 'name' al campo que almacena el nombre en tus documentos de usuario
+      }
+    }
+
+    // Si no se encuentra el usuario con el ID especificado, puedes devolver null o algún otro valor indicativo.
+    return null;
+  } catch (error) {
+    console.error("Error al buscar el nombre del usuario por ID:", error);
+    return null;
+  }
+};
+
