@@ -51,7 +51,8 @@ const Message = ({ route, navigation }) => {
     };
 
     const getMembersNamesText = (members) => {
-        return members.map(memberId => memberNames[memberId]).join(', ');
+        const d = members[1];
+        return d;
     };
 
     return (
@@ -67,7 +68,7 @@ const Message = ({ route, navigation }) => {
             {userChatRooms.map((room) => (
                 <TouchableOpacity key={room.id} style={styles.roomContainer} onPress={() => handleButtonChat(room.id)}>
                     <Text style={styles.roomText}>ID de la Sala: {room.id}</Text>
-                    <Text style={styles.roomText}>Miembros: {room.members.join(',')}</Text>
+                    <Text>Miembros: {getMembersNamesText(room.members)}</Text>
                 </TouchableOpacity>
             ))}
         </View>

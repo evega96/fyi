@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
-import ImageSize from 'react-native-image-size';
 import { useNavigation } from '@react-navigation/native';
 import { getCurrentUserId, getOrCreateRoom, getTwoHumansRoomId } from '../../app/api';
 import MasonryList from "react-native-masonry-list";
@@ -13,22 +12,21 @@ const HomeScreen = ({ navigation }) => {
   const storage = getStorage();
 
 
-  /*useEffect(() => {
+  useEffect(() => {
 
     const fetchImages = async () => {
       try {
         const imageRef = ref(storage);
         const imageList = await listAll(imageRef);
-
+        const data = []
         const imageUrlArray = await Promise.all(
           imageList.items.map(async (item) => {
             const downloadURL = await getDownloadURL(item);
-            const imageSize = await ImageSize.getSize(downloadURL);
-            return { id: item.name, url: downloadURL, width: imageSize.width, height: imageSize.height };
+            Image.getSize(downloadURL, (widtg, height) => data.push({ uri: downloadURL }))
           })
         );
 
-        setImages(imageUrlArray);
+        setImages(data);
       } catch (error) {
         console.error('Error al obtener imágenes:', error);
       }
@@ -36,7 +34,7 @@ const HomeScreen = ({ navigation }) => {
 
     fetchImages();
 
-  }, []);*/
+  }, []);
 
 
   const openDetailScreen = (imageData) => {
@@ -65,18 +63,15 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <View>
-      <MasonryList
-        images={images}
-        spacing={5}
-        containerStyle={{ padding: 5 }}
-        onPressImage={(image, index) => {
-          openDetailScreen(image);
-        }}
+    <MasonryList
+      images={images}
+      spacing={5}
+      containerStyle={{ padding: 5 }}
+      onPressImage={(image, index) => {
+        openDetailScreen(image);
+      }}
 
-      />
-      <TouchableOpacity style={{ top: 200 }} onPress={() => handleContactButtonClick('BcFleS8Au3e7cBKJl9DQggKjOBg1')}><Text>Contactar</Text></TouchableOpacity>
-    </View>
+    />
   );
 };
 
