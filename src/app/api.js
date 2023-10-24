@@ -436,7 +436,9 @@ export const getUserRoomsByUserId = async (userId) => {
     if (result.empty) {
       return null;
     } else {
+
       const r = getArrayFromCollection(result);
+
       return r;
     }
   } catch (error) {

@@ -46,7 +46,7 @@ const PrivateChatScreen = ({ route }) => {
         <Card
             style={{
                 margin: 8,
-                alignSelf: item.senderId === getCurrentUserId() ? 'flex-end' : 'flex-start',
+                alignSelf: item.userId === getCurrentUserId() ? 'flex-end' : 'flex-start',
                 maxWidth: '70%', // Limita el ancho de la burbuja
             }}
         >
