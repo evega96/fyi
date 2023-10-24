@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TextInput, Button } from 'react-native';
-import { createMsg, onMsgsUpdated, getCurrentUserId, getMsgs } from '../app/api'; // Reemplaza 'tuRutaDeApi' con la ruta real a tus funciones API
+import { View, Text, FlatList, TextInput } from 'react-native';
+import { createMsg, onMsgsUpdated, getCurrentUserId, getMsgs } from '../app/api';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Card, Avatar } from 'react-native-paper'; // Importa componentes de react-native-paper
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
@@ -11,8 +12,6 @@ const PrivateChatScreen = ({ route }) => {
     const [newMessage, setNewMessage] = useState('');
 
     useEffect(() => {
-        // Obtener los mensajes existentes de la sala de chat privada al cargar la pantalla
-
         const fetchMessages = async () => {
             try {
                 const msgs = await getMsgs(roomCodeId);
@@ -22,47 +21,56 @@ const PrivateChatScreen = ({ route }) => {
             }
         };
 
-
-
         fetchMessages();
 
-        // Escuchar actualizaciones en tiempo real de los mensajes en la sala de chat privada
         const unsubscribe = onMsgsUpdated(roomCodeId, (updatedMessages) => {
             setMessages(updatedMessages);
         });
 
         return () => {
-            // Desinscribirse de las actualizaciones al desmontar la pantalla
             unsubscribe();
         };
     }, [roomCodeId]);
 
     const handleSendMessage = async () => {
         try {
-            const userId = await getCurrentUserId(); // Espera a que se resuelva la promesa
+            const userId = await getCurrentUserId();
             await createMsg(roomCodeId, userId, newMessage);
-
             setNewMessage('');
         } catch (error) {
             console.error('Error al enviar el mensaje:', error);
         }
     };
 
-
+    const renderMessageItem = ({ item }) => (
+        <Card
+            style={{
+                margin: 8,
+                alignSelf: item.senderId === getCurrentUserId() ? 'flex-end' : 'flex-start',
+                maxWidth: '70%', // Limita el ancho de la burbuja
+            }}
+        >
+            <Card.Content>
+                <Text>{item.msg}</Text>
+            </Card.Content>
+            <Card.Actions>
+                <Text style={{ fontSize: 12 }}>
+                    {new Date(item.timestamp).toLocaleTimeString()}
+                </Text>
+            </Card.Actions>
+        </Card>
+    );
 
     return (
         <View style={{ flex: 1 }}>
             <FlatList
                 data={messages}
                 keyExtractor={(message) => message.id}
-                renderItem={({ item }) => (
-                    <Text>{item.msg}</Text>
-                    // Renderiza otros detalles del mensaje según tu estructura de datos
-                )}
+                renderItem={renderMessageItem}
             />
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 50, marginLeft: 25, marginRight: 25 }}>
                 <TextInput
-                    style={{ flex: 1, marginRight: 8 }} // Utiliza flex para que el input ocupe el espacio restante
+                    style={{ flex: 1, marginRight: 8 }}
                     placeholder="Escribe un mensaje"
                     value={newMessage}
                     onChangeText={(text) => setNewMessage(text)}

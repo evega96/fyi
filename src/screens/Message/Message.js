@@ -9,7 +9,7 @@ const Message = ({ route, navigation }) => {
     const [roomData, setRoomData] = useState(null);
     const [userChatRooms, setUserChatRooms] = useState([]);
     const [memberIds, setMemberIds] = useState([]);
-
+    const [memberNames, setMemberNames] = useState({}); // Almacena los nombres de usuario
 
     var userId;
 
@@ -18,12 +18,24 @@ const Message = ({ route, navigation }) => {
             try {
                 userId = await getCurrentUserId();
                 const chatRooms = await getUserRoomsByUserId(userId);
-                console.log('00000000', chatRooms)
                 setUserChatRooms(chatRooms)
 
                 // Obtener los IDs de los miembros de cada sala
-                const memberIdsArray = userChatRooms.map(room => room.members);
+                const memberIdsArray = chatRooms.map(room => room.members);
                 setMemberIds(memberIdsArray);
+
+                // Obtener los nombres de usuario a partir de las ID de los miembros
+                const namesMap = {};
+                for (const room of chatRooms) {
+                    for (const memberId of room.members) {
+                        if (memberId !== userId) { // Evita obtener el nombre del usuario actual
+                            if (!namesMap[memberId]) {
+                                namesMap[memberId] = await getNameById(memberId);
+                            }
+                        }
+                    }
+                }
+                setMemberNames(namesMap);
             } catch (error) {
                 console.error('Error al obtener las salas de chat:', error);
             }
@@ -38,15 +50,9 @@ const Message = ({ route, navigation }) => {
         });
     };
 
-    const getOtherMemberName = async (room) => {
-        const otherMemberId = room.members.find(memberId => memberId !== userId);
-
-        // Obtener el nombre del otro miembro
-        const otherMemberName = await getNameById(otherMemberId);
-        return otherMemberName;
-
+    const getMembersNamesText = (members) => {
+        return members.map(memberId => memberNames[memberId]).join(', ');
     };
-
 
     return (
         <View>
@@ -55,11 +61,11 @@ const Message = ({ route, navigation }) => {
                     placeholder="Buscar..."
                     containerStyle={{ backgroundColor: '#333' }}
                     inputContainerStyle={{ backgroundColor: '#444' }}
-                /></View>
+                />
+            </View>
             <Text style={styles.sectionTitle}>Salas de Chat:</Text>
             {userChatRooms.map((room) => (
-
-                <TouchableOpacity key={room.id} style={styles.sectionTitle} onPress={() => handleButtonChat(room.id)}>
+                <TouchableOpacity key={room.id} style={styles.roomContainer} onPress={() => handleButtonChat(room.id)}>
                     <Text style={styles.roomText}>ID de la Sala: {room.id}</Text>
                     <Text style={styles.roomText}>Miembros: {room.members.join(',')}</Text>
                 </TouchableOpacity>

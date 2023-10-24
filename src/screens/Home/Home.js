@@ -65,15 +65,18 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <MasonryList
-      images={images}
-      spacing={5}
-      containerStyle={{ padding: 5 }}
-      onPressImage={(image, index) => {
-        openDetailScreen(image);
-      }}
+    <View>
+      <MasonryList
+        images={images}
+        spacing={5}
+        containerStyle={{ padding: 5 }}
+        onPressImage={(image, index) => {
+          openDetailScreen(image);
+        }}
 
-    />
+      />
+      <TouchableOpacity style={{ top: 200 }} onPress={() => handleContactButtonClick('BcFleS8Au3e7cBKJl9DQggKjOBg1')}><Text>Contactar</Text></TouchableOpacity>
+    </View>
   );
 };
 
