@@ -68,7 +68,7 @@ const Message = ({ route, navigation }) => {
             {userChatRooms.map((room) => (
                 <TouchableOpacity key={room.id} style={styles.roomContainer} onPress={() => handleButtonChat(room.id)}>
                     <Text style={styles.roomText}>ID de la Sala: {room.id}</Text>
-                    <Text>Miembros: {getMembersNamesText(room.members)}</Text>
+                    <Text>Miembros: {room.members.join(',')}</Text>
                 </TouchableOpacity>
             ))}
         </View>

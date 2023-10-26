@@ -25,7 +25,7 @@ const HomeScreen = ({ navigation }) => {
             Image.getSize(downloadURL, (widtg, height) => data.push({ uri: downloadURL }))
           })
         );
-
+        console.log('uuuuuuuuuu', data)
         setImages(data);
       } catch (error) {
         console.error('Error al obtener imágenes:', error);
@@ -42,7 +42,7 @@ const HomeScreen = ({ navigation }) => {
     navigation.navigate('DetailScreen', {
       screen: 'DetailScreen',
       params: {
-        imageUrl: imageData,
+        imageUrl: imageData.uri,
         authorName: 'Nombre del autor', // Reemplaza con el nombre real del autor
         description: 'Descripción de la imagen', // Reemplaza con la descripción real
         hashtags: 'hasthtags'
