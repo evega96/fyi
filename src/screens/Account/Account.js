@@ -5,7 +5,7 @@ import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
 import { getNameById, getCurrentUserId } from "../../app/api";
 import img from "../../../assets/FotodePerfil.jpg";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
-import {getUser} from "../../app/api"
+import { getUser } from "../../app/api"
 import Configuration from "../../components/ConfigorationIcon";
 import Modal from "react-native-modal";
 import Count from "../../components/Cuenta";
@@ -23,14 +23,14 @@ import { getTwoHumansRoomId } from "../../app/api";
 
 
 const Account = ({ navigation, route }) => {
-   const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState('');
   const [error, setError] = useState('');
   const [images, setImages] = useState([]);
   const storage = getStorage();
   const [isModalVisible, setModalVisible] = useState(false);
 
   const showModal = () => {
-    setModalVisible(true); 
+    setModalVisible(true);
   };
 
   const hideModal = () => {
@@ -42,10 +42,10 @@ const Account = ({ navigation, route }) => {
       try {
         const userId = await getCurrentUserId(); // Asegúrate de que esta función existe y devuelve el ID del usuario.
         const userData = await getNameById(userId); // Asegúrate de que esta función obtiene los datos del usuario por su ID.
-  
+
         console.log("ID:", userId);
         console.log("DATA:", userData);
-  
+
         if (userData) {
           setUserName(userData);
         } else {
@@ -55,10 +55,10 @@ const Account = ({ navigation, route }) => {
         setError('Error fetching user data: ' + error.message);
       }
     }
-  
+
     getUser();
   }, []);
-  
+
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -93,49 +93,49 @@ const Account = ({ navigation, route }) => {
       console.error('Error al iniciar el chat privado:', error);
     }
   };
-  
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.contenido}>
         <TouchableOpacity onPress={showModal}>
           <Configuration style={styles.Configuration} />
         </TouchableOpacity>
-    
+
         <Modal isVisible={isModalVisible}>
           <View style={styles.modalContent}>
             <View style={styles.modalTexts}>
               <View>
-                <Text style={{ color: "white", padding: 20, margin: "auto", left: 90, padding: 30}}>
+                <Text style={{ color: "white", padding: 20, margin: "auto", left: 90, padding: 30 }}>
                   <Ajustes />
                 </Text>
-                <View style={styles.headerModal}> 
+                <View style={styles.headerModal}>
                   <Text style={styles.LineIcon}>
-                    <LineIcon /> 
+                    <LineIcon />
                   </Text>
                 </View>
                 <View style={styles.Iconos}>
-                  <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}>
-                    <Count/>
+                  <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
+                    <Count />
                   </Text>
-                  <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}>
+                  <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
                     <Privacidad />
                   </Text>
-                  <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}>
+                  <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
                     <Contein />
                   </Text>
-                  <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}>
+                  <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
                     <Not />
                   </Text>
-                  <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}>
+                  <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
                     <Langua />
                   </Text>
-                  <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}>
-                    <Pagos  />
+                  <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
+                    <Pagos />
                   </Text>
-                  <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}>
+                  <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
                     <Reser />
                   </Text>
-                  <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}>
+                  <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
                     <Ay />
                   </Text>
                 </View>
@@ -143,14 +143,14 @@ const Account = ({ navigation, route }) => {
             </View>
             <View>
               <TouchableOpacity onPress={hideModal}>
-                <Text style={{ color: "#ffffff"  }}>  <Closed /> </Text>
+                <Text style={{ color: "#ffffff" }}>  <Closed /> </Text>
               </TouchableOpacity>
             </View>
           </View>
         </Modal>
-          
+
         <View style={styles.HeaderButton}>
-          <Text style={styles.userName}>Usuario: {userName }</Text>
+          <Text style={styles.userName}>Usuario: {userName}</Text>
           <Image source={img} style={styles.profileImage} />
 
           <TouchableOpacity
@@ -159,10 +159,10 @@ const Account = ({ navigation, route }) => {
           >
             <Text style={styles.buttonText}>Editar Perfil</Text>
           </TouchableOpacity>
-       
+
           <TouchableOpacity
             style={styles.button}
-            onPress={()=>handleContactButtonClick('93i5kPJhBLRB6KnwY87m9yVOJiE2')}
+            onPress={() => handleContactButtonClick('93i5kPJhBLRB6KnwY87m9yVOJiE2')}
           >
             <Text style={styles.buttonText}>Contactar</Text>
           </TouchableOpacity>
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     left: -40
   },
-  tatuajes:{ 
+  tatuajes: {
     flexDirection: "row",
     padding: 40,
   },
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     margin: "auto",
   },
   headerModal: {
-    left: -40, 
+    left: -40,
     flexDirection: "row",
   },
   LineIcon: {

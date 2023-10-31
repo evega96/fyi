@@ -481,9 +481,9 @@ export const getNameById = async (userId) => {
 
 
 
-    const docRef = doc(db, 'users', userId);
-    const result = await getDoc(docRef);
-     return result.data().user;
+  const docRef = doc(db, 'users', userId);
+  const result = await getDoc(docRef);
+  return result.data().user;
 
 
   // try {

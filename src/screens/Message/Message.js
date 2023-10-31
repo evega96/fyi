@@ -13,7 +13,7 @@ const Message = ({ route, navigation }) => {
     const [memberIds, setMemberIds] = useState([]);
     const [memberNames, setMemberNames] = useState({}); // Almacena los nombres de usuario
 
-const [users, setUsers] = useState();
+    const [users, setUsers] = useState();
 
     var userId;
 
@@ -21,7 +21,7 @@ const [users, setUsers] = useState();
         const fetchData = async () => {
             try {
 
-                const users = await  getItems();
+                const users = await getItems();
                 setUsers(users);
 
                 userId = await getCurrentUserId();
@@ -33,12 +33,12 @@ const [users, setUsers] = useState();
                 setMemberIds(memberIdsArray);
 
 
-                var user=[];
+                var user = [];
                 // Obtener los nombres de usuario a partir de las ID de los miembros
-                for(var i = 0; i< users.length; i++){
-                    user[i] = await getUserNameByUserId(users,users[i].id)
+                for (var i = 0; i < users.length; i++) {
+                    user[i] = await getUserNameByUserId(users, users[i].id)
                 }
-                
+
                 setMemberNames(user.displayName);
 
             } catch (error) {
@@ -60,12 +60,12 @@ const [users, setUsers] = useState();
         return members.map(memberId => memberNames[memberId]).join(', ');
     };
 
-    function getUserNameByUserId(users,userId){
+    function getUserNameByUserId(users, userId) {
 
-        const user=   users.find( user => user.id === userId);
-        const result = " "+user.user+" ";
+        const user = users.find(user => user.id === userId);
+        const result = " " + user.user + " ";
         return result;
-      }
+    }
 
 
     return (
@@ -83,8 +83,8 @@ const [users, setUsers] = useState();
                     <Text style={styles.roomText}>ID de la Sala: {room.id}</Text>
 
 
-{users &&  <Text style={styles.roomText}>Miembros: {room.members.map(member => getUserNameByUserId(users, member) )}</Text>
-}
+                    {users && <Text style={styles.roomText}>Miembros: {room.members.map(member => getUserNameByUserId(users, member))}</Text>
+                    }
 
                 </TouchableOpacity>
             ))}
