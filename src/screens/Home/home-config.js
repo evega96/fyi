@@ -4,18 +4,24 @@ import Home from "./Home"; // Asegúrate de que la ruta sea correcta
 import Ionicons from "react-native-vector-icons/Ionicons";
 import home from "../../../assets/home.png"; // Asegúrate de que la ruta sea correcta
 
+
+
+
 // Define la configuración de la pantalla "Home"
 const HomeConfig = {
+  
   name: "Home",
   component: Home,
   options: ({ navigation }) => ({
     tabBarIcon: () => <Image source={home} size={44} />,
+
     headerStyle: {
       backgroundColor: "black", // Fondo blanco
     },
     headerTitleStyle: {
       display: "none", // Oculta el título "Home"
     },
+    
     headerTransparent: true,
     headerShown: true,
     headerRight: () => (
@@ -34,7 +40,7 @@ const HomeConfig = {
       <View style={styles.headerButtonsContainer}>
         <TouchableOpacity
           style={styles.centerButton}
-          onPress={() => navigation.navigate("ParaTiScreen")}
+          onPress={() => navigation.navigate("ParatiScreen")}
         >
           <Text style={styles.buttonText}>Para Ti</Text>
         </TouchableOpacity>
