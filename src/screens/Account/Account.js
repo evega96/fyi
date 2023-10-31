@@ -1,13 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, ScrollView,userID} from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, ScrollView } from "react-native";
 import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
-import { getItemById, logout } from "../../app/api"; // Asegúrate de importar getItemById correctamente
+import { getNameById, getCurrentUserId } from "../../app/api";
 import img from "../../../assets/FotodePerfil.jpg";
-import { AuthenticatedUserContext } from "../../Context/AuthContextProdiver";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
-import { getUser } from "../../app/api";
+import {getUser} from "../../app/api"
 import Configuration from "../../components/ConfigorationIcon";
-import Modal from "react-native-modal"; // Importar la biblioteca react-native-modal+
+import Modal from "react-native-modal";
 import Count from "../../components/Cuenta";
 import Privacidad from "../../components/Privacidad";
 import Contein from "../../components/Contenido";
@@ -19,17 +18,18 @@ import Ay from "../../components/Ayudas";
 import Ajustes from "../../components/Ajustes";
 import LineIcon from "../../components/Linea";
 import Closed from "../../components/Cerrar";
+import { getTwoHumansRoomId } from "../../app/api";
+
+
 const Account = ({ navigation, route }) => {
-  const { userid, setUserid } = useContext(AuthenticatedUserContext);
-  const [userName, setUserName] = useState(""); // Estado para almacenar el nombre de usuario
+   const [userName, setUserName] = useState('');
+  const [error, setError] = useState('');
   const [images, setImages] = useState([]);
   const storage = getStorage();
   const [isModalVisible, setModalVisible] = useState(false);
 
-  console.log(userName)
-
   const showModal = () => {
-    setModalVisible(true);
+    setModalVisible(true); 
   };
 
   const hideModal = () => {
@@ -37,18 +37,32 @@ const Account = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    const user = async ()=>{
-        const id = "BcFleS8Au3e7cBKJl9DQggKjOBg1";
-       const data=  await getUser(id);
-       setUserName(data.usuario)
-       console.log(data);
+    const getUser = async () => {
+      try {
+        const userId = await getCurrentUserId(); // Asegúrate de que esta función existe y devuelve el ID del usuario.
+        const userData = await getNameById(userId); // Asegúrate de que esta función obtiene los datos del usuario por su ID.
+  
+        console.log("ID:", userId);
+        console.log("DATA:", userData);
+  
+        if (userData) {
+          setUserName(userData);
+        } else {
+          setError('User not found');
+        }
+      } catch (error) {
+        setError('Error fetching user data: ' + error.message);
+      }
     }
-    user();
+  
+    getUser();
   }, []);
+  
+
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const imageRef = ref(storage); // Ref al directorio principal de Storage
+        const imageRef = ref(storage);
         const imageList = await listAll(imageRef);
 
         const imageUrlArray = await Promise.all(
@@ -67,101 +81,118 @@ const Account = ({ navigation, route }) => {
     fetchImages();
   }, []);
 
+  const handleContactButtonClick = async (otherUserId) => {
+    try {
+      const currentUserId = await getCurrentUserId();
+      const roomCode = await getTwoHumansRoomId(currentUserId, otherUserId);
+      navigation.navigate('ChatRooms', {
+        roomCodeId: roomCode,
+      });
+    } catch (error) {
+      console.error('Error al iniciar el chat privado:', error);
+    }
+  };
+  
   return (
     <View style={styles.container}>
-    <ScrollView contentContainerStyle={styles.contenido}>
-      <TouchableOpacity onPress={showModal}>
-        <Configuration style={styles.Configuration} />
-      </TouchableOpacity>
+      <ScrollView contentContainerStyle={styles.contenido}>
+        <TouchableOpacity onPress={showModal}>
+          <Configuration style={styles.Configuration} />
+        </TouchableOpacity>
     
-  
-      <Modal isVisible={isModalVisible}>
+        <Modal isVisible={isModalVisible}>
           <View style={styles.modalContent}>
             <View style={styles.modalTexts}>
-            <View>
-            <Text style={{ color: "white", padding: 20, margin: "auto", left: 90,padding: 30}}> <Ajustes />   </Text>
-
-     <View style={styles.headerModal}> 
-     <Text style={styles.LineIcon}>
-     <LineIcon /> 
-     </Text>
-     
-     </View>
-     <View style={styles.Iconos}>
-     <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Count/>   </Text>
-            
-            <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}> <Privacidad />  </Text>
-            <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Contein />    </Text>
-            <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Not />  </Text>
-            <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}> <Langua /></Text>
-            <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Pagos  />  </Text>
-            <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}> <Reser /> </Text>
-            <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}> <Ay /> </Text>
-     </View>
-      
-            
-      
+              <View>
+                <Text style={{ color: "white", padding: 20, margin: "auto", left: 90, padding: 30}}>
+                  <Ajustes />
+                </Text>
+                <View style={styles.headerModal}> 
+                  <Text style={styles.LineIcon}>
+                    <LineIcon /> 
+                  </Text>
+                </View>
+                <View style={styles.Iconos}>
+                  <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}>
+                    <Count/>
+                  </Text>
+                  <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}>
+                    <Privacidad />
+                  </Text>
+                  <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}>
+                    <Contein />
+                  </Text>
+                  <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}>
+                    <Not />
+                  </Text>
+                  <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}>
+                    <Langua />
+                  </Text>
+                  <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}>
+                    <Pagos  />
+                  </Text>
+                  <Text style={{ color: "white" , padding: 15}} onPress={()=>Alert.alert(".....hola")}>
+                    <Reser />
+                  </Text>
+                  <Text style={{ color: "white", padding: 15 }} onPress={()=>Alert.alert(".....hola")}>
+                    <Ay />
+                  </Text>
+                </View>
+              </View>
             </View>
-            </View>
             <View>
-            <TouchableOpacity onPress={hideModal}>
-              <Text style={{ color: "#ffffff"  }}>  <Closed /> </Text>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={hideModal}>
+                <Text style={{ color: "#ffffff"  }}>  <Closed /> </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
-        
           
-      
-      <View style={styles.HeaderButton}>
-      <Text style={styles.userName}>usuario:{userName}</Text>
-      <Image source={img} style={styles.profileImage} />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("EditarPerfil")}
->
-          <Text style={styles.buttonText}>Editar Perfil</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("AccountTatto")}
->
-          <Text style={styles.buttonText}>TATTOPAGE</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}  onPress={() => {
-          alert("");}}>
-          <Text style={styles.buttonText}>Compartir</Text>
-        </TouchableOpacity>
-        
-      </View>
-      <View style={styles.Text}>
-      <Text style={{ color: 'white' }}> Fan de los tatuajes</Text>
-      <Text style={{ color: 'white' }}> BARCELONA</Text>
-      <View style={styles.tatuajes}>
-      <TouchableOpacity style={styles.buttons} onPress={() => {
-          
-          alert("");
-        }}>
-          <Text style={styles.buttonText}>Mis Tatuajes</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity style={styles.buttons} onPress={() => {
+        <View style={styles.HeaderButton}>
+          <Text style={styles.userName}>Usuario: {userName }</Text>
+          <Image source={img} style={styles.profileImage} />
 
-        alert("");
-      }}>
-          <Text style={styles.buttonText}>Colecciones</Text>
-      </TouchableOpacity>
-      </View>
-      </View>
-     
-      {images.map((image) => (
-        <Image
-          key={image.id}
-          source={{ uri: image.url }}
-          style={styles.image}
-        />
-      ))}
-    </ScrollView>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("EditarPerfil")}
+          >
+            <Text style={styles.buttonText}>Editar Perfil</Text>
+          </TouchableOpacity>
+       
+          <TouchableOpacity
+            style={styles.button}
+            onPress={()=>handleContactButtonClick('93i5kPJhBLRB6KnwY87m9yVOJiE2')}
+          >
+            <Text style={styles.buttonText}>Contactar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Compartir</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.Text}>
+          <Text style={{ color: 'white' }}> Fan de los tatuajes</Text>
+          <Text style={{ color: 'white' }}> BARCELONA</Text>
+          <View style={styles.tatuajes}>
+            <TouchableOpacity style={styles.buttons} onPress={() => {
+              alert("");
+            }}>
+              <Text style={styles.buttonText}>Mis Tatuajes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttons} onPress={() => {
+              alert("");
+            }}>
+              <Text style={styles.buttonText}>Colecciones</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        {images.map((image) => (
+          <Image
+            key={image.id}
+            source={{ uri: image.url }}
+            style={styles.image}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -177,7 +208,6 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 75,
     marginBottom: -20,
-    
   },
   userName: {
     fontSize: 18,
@@ -190,7 +220,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
     right: -55,
     width: 200,
-    
   },
   button: {
     backgroundColor: "#6B7280",
@@ -198,8 +227,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginHorizontal: 10,
     marginBottom: 5,
-   width:171 ,
-   height: 44,
+    width: 171,
+    height: 44,
   },
   buttonText: {
     color: "#fff",
@@ -222,18 +251,17 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginBottom: 5,
     right: -10,
-    width:171 ,
-   height: 44,
+    width: 171,
+    height: 44,
   },
   contenido: {
     flexDirection: "row",
     flexWrap: "wrap",
-    
   },
   image: {
-    width: "50%", // Esto hará que las imágenes aparezcan en filas de 2
-    height: 200, // Establece la altura deseada
-    resizeMode: "cover", // Ajusta el modo de redimensionamiento según tus necesidades
+    width: "50%",
+    height: 200,
+    resizeMode: "cover",
   },
   Configuration: {
     left: 350,
@@ -248,15 +276,12 @@ const styles = StyleSheet.create({
     margin: "auto",
   },
   headerModal: {
-        left: -40, 
-        flexDirection: "row",
-       
+    left: -40, 
+    flexDirection: "row",
   },
-
-LineIcon: {
-  marginHorizontal: -79
-},
-
+  LineIcon: {
+    marginHorizontal: -79
+  },
 });
 
 export default Account;

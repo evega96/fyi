@@ -1,56 +1,84 @@
-import React, { useEffect, useState } from "react";
-import { View, Image, ScrollView, StyleSheet } from "react-native";
-import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 
-const HomeScreen = () => {
+import React, { useEffect, useState } from 'react';
+import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
+import { useNavigation } from '@react-navigation/native';
+import { getCurrentUserId, getOrCreateRoom, getTwoHumansRoomId } from '../../app/api';
+import MasonryList from "react-native-masonry-list";
+// import ImageSize from 'react-native-image-size';
+
+const HomeScreen = ({ navigation }) => {
+
   const [images, setImages] = useState([]);
   const storage = getStorage();
 
+
   useEffect(() => {
+
     const fetchImages = async () => {
       try {
-        const imageRef = ref(storage); // Ref al directorio principal de Storage
+        const imageRef = ref(storage);
         const imageList = await listAll(imageRef);
-
-        const imageUrlArray = await Promise.all(
+const data = [];
+        const imageUrlArray = await Promise.all( 
           imageList.items.map(async (item) => {
             const downloadURL = await getDownloadURL(item);
-            return { id: item.name, url: downloadURL };
+           Image.getSize(downloadURL, (width, height) => {
+data.push({ uri: downloadURL});
+    
+});
           })
         );
-
-        setImages(imageUrlArray);
+        setImages(data);
       } catch (error) {
-        console.error("Error al obtener imágenes:", error);
+        console.error('Error al obtener imágenes:', error);
       }
     };
 
     fetchImages();
+
   }, []);
 
+
+  const openDetailScreen = (imageData) => {
+    // Navega a la pantalla de detalle y pasa los datos de la imagen como parámetros imageData, imageData.url)
+    navigation.navigate('DetailScreen', {
+      screen: 'DetailScreen',
+      params: {
+        imageUrl: imageData.uri,
+        authorName: 'Nombre del autor', // Reemplaza con el nombre real del autor
+        description: 'Descripción de la imagen', // Reemplaza con la descripción real
+        hashtags: 'hasthtags'
+      }
+    });
+  };
+
+  
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {images.map((image) => (
-        <Image
-          key={image.id}
-          source={{ uri: image.url }}
-          style={styles.image}
-        />
-      ))}
-    </ScrollView>
+ 
+     <>
+
+
+      <MasonryList
+        images={images}
+        spacing={5}
+        containerStyle={{ padding: 5 }}
+        onPressImage={(image, index) => {
+          openDetailScreen(image);
+        }}
+
+      />
+  </>
+    
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+  overlayButton: {
+    marginTop: 200,
   },
-  image: {
-    width: "50%", // Esto hará que las imágenes aparezcan en filas de 2
-    height: 200, // Establece la altura deseada
-    resizeMode: "cover", // Ajusta el modo de redimensionamiento según tus necesidades
-  },
+
 });
 
 export default HomeScreen;

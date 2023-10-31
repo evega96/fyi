@@ -2,11 +2,11 @@ import Account from "./Account";
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const AccountConfig = {
-    name: "Perfil",
+    name: "Account",
     component: Account,
     options: {
-        headerTitle: 'Cuenta',
-        tabBarIcon: () => <Ionicons name="account" size={30} color="#6451a5" ></Ionicons>
+        headerTitle: 'Account',
+        tabBarIcon: () => <Ionicons name="account" size={44} color="#6451a5" ></Ionicons>
     }
 }
 

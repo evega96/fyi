@@ -1,7 +1,7 @@
-import Add from "./Add";
+import TagPerson from "./TagPerson";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const AddConfig = {
+const AddUbicationConfig = {
     name: "Add",
     component: Add,
     options: {
@@ -11,11 +11,11 @@ const AddConfig = {
         tabBarIcon: () => (
             <Ionicons
                 name="add-circle-sharp"
-                size={24}
+                size={30}
                 color="#6451a5"
             ></Ionicons>
         ),
     },
 };
 
-export default AddConfig;
+export default AddUbicationConfig;

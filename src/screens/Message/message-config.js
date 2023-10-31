@@ -4,10 +4,10 @@ import img from '../../../assets/mensaje.png';
 import { Image } from "react-native";
 
 const MessageConfig = {
-  name: "Mensajes",
+  name: "Message",
   component: Message,
   options: {
-    headerTitle: "Mensajes",
+    headerTitle: "Message",
     tabBarIcon: () => <Image source={img} />
   },
 };
