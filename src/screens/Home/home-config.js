@@ -14,7 +14,7 @@ const HomeConfig = {
   component: Home,
   options: ({ navigation }) => ({
     tabBarIcon: () => <Image source={home} size={44} />,
-    
+
     headerStyle: {
       backgroundColor: "black", // Fondo blanco
     },

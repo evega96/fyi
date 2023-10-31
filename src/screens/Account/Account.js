@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, ScrollView } from "react-native";
 import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -195,6 +196,7 @@ const Account = ({ navigation, route }) => {
       </ScrollView>
     </View>
   );
+
 };
 
 const styles = StyleSheet.create({

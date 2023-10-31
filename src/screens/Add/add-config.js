@@ -11,7 +11,9 @@ const AddConfig = {
         tabBarIcon: () => (
             <Ionicons
                 name="add-circle-sharp"
+
                 size={24}
+
                 color="#6451a5"
             ></Ionicons>
         ),

@@ -48,20 +48,22 @@ const PrivateChatScreen = ({ route }) => {
     useEffect(() => {
         const f = async () => {
             const uid = await getCurrentUserId();
-            setUid(uid   );
+
+            setUid(uid);
         }
-         f();
-        
+        f();
+
+
     }, [])
     return (
         <View style={{ flex: 1 }}>
             {
                 uid && <FlatList
+
                 data={messages}
                 keyExtractor={(message) => message.id}
                 renderItem={ 
                     ({item}) =>{
-console.log('ooooooooooooooo', item.userId, uid)
                         return (
                             (
                                   
@@ -85,6 +87,7 @@ console.log('ooooooooooooooo', item.userId, uid)
                         )
                     }}
             />
+
             }
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 50, marginLeft: 25, marginRight: 25 }}>
                 <TextInput
