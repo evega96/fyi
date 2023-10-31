@@ -15,6 +15,9 @@ import AddTags from "../../screens/AddTags/AddTags";
 import ChatRoom from "../../components/ChatRoom"
 import DetailScreen from '../../screens/Home/DetailScreen';
 
+import EditarPerfil from "../../screens/EditarPerfil/Editarperfil";
+import Parati from "../../screens/Parati/Parati";
+
 
 const Stack = createStackNavigator();
 
@@ -40,6 +43,10 @@ const TattoArtistNav = () => {
             <Stack.Screen name="ChatRooms" component={ChatRoom} />
             <Stack.Screen name="DetailScreen" component={DetailScreen}
                 options={{ headerShown: false }} />
+
+                <Stack.Screen name="EditarPerfil" component={EditarPerfil} />  
+            
+       <Stack.Screen name="ParaTi" component={Parati}/>
 
         </Stack.Navigator>
     );

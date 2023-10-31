@@ -2,7 +2,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import GuessNav from "./stack/GuessNav";
 import { useContext, useEffect, useState } from "react";
 import { AuthenticatedUserContext } from "../Context/AuthContextProdiver";
+
 import { Text } from "react-native";
+
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../app/firebase";
 import ClientNav from "./stack/ClientNav";

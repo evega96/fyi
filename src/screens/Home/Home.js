@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getCurrentUserId, getOrCreateRoom, getTwoHumansRoomId } from '../../app/api';
 import MasonryList from "react-native-masonry-list";
 
+
 const HomeScreen = ({ navigation }) => {
 
   const [images, setImages] = useState([]);
@@ -72,6 +73,7 @@ const HomeScreen = ({ navigation }) => {
       }}
 
     />
+
   );
 };
 
