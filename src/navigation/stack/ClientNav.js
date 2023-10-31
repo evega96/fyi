@@ -8,19 +8,24 @@ import ForYou from "../../screens/ForYou/Add";
 import Header from "../../components/Header";
 import DetailScreen from "../stack/DetailsNav"
 import ChatRoom from "../../components/ChatRoom";
+
 import EditarPerfil from "../../screens/EditarPerfil/Editarperfil";
 import Parati from "../../screens/Parati/Parati";
+
 
 const Stack = createStackNavigator();
 
 const ClientNav = () => {
   return (
     <Stack.Navigator>
-       <Stack.Screen
+
+      <Stack.Screen
+
         name="Inicio"
         component={ClientBottomNav}
         options={{ headerShown: false }}
       />
+
        <Stack.Screen name="Home" component={Home} />
        <Stack.Screen name="ForYou" component={ForYou} />
        <Stack.Screen name="Favorite" component={Favorite} />
@@ -32,6 +37,7 @@ const ClientNav = () => {
        <Stack.Screen name="EditarPerfil" component={EditarPerfil} /> 
        <Stack.Screen name="ParaTi" component={Parati}/>
     </Stack.Navigator> 
+
   );
 };
 
