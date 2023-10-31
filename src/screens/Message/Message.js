@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/AntDesign';
 import Chat from '../../components/ChatRoom';
-import { getUserChatRooms, getCurrentUserId, getRoomById, getUserRoomsByUserId, getNameById } from '../../app/api';
+import { getUserChatRooms, getCurrentUserId, getRoomById, getUserRoomsByUserId, getNameById, getItems } from '../../app/api';
 import { SearchBar } from 'react-native-elements';
 
 const Message = ({ route, navigation }) => {
@@ -10,12 +10,14 @@ const Message = ({ route, navigation }) => {
     const [userChatRooms, setUserChatRooms] = useState([]);
     const [memberIds, setMemberIds] = useState([]);
     const [memberNames, setMemberNames] = useState({}); // Almacena los nombres de usuario
-
+const [users, setUsers] = useState();
     var userId;
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const users = await  getItems();
+                setUsers(users);
                 userId = await getCurrentUserId();
                 const chatRooms = await getUserRoomsByUserId(userId);
                 setUserChatRooms(chatRooms)
@@ -24,18 +26,13 @@ const Message = ({ route, navigation }) => {
                 const memberIdsArray = chatRooms.map(room => room.members);
                 setMemberIds(memberIdsArray);
 
+                var user=[];
                 // Obtener los nombres de usuario a partir de las ID de los miembros
-                const namesMap = {};
-                for (const room of chatRooms) {
-                    for (const memberId of room.members) {
-                        if (memberId !== userId) { // Evita obtener el nombre del usuario actual
-                            if (!namesMap[memberId]) {
-                                namesMap[memberId] = await getNameById(memberId);
-                            }
-                        }
-                    }
+                for(var i = 0; i< users.length; i++){
+                    user[i] = await getUserNameByUserId(users,users[i].id)
                 }
-                setMemberNames(namesMap);
+                console.log('ooooooooooo', user)
+                setMemberNames(user.displayName);
             } catch (error) {
                 console.error('Error al obtener las salas de chat:', error);
             }
@@ -51,9 +48,15 @@ const Message = ({ route, navigation }) => {
     };
 
     const getMembersNamesText = (members) => {
-        const d = members[1];
-        return d;
+        return members.map(memberId => memberNames[memberId]).join(', ');
     };
+
+    function getUserNameByUserId(users,userId){
+
+        const user=   users.find( user => user.id === userId);
+        const result = " "+user.user+" ";
+        return result;
+      }
 
     return (
         <View>
@@ -68,7 +71,9 @@ const Message = ({ route, navigation }) => {
             {userChatRooms.map((room) => (
                 <TouchableOpacity key={room.id} style={styles.roomContainer} onPress={() => handleButtonChat(room.id)}>
                     <Text style={styles.roomText}>ID de la Sala: {room.id}</Text>
-                    <Text>Miembros: {room.members.join(',')}</Text>
+
+{users &&  <Text style={styles.roomText}>Miembros: {room.members.map(member => getUserNameByUserId(users, member) )}</Text>
+}
                 </TouchableOpacity>
             ))}
         </View>

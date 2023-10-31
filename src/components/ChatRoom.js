@@ -48,42 +48,43 @@ const PrivateChatScreen = ({ route }) => {
     useEffect(() => {
         const f = async () => {
             const uid = await getCurrentUserId();
-            setUid(uid);
+            setUid(uid   );
         }
-        f();
-
+         f();
+        
     }, [])
     return (
         <View style={{ flex: 1 }}>
             {
                 uid && <FlatList
-                    data={messages}
-                    keyExtractor={(message) => message.id}
-                    renderItem={
-                        ({ item }) => {
-                            return (
-                                (
-
-                                    <Card
-                                        style={{
-                                            margin: 8,
-                                            alignSelf: item.userId === uid ? 'flex-end' : 'flex-start',
-                                            maxWidth: '70%', // Limita el ancho de la burbuja
-                                        }}
-                                    >
-                                        <Card.Content>
-                                            <Text>{item.msg}</Text>
-                                        </Card.Content>
-                                        <Card.Actions>
-                                            <Text style={{ fontSize: 12 }}>
-                                                {/* {new Date(item.timestamp).toLocaleTimeString()} */}
-                                            </Text>
-                                        </Card.Actions>
-                                    </Card>
-                                )
+                data={messages}
+                keyExtractor={(message) => message.id}
+                renderItem={ 
+                    ({item}) =>{
+console.log('ooooooooooooooo', item.userId, uid)
+                        return (
+                            (
+                                  
+                                <Card
+                style={{
+                    margin: 8,
+                    alignSelf: item.userId ===  uid ? 'flex-end' : 'flex-start',
+                    maxWidth: '70%', // Limita el ancho de la burbuja
+                }}
+            >
+                <Card.Content>
+                    <Text>{item.msg}</Text>
+                </Card.Content>
+                <Card.Actions>
+                    <Text style={{ fontSize: 12 }}>
+                        {/* {new Date(item.timestamp).toLocaleTimeString()} */}
+                    </Text>
+                </Card.Actions>
+            </Card>
                             )
-                        }}
-                />
+                        )
+                    }}
+            />
             }
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 50, marginLeft: 25, marginRight: 25 }}>
                 <TextInput

@@ -1,6 +1,6 @@
 import * as React from "react";
 import Svg, { Path } from "react-native-svg";
-const Cancel = (props) => (
+const IconGalery = (props) => (
   <Svg
     width={24}
     height={24}
@@ -10,9 +10,9 @@ const Cancel = (props) => (
     {...props}
   >
     <Path
-      d="M17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41L17.59 5Z"
-      fill="white"
+      d="M19 5V19H5V5H19ZM19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM14.14 11.86L11.14 15.73L9 13.14L6 17H18L14.14 11.86Z"
+      fill="#E4E4E4"
     />
   </Svg>
 );
-export default Cancel;
+export default IconGalery;
