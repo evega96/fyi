@@ -61,6 +61,7 @@ const PrivateChatScreen = ({ route }) => {
                     keyExtractor={(message) => message.id}
                     renderItem={
                         ({ item }) => {
+                            console.log('ooooooooooooooo', item.userId, uid)
                             return (
                                 (
 
