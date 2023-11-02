@@ -10,15 +10,14 @@ const DetailScreen = ({ route, navigation }) => {
 
   const handleLikePress = () => {
     setIsLiked(!isLiked);
-    createImageLike(imageUrl);
-
+    createImageLike(imageUrl.uri);
 
   };
 
 
   const handleSavePress = () => {
     setIsSaved(!isSaved);
-    createImageFav(imageUrl);
+    createImageFav(imageUrl.uri);
 
   };
 
@@ -55,7 +54,7 @@ const DetailScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: imageUrl.url }} style={styles.image} resizeMode="cover" />
+        <Image source={{ uri: imageUrl.uri }} style={styles.image} resizeMode="cover" />
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.authorName} onPress={goToAuthorProfile}>
