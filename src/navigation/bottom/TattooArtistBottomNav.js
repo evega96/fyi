@@ -22,7 +22,6 @@ const TattooArtistBottomNav = () => {
         {...HomeConfig}
       ></BottomTab.Screen>
       <BottomTab.Screen name="fav" component={Fav} {...PageConfig} />
-      <BottomTab.Screen name="Add" component={Add} {...AddConfig} />
       <BottomTab.Screen name="Message" component={Message} {...MessageConfig} />
       <BottomTab.Screen name="Account" component={Account} {...AccountConfig} />
     </BottomTab.Navigator>
