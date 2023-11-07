@@ -28,6 +28,7 @@ const Account = ({ navigation, route }) => {
   const [images, setImages] = useState([]);
   const storage = getStorage();
   const [isModalVisible, setModalVisible] = useState(false);
+  const [buttonPressed, setButtonPressed] = useState(true);
 
   const showModal = () => {
     setModalVisible(true);
@@ -95,11 +96,18 @@ const Account = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.contenido}>
+  
+      <ScrollView style={{backgroundColor: '#313131'}} contentContainerStyle={styles.contenido}>
         <TouchableOpacity onPress={showModal}>
           <Configuration style={styles.Configuration} />
         </TouchableOpacity>
+        <TouchableOpacity
+            style={styles.AddButton}
+            
+
+            onPress={() => navigation.navigate("Add") }>
+              <Text>ADD</Text>
+          </TouchableOpacity>
 
         <Modal isVisible={isModalVisible}>
           <View style={styles.modalContent}>
@@ -164,7 +172,7 @@ const Account = ({ navigation, route }) => {
             style={styles.button}
             onPress={() => handleContactButtonClick('93i5kPJhBLRB6KnwY87m9yVOJiE2')}
           >
-            <Text style={styles.buttonText}>Contactar</Text>
+            <Text style={styles.buttonText}>Mensaje</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Compartir</Text>
@@ -174,42 +182,60 @@ const Account = ({ navigation, route }) => {
           <Text style={{ color: 'white' }}> Fan de los tatuajes</Text>
           <Text style={{ color: 'white' }}> BARCELONA</Text>
           <View style={styles.tatuajes}>
-            <TouchableOpacity style={styles.buttons} onPress={() => {
-              alert("");
-            }}>
-              <Text style={styles.buttonText}>Mis Tatuajes</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.buttons} onPress={() => {
-              alert("");
-            }}>
-              <Text style={styles.buttonText}>Colecciones</Text>
-            </TouchableOpacity>
-          </View>
+  <TouchableOpacity
+    style={[
+      styles.buttons,
+      buttonPressed === 'MisTatuajes' ? { backgroundColor: 'white' } : { backgroundColor: 'black' }
+    ]}
+    onPress={() => {
+      alert("");
+      setButtonPressed('MisTatuajes');
+    }}
+  >
+    <Text style={[
+      styles.buttonsText,
+      buttonPressed === 'MisTatuajes' ? { color: 'blue' } : { color: 'white' }
+    ]}>Mis Tatuajes</Text>
+  </TouchableOpacity>
+  <TouchableOpacity
+    style={[
+      styles.buttons,
+      buttonPressed === 'Colecciones' ? { backgroundColor: 'white' } : { backgroundColor: 'black' }
+    ]}
+    onPress={() => {
+      alert("");
+      setButtonPressed('Colecciones');
+    }}
+  >
+    <Text style={[
+      styles.buttonsText,
+      buttonPressed === 'Colecciones' ? { color: 'blue' } : { color: 'white' }
+    ]}>Colecciones</Text>
+  </TouchableOpacity>
+</View>
+
         </View>
         {images.map((image) => (
           <Image
             key={image.id}
             source={{ uri: image.url }}
-            style={styles.image}
+            style={styles.imagenes}
           />
         ))}
       </ScrollView>
-    </View>
+   
   );
 
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "black",
-  },
+
   profileImage: {
     width: 120,
     height: 150,
     borderRadius: 75,
     marginBottom: -20,
+    marginTop: 20
   },
   userName: {
     fontSize: 18,
@@ -237,6 +263,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center"
   },
+  buttonsText: {
+    color: "#314C9F",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
   Text: {
     justifyContent: "center",
     alignItems: "center",
@@ -247,7 +278,7 @@ const styles = StyleSheet.create({
     padding: 40,
   },
   buttons: {
-    backgroundColor: "#4B74F1",
+    
     padding: 10,
     borderRadius: 50,
     marginHorizontal: 10,
@@ -260,13 +291,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
   },
-  image: {
-    width: "50%",
-    height: 200,
-    resizeMode: "cover",
+  imagenes: {
+    width: 150,
+    height: 150,
+    resizeMode: 'cover', 
+    margin: 15,
+    marginLeft: 25
+    
   },
   Configuration: {
-    left: 350,
+    left: 340,
+    marginTop: 10,
   },
   modalContent: {
     backgroundColor: "grey",
@@ -284,6 +319,23 @@ const styles = StyleSheet.create({
   LineIcon: {
     marginHorizontal: -79
   },
+  ImagePairsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
+  imagePair: {
+    alignItems: "center",
+    margin: 5,
+  },
+  border: {
+    width: 10, // Adjust the width as needed
+    height: "100%",
+    backgroundColor: "transparent", // You can set the desired border color here
+  },
+  AddButton: {
+    
+  }
 });
 
 export default Account;

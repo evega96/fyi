@@ -30,7 +30,6 @@ const TattoArtistNav = () => {
                 options={{ headerShown: false }}
             />
             <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Add" component={Add} {...AddConfig} />
             <Stack.Screen name="AddDetails" component={AddDetails} />
             <Stack.Screen name="Favorite" component={Favorite} />
             <Stack.Screen name="Account" component={Account} />

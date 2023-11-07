@@ -67,7 +67,7 @@ const HomeScreen = ({ navigation }) => {
     <MasonryList
       images={images}
       spacing={5}
-      containerStyle={{ padding: 5 }}
+      containerStyle={{ padding: 5, }}
       onPressImage={(image, index) => {
         openDetailScreen(image);
       }}
@@ -80,7 +80,9 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   overlayButton: {
     marginTop: 200,
+
   },
+  
 
 });
 
