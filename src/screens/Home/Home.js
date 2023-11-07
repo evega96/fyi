@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, Image, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
 import { useNavigation } from '@react-navigation/native';
 import { getCurrentUserId, getOrCreateRoom, getTwoHumansRoomId } from '../../app/api';
@@ -64,15 +64,17 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <MasonryList
-      images={images}
-      spacing={5}
-      containerStyle={{ padding: 5, }}
-      onPressImage={(image, index) => {
-        openDetailScreen(image);
-      }}
-
-    />
+    <ScrollView style={{ backgroundColor: '#313131' }}>
+      <MasonryList
+        style={{ backgroundColor: '#313131' }}
+        images={images}
+        spacing={5}
+        containerStyle={{ padding: 5 }}
+        onPressImage={(image, index) => {
+          openDetailScreen(image);
+        }}
+      />
+    </ScrollView>
 
   );
 };

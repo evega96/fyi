@@ -43,9 +43,9 @@ const TattoArtistNav = () => {
             <Stack.Screen name="DetailScreen" component={DetailScreen}
                 options={{ headerShown: false }} />
 
-                <Stack.Screen name="EditarPerfil" component={EditarPerfil} />  
-            
-       <Stack.Screen name="ParaTi" component={Parati}/>
+            <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
+
+            <Stack.Screen name="ParaTi" component={Parati} />
 
         </Stack.Navigator>
     );

@@ -12,7 +12,6 @@ const DetailScreen = ({ route, navigation }) => {
     setIsLiked(!isLiked);
     createImageLike(imageUrl.uri);
 
-
   };
 
 

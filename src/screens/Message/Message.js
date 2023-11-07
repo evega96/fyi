@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/AntDesign';
 import Chat from '../../components/ChatRoom';
 
@@ -12,10 +12,12 @@ const Message = ({ route, navigation }) => {
     const [userChatRooms, setUserChatRooms] = useState([]);
     const [memberIds, setMemberIds] = useState([]);
     const [memberNames, setMemberNames] = useState({}); // Almacena los nombres de usuario
+    const [uid, setUid] = useState();
 
     const [users, setUsers] = useState();
 
     var userId;
+    var otherUserID
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,6 +33,9 @@ const Message = ({ route, navigation }) => {
                 // Obtener los IDs de los miembros de cada sala
                 const memberIdsArray = chatRooms.map(room => room.members);
                 setMemberIds(memberIdsArray);
+
+                otherUserID = await getNameById('BcFleS8Au3e7cBKJl9DQggKjOBg1');
+                setUid(otherUserID);
 
 
                 var user = [];
@@ -55,11 +60,6 @@ const Message = ({ route, navigation }) => {
         });
     };
 
-    const getMembersNamesText = (members) => {
-
-        return members.map(memberId => memberNames[memberId]).join(', ');
-    };
-
     function getUserNameByUserId(users, userId) {
 
         const user = users.find(user => user.id === userId);
@@ -69,26 +69,29 @@ const Message = ({ route, navigation }) => {
 
 
     return (
-        <View>
-            <View style={{ backgroundColor: '#333' }}>
+        <ScrollView style={{ backgroundColor: '#313131' }}>
+            <View style={{ backgroundColor: '#313131' }}>
                 <SearchBar
                     placeholder="Buscar..."
-                    containerStyle={{ backgroundColor: '#333' }}
+                    containerStyle={{ backgroundColor: '#313131' }}
                     inputContainerStyle={{ backgroundColor: '#444' }}
                 />
             </View>
             <Text style={styles.sectionTitle}>Salas de Chat:</Text>
             {userChatRooms.map((room) => (
                 <TouchableOpacity key={room.id} style={styles.roomContainer} onPress={() => handleButtonChat(room.id)}>
-                    <Text style={styles.roomText}>ID de la Sala: {room.id}</Text>
-
-
-                    {users && <Text style={styles.roomText}>Miembros: {room.members.map(member => getUserNameByUserId(users, member))}</Text>
-                    }
-
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Image style={styles.img} source={require('../../../assets/FotodePerfil.jpg')} />
+                        <View style={{ marginLeft: 10, flex: 1 }}>
+                            <Text style={styles.roomText}>{uid}</Text>
+                            <Text style={styles.lastMessage}>Último mensaje</Text>
+                        </View>
+                    </View>
                 </TouchableOpacity>
             ))}
-        </View>
+
+
+        </ScrollView>
     );
 };
 
@@ -99,7 +102,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         width: 205,
         height: 25,
-        backgroundColor: '#E4E4E4',
+        backgroundColor: '#313131',
         marginBottom: 10,
         marginLeft: 112,
     },
@@ -107,15 +110,25 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 10,
+        color: '#ffffff',
     },
     roomContainer: {
-        backgroundColor: '#E4E4E4',
+        backgroundColor: '#313131',
         borderRadius: 10,
         padding: 10,
         marginBottom: 10,
     },
     roomText: {
-        fontSize: 16,
-        color: 'black',
+        fontSize: 24,
+        color: 'white',
+        fontWeight: 'bold'
     },
+    img: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+    },
+    lastMessage: {
+        color: 'white'
+    }
 });
