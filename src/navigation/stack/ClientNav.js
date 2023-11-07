@@ -23,20 +23,18 @@ const ClientNav = () => {
 
         name="Inicio"
         component={ClientBottomNav}
-        options={{ headerShown: false }}
       />
-
-       <Stack.Screen name="Home" component={Home} />
-       <Stack.Screen name="ForYou" component={ForYou} />
-       <Stack.Screen name="Favorite" component={Favorite} />
-       <Stack.Screen name="Account" component={Account} />
-       <Stack.Screen name="Message" component={Message} />
-       <Stack.Screen name="DetailScreen" component={DetailScreen}
-         options={{ headerShown: false }} />
-       <Stack.Screen name='ChatRooms' component={ChatRoom} />
-       <Stack.Screen name="EditarPerfil" component={EditarPerfil} /> 
-       <Stack.Screen name="ParaTi" component={Parati}/>
-    </Stack.Navigator> 
+      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="ForYou" component={ForYou} />
+      <Stack.Screen name="Favorite" component={Favorite} />
+      <Stack.Screen name="Account" component={Account} />
+      <Stack.Screen name="Message" component={Message} />
+      <Stack.Screen name="DetailScreen" component={DetailScreen}
+        options={{ headerShown: false }} />
+      <Stack.Screen name='ChatRooms' component={ChatRoom} />
+      <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
+      <Stack.Screen name="ParaTi" component={Parati} />
+    </Stack.Navigator>
 
   );
 };

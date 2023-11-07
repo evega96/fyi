@@ -9,33 +9,17 @@ import home from "../../../assets/home.png"; // Asegúrate de que la ruta sea co
 
 // Define la configuración de la pantalla "Home"
 const HomeConfig = {
-  
+
   name: "Home",
   component: Home,
   options: ({ navigation }) => ({
     tabBarIcon: () => <Image source={home} size={44} />,
 
     headerStyle: {
-      backgroundColor: "black", // Fondo blanco
+      backgroundColor: '#313131', // Fondo blanco
     },
-    headerTitleStyle: {
-      display: "none", // Oculta el título "Home"
-    },
-    
-    headerTransparent: true,
+
     headerShown: true,
-    headerRight: () => (
-      <TouchableOpacity
-        style={styles.searchButton}
-        onPress={() => {
-          // Agrega aquí la lógica para la acción "Se Busca"
-          // Por ejemplo, podrías abrir un cuadro de diálogo de búsqueda
-          alert("Se Busca");
-        }}
-      >
-        <Ionicons name="search" size={24} color="#4b74f2" />
-      </TouchableOpacity>
-    ),
     headerTitle: () => (
       <View style={styles.headerButtonsContainer}>
         <TouchableOpacity
@@ -50,6 +34,16 @@ const HomeConfig = {
         >
           <Text style={styles.buttonText}>Destacados</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.searchButton}
+          onPress={() => {
+            // Agrega aquí la lógica para la acción "Se Busca"
+            // Por ejemplo, podrías abrir un cuadro de diálogo de búsqueda
+            alert("Se Busca");
+          }}
+        >
+          <Ionicons name="search" size={24} color="#ffffff" />
+        </TouchableOpacity>
       </View>
     ),
   }),
@@ -62,18 +56,17 @@ const styles = StyleSheet.create({
     alignItems: "center", // Centra los botones verticalmente
   },
   centerButton: {
-    marginHorizontal: 10,
-    backgroundColor: "white",
+    marginLeft: 13,
+    backgroundColor: "#000000",
     padding: 10,
-    borderRadius: 30,
-    left: 80,
+    borderRadius: 30
   },
   buttonText: {
-    color: "#4b74f2",
+    color: "#ffffff",
   },
   searchButton: {
-    marginRight: 10,
-  },
+    marginLeft: 24
+  }
 });
 
 export default HomeConfig;
