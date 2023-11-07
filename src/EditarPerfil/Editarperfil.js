@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image,
 Alert } from "react-native";
  import { AuthenticatedUserContext } from "../Context/AuthContextProdiver";
 import img from "../../assets/FotodePerfil.jpg"
-import { getUser } from "../app/api";
+import { getCurrentUserId, getUser } from "../app/api";
 
 import ImageIcon from "../components/Imagen";
 import LineIcon from "../components/Linea";
@@ -100,7 +100,7 @@ const EditarPerfil = ({ navigation }) => {
   };
   useEffect(() => {
     const user = async ()=>{
-        const id = "BcFleS8Au3e7cBKJl9DQggKjOBg1";
+        const id = getCurrentUserId();
        const data=  await getUser(id);
        setUserName(data.usuario)
        console.log(data);

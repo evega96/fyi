@@ -82,7 +82,9 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   overlayButton: {
     marginTop: 200,
+
   },
+  
 
 });
 
