@@ -2,7 +2,7 @@ import React from "react";
 import { Image, StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import Home from "./Home"; // Asegúrate de que la ruta sea correcta
 import Ionicons from "react-native-vector-icons/Ionicons";
-import home from "../../../assets/home.png"; // Asegúrate de que la ruta sea correcta
+import home from "../../../assets/Home.png"; // Asegúrate de que la ruta sea correcta
 
 
 
@@ -16,7 +16,7 @@ const HomeConfig = {
     tabBarIcon: () => <Image source={home} size={44} />,
 
     headerStyle: {
-      backgroundColor: '#313131', // Fondo blanco
+      backgroundColor: '#313131', 
     },
 
     headerShown: true,

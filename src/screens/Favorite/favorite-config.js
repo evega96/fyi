@@ -1,6 +1,6 @@
 import Fav from "./Favorite";
 import Ionicons from 'react-native-vector-icons/Fontisto';
-import img from '../../../assets/save-line.png';
+import img from '../../../assets/Favoritos.png';
 import { Image } from "react-native";
 
 const Favorite = {

@@ -8,7 +8,7 @@ import ForYou from "../../screens/ForYou/Add";
 import Header from "../../components/Header";
 import DetailScreen from "../stack/DetailsNav"
 import ChatRoom from "../../components/ChatRoom";
-
+import Add from "../../screens/Add/Add";
 import EditarPerfil from "../../screens/EditarPerfil/Editarperfil";
 import Parati from "../../screens/Parati/Parati";
 
@@ -16,6 +16,7 @@ import Parati from "../../screens/Parati/Parati";
 const Stack = createStackNavigator();
 
 const ClientNav = () => {
+  console.log('uuuuuuuuuuuuuuuuuuuuuu')
   return (
     <Stack.Navigator>
 
@@ -25,6 +26,7 @@ const ClientNav = () => {
         component={ClientBottomNav}
       />
       <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Add" component={Add} {...AddConfig} />
       <Stack.Screen name="ForYou" component={ForYou} />
       <Stack.Screen name="Favorite" component={Favorite} />
       <Stack.Screen name="Account" component={Account} />
@@ -34,6 +36,7 @@ const ClientNav = () => {
       <Stack.Screen name='ChatRooms' component={ChatRoom} />
       <Stack.Screen name="EditarPerfil" component={EditarPerfil} />
       <Stack.Screen name="ParaTi" component={Parati} />
+      
     </Stack.Navigator>
 
   );

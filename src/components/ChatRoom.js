@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TextInput } from 'react-native';
+import { View, Text, FlatList, TextInput, Image } from 'react-native';
 import { createMsg, onMsgsUpdated, getCurrentUserId, getMsgs } from '../app/api';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Card, Avatar } from 'react-native-paper'; // Importa componentes de react-native-paper
@@ -56,7 +56,7 @@ const PrivateChatScreen = ({ route }) => {
 
     }, [])
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: '#313131' }}>
             {
                 uid && <FlatList
 
@@ -72,6 +72,7 @@ const PrivateChatScreen = ({ route }) => {
                                             margin: 8,
                                             alignSelf: item.userId === uid ? 'flex-end' : 'flex-start',
                                             maxWidth: '70%', // Limita el ancho de la burbuja
+                                            backgroundColor: item.userId === uid ? '#93ACF7' : '#6B7280',
                                         }}
                                     >
                                         <Card.Content>
@@ -89,7 +90,7 @@ const PrivateChatScreen = ({ route }) => {
                 />
 
             }
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 50, marginLeft: 25, marginRight: 25 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 50, marginLeft: 10, marginRight: 10, backgroundColor: '#ffffff', height:60,width:370, borderRadius: 30 }}>
                 <TextInput
                     style={{ flex: 1, marginRight: 8 }}
                     placeholder="Escribe un mensaje"
@@ -97,7 +98,7 @@ const PrivateChatScreen = ({ route }) => {
                     onChangeText={(text) => setNewMessage(text)}
                 />
                 <TouchableOpacity onPress={handleSendMessage}>
-                    <Icon name="send" size={24} color="blue" />
+                    <Image source={require('../../assets/send.png')}/>
                 </TouchableOpacity>
             </View>
         </View>

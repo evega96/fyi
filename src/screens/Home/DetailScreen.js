@@ -8,9 +8,8 @@ const DetailScreen = ({ route, navigation }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
-  const handleLikePress = () => {
-    setIsLiked(!isLiked);
-    createImageLike(imageUrl.uri);
+  const handleGoToAccount = () => {
+    navigation.navigate('Account')
 
   };
 
@@ -57,21 +56,18 @@ const DetailScreen = ({ route, navigation }) => {
         <Image source={{ uri: imageUrl.uri }} style={styles.image} resizeMode="cover" />
       </View>
       <View style={styles.infoContainer}>
-        <Text style={styles.authorName} onPress={goToAuthorProfile}>
-          {authorName}
-        </Text>
         <Text style={styles.description}>{description}</Text>
         <Text style={styles.description}>{hashtags}</Text>
       </View>
       <View style={styles.overlayButtons}>
-        <TouchableOpacity onPress={handleLikePress} style={styles.overlayButton}>
-          <FontAwesomeIcon name={isLiked ? 'heart' : 'heart-o'} size={40} color="red" />
+        <TouchableOpacity onPress={handleGoToAccount} style={styles.overlayAccount}>
+          <Image source={require('../../../assets/FotodePerfil.jpg')} style={{borderRadius:50, width:45, height:45}}></Image>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleSavePress} style={styles.overlayButton}>
-          <FontAwesomeIcon name={isSaved ? 'star' : 'star-o'} size={40} color="gold" />
+          <Image style={{marginRight:15, marginTop: 10}} source={isSaved ? require('../../../assets/fav-red.png') : require('../../../assets/fav-white.png')} size={40}></Image>
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleSharePress} style={styles.overlayButton}>
-          <FontAwesomeIcon name="share" size={40} color="blue" />
+        <TouchableOpacity onPress={handleSharePress} style={styles.overlayShare}>
+          <Image source={require('../../../assets/Share.png')}></Image>
         </TouchableOpacity>
       </View>
     </View>
@@ -112,17 +108,39 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: 'white',
   },
-  overlayButtons: {
+  overlayAccount: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 120,
     right: 10,
-    flexDirection: 'column',
     alignItems: 'flex-end', // Alinea los iconos a la derecha
-    marginBottom: 200
+    marginBottom: 200,
+    marginRight:6
   },
   overlayButton: {
     backgroundColor: 'transparent',
     marginBottom: 25,
+  },
+  overlayButton: {
+    position: 'absolute',
+    bottom: 60,
+    right: 10,
+    alignItems: 'flex-end', // Alinea los iconos a la derecha
+    marginBottom: 200,
+    backgroundColor: '#313131',
+    borderRadius: 50,
+    height: 50,
+    width: 50
+  },
+  overlayShare: {
+    position: 'absolute',
+    bottom: 0,
+    right: 10,
+    alignItems: 'flex-end', // Alinea los iconos a la derecha
+    marginBottom: 200,
+    backgroundColor: '#313131',
+    borderRadius: 50,
+    height: 50,
+    width: 50
   },
 });
 

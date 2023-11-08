@@ -20,6 +20,8 @@ import Ajustes from "../../components/Ajustes";
 import LineIcon from "../../components/Linea";
 import Closed from "../../components/Cerrar";
 import { getTwoHumansRoomId } from "../../app/api";
+import Ioniconss from "react-native-vector-icons/Ionicons";
+import {logout} from "../../app/api";
 
 
 const Account = ({ navigation, route }) => {
@@ -94,6 +96,13 @@ const Account = ({ navigation, route }) => {
       console.error('Error al iniciar el chat privado:', error);
     }
   };
+  
+ 
+
+  const handleOnPressAdd = () =>{
+    navigation.navigate('Add')
+    console.log('11111111111' , handleOnPressAdd)
+  }
 
   return (
   
@@ -102,12 +111,12 @@ const Account = ({ navigation, route }) => {
           <Configuration style={styles.Configuration} />
         </TouchableOpacity>
         <TouchableOpacity
-            style={styles.AddButton}
-            
-
-            onPress={() => navigation.navigate("Add") }>
-              <Text>ADD</Text>
-          </TouchableOpacity>
+        style={styles.AddButton}
+        onPress={handleOnPressAdd}>
+      <Ioniconss
+        name="add-circle-sharp"
+        size={44}
+        color="#fff" /></TouchableOpacity>
 
         <Modal isVisible={isModalVisible}>
           <View style={styles.modalContent}>
@@ -146,6 +155,12 @@ const Account = ({ navigation, route }) => {
                   <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
                     <Ay />
                   </Text>
+                  <TouchableOpacity
+                  style={styles.logoutButton}
+                  onPress={()=>logout()}>
+                 <Text style={styles.logoutButtonText}>Cerrar Sesión</Text>
+                 </TouchableOpacity>
+
                 </View>
               </View>
             </View>
@@ -175,7 +190,7 @@ const Account = ({ navigation, route }) => {
             <Text style={styles.buttonText}>Mensaje</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Compartir</Text>
+            <Text style={styles.buttonText} onPress={() => Alert.alert("Compartir")}>Compartir</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.Text}>
@@ -187,8 +202,8 @@ const Account = ({ navigation, route }) => {
       styles.buttons,
       buttonPressed === 'MisTatuajes' ? { backgroundColor: 'white' } : { backgroundColor: 'black' }
     ]}
-    onPress={() => {
-      alert("");
+    onPress={() => {Alert.
+      alert("Mis Tatuajes");
       setButtonPressed('MisTatuajes');
     }}
   >
@@ -202,8 +217,8 @@ const Account = ({ navigation, route }) => {
       styles.buttons,
       buttonPressed === 'Colecciones' ? { backgroundColor: 'white' } : { backgroundColor: 'black' }
     ]}
-    onPress={() => {
-      alert("");
+    onPress={() => {Alert.
+      alert("Colecciones");
       setButtonPressed('Colecciones');
     }}
   >
@@ -246,7 +261,7 @@ const styles = StyleSheet.create({
     position: "relative",
     alignItems: "center",
     marginTop: 40,
-    right: -55,
+    right: -9,
     width: 200,
   },
   button: {
@@ -334,7 +349,14 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent", // You can set the desired border color here
   },
   AddButton: {
+    marginTop: 70,
+    left: 298,
     
+  },
+  logoutButton: {
+    borderWidth: 1, 
+    borderColor: "red",
+    backgroundColor: "bla"
   }
 });
 
