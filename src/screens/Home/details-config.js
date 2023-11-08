@@ -4,7 +4,7 @@ const DetailsConfig = {
     name: "Details",
     component: DetailScreen,
     options: {
-        headerShown: false
+        headerShown: true
     }
 }
 

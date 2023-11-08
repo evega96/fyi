@@ -91,6 +91,7 @@ export const signUp = async (
     const userData = {
       id: auth.currentUser.uid,
       user: userLog,
+      email: email,
       birthday: birthday,
       sanitaryHygieneTitle: sanitaryHygieneTitle,
       vaccines: vaccines,

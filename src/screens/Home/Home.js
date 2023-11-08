@@ -51,22 +51,11 @@ const HomeScreen = ({ navigation }) => {
     });
   };
 
-  const handleContactButtonClick = async (otherUserId) => {
-    try {
-      const currentUserId = await getCurrentUserId();
-      const roomCode = await getTwoHumansRoomId(currentUserId, otherUserId);
-      navigation.navigate('ChatRooms', {
-        roomCodeId: roomCode,
-      });
-    } catch (error) {
-      console.error('Error al iniciar el chat privado:', error);
-    }
-  };
 
   return (
     <ScrollView style={{ backgroundColor: '#313131' }}>
       <MasonryList
-        style={{ backgroundColor: '#313131' }}
+        backgroundColor='#313131'
         images={images}
         spacing={5}
         containerStyle={{ padding: 5 }}

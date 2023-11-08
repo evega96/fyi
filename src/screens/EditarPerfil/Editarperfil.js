@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext} from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, 
 Alert } from "react-native";
+ import { AuthenticatedUserContext } from "../../Context/AuthContextProdiver";
 import img from "../../../assets/FotodePerfil.jpg"
-import { getUser } from "../../app/api";
-import { getNameById } from "../../app/api";
-import { getCurrentUserId } from "../../app/api";
+import { getCurrentUserId, getNameById, getUser } from "../../app/api";
+
 import ImageIcon from "../../components/Imagen";
 import LineIcon from "../../components/Linea";
 import Configuration from "../../components/ConfigorationIcon";
@@ -38,6 +38,7 @@ import Wom from "../../components/Woman";
 import Espeficicar from "../../components/Espeficicar";
 
 const EditarPerfil = ({ navigation }) => {
+  const { userid, setUserid } = useContext(AuthenticatedUserContext);
   const [userName, setUserName] = useState(""); // Estado para almacenar el  de usuario
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalShowImage, setModalImageVisible] = useState(false);
@@ -97,29 +98,15 @@ const EditarPerfil = ({ navigation }) => {
     // Navegar de vuelta a la pantalla de cuenta después de guardar los cambios
     navigation.goBack();
   };
-
   useEffect(() => {
-    const getUser = async () => {
-      try {
-        const userId = await getCurrentUserId(); // Asegúrate de que esta función existe y devuelve el ID del usuario.
-        const userData = await getNameById(userId); // Asegúrate de que esta función obtiene los datos del usuario por su ID.
-  
-        console.log("ID:", userId);
-        console.log("DATA:", userData);
-  
-        if (userData) {
-          setUserName(userData);
-        } else {
-          setError('User not found');
-        }
-      } catch (error) {
-        setError('Error fetching user data: ' + error.message);
-      }
+    const user = async ()=>{
+        const id = await getCurrentUserId();
+       const data=  await getNameById(id);
+       setUserName(data)
+       console.log(data);
     }
-  
-    getUser();
+    user();
   }, []);
- 
   return (
     <View style={styles.container}>
       <View style={styles.configuration}>
@@ -129,7 +116,7 @@ const EditarPerfil = ({ navigation }) => {
 
       </View>
      
-      <Text style={styles.userName}>usuario:  {userName}</Text>
+      <Text style={styles.userName}>usuario:{userName}</Text>
        
       <View>
       
@@ -159,7 +146,7 @@ const EditarPerfil = ({ navigation }) => {
           <View style={styles.TextosPerile}>
             <TextO />
             <View style={styles.Correcto}>
-            <ImagenCorrect  onPress={()=>Alert.alert("imagen guardada ")}/>
+            <ImagenCorrect  onPress={()=>Alert.alert(".....hola")}/>
             </View>
            
             </View>
@@ -169,7 +156,7 @@ const EditarPerfil = ({ navigation }) => {
           
           
           <View style={styles.TextsPerfil}>
-          <Text style={{ padding: 15}} onPress={()=>Alert.alert("...pendejo")}>  
+          <Text style={{ padding: 15}} onPress={()=>Alert.alert(".....hola")}>  
         
         < Photo/> <TextPho /> 
         </Text>
