@@ -10,9 +10,8 @@ import {
   onSnapshot,
   updateDoc,
   setDoc,
-  where
+  where,
 } from "firebase/firestore";
-
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -21,6 +20,7 @@ import {
 
 import { db, auth, storage } from "./firebase";
 
+import {ref, uploadBytesResumable, getDownloadURL} from 'firebase/storage'
 const collectionNameMsgs = 'msgs';
 
 const collectionName = "chat";
@@ -172,7 +172,7 @@ export const uploadImageToFirebase = async (imageUri, documentInformation) => {
     // Genera un nombre único para la imagen o utiliza el nombre original
     const uniqueImageName = `${Math.random()}-${new Date().getTime()}.jpg`;
 
-    const storageRef = ref(storage, `images/ ${uniqueImageName}`); // Utiliza la instancia de Firebase Storage
+    const storageRef = ref(storage, ` ${uniqueImageName}`); // Utiliza la instancia de Firebase Storage
 
     await uploadBytesResumable(storageRef, blobImage, metadata);
 

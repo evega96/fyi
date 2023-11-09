@@ -45,7 +45,7 @@ const Add = () => {
                 return;
             }
             const assets = await MediaLibrary.getAssetsAsync({
-                first: 10,
+                first: 100,
                 mediaType: "photo",
             });
 
@@ -83,18 +83,8 @@ const Add = () => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("Favorite")}
-                >
-                    <Cancel />
-                </TouchableOpacity>
-                <Text style={styles.textHeader}>Nueva publicación</Text>
-                <View>
-                    <Expand />
-                </View>
-            </View>
+        <ScrollView style={styles.container}>
+            
 
             <View style={styles.imageContainer}>
                 {lastImage && (
@@ -117,7 +107,7 @@ const Add = () => {
 
             <View style={styles.imagesContainer}>
                 {/* Utiliza FlatList para las imágenes recientes */}
-                <FlatList
+                {<FlatList
                     data={recentImages}
                     keyExtractor={(item) => item.id}
                     numColumns={numColumns}
@@ -135,7 +125,7 @@ const Add = () => {
                             />
                         </TouchableOpacity>
                     )}
-                />
+                    />}
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity
                         style={styles.button}
@@ -149,7 +139,7 @@ const Add = () => {
                     </TouchableOpacity>
                 </View>
             </View>
-        </SafeAreaView>
+        </ScrollView>
     );
 };
 

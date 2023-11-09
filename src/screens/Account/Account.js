@@ -22,6 +22,7 @@ import Closed from "../../components/Cerrar";
 import { getTwoHumansRoomId } from "../../app/api";
 import Ioniconss from "react-native-vector-icons/Ionicons";
 import {logout} from "../../app/api";
+import Flechi from "../../components/Flecha";
 
 
 const Account = ({ navigation, route }) => {
@@ -158,7 +159,8 @@ const Account = ({ navigation, route }) => {
                   <TouchableOpacity
                   style={styles.logoutButton}
                   onPress={()=>logout()}>
-                 <Text style={styles.logoutButtonText}>Cerrar Sesión</Text>
+                    <Text style={{padding: 15, right: 60}}><Closed /></Text>
+                 <Text style={styles.logoutButtonText}  >  Cerrar Sesión</Text>
                  </TouchableOpacity>
 
                 </View>
@@ -166,7 +168,7 @@ const Account = ({ navigation, route }) => {
             </View>
             <View>
               <TouchableOpacity onPress={hideModal}>
-                <Text style={{ color: "#ffffff" }}>  <Closed /> </Text>
+                <Text style={ styles.flechaCerrar}>  <Flechi/> </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -319,7 +321,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   modalContent: {
-    backgroundColor: "grey",
+    backgroundColor: "#313131",
     padding: 20,
     borderRadius: 10,
   },
@@ -354,10 +356,19 @@ const styles = StyleSheet.create({
     
   },
   logoutButton: {
-    borderWidth: 1, 
-    borderColor: "red",
-    backgroundColor: "bla"
-  }
+    
+    left: 62
+  },
+  logoutButtonText: {
+    color: '#ffffff',
+    fontSize: 18,
+    top: -40,
+    right: 10
+  },
+  flechaCerrar: {
+ 
+    left: 280
+  },
 });
 
 export default Account;

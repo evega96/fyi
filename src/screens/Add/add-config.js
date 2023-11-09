@@ -6,17 +6,11 @@ const AddConfig = {
     component: Add,
     options: {
         headerTitle: "Add",
-        headerShown: false,
-        tabBarStyle: { display: "none" },
-        tabBarIcon: () => (
-            <Ionicons
-                name="add-circle-sharp"
-
-                size={24}
-
-                color="#6451a5"
-            ></Ionicons>
-        ),
+        headerShown: true,
+        tabBarStyle: { display: "none", },
+        headerStyle:{backgroundColor: '#313131'},
+        headerTintColor: '#ffffff'
+        
     },
 };
 
