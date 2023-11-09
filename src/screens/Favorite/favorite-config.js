@@ -4,10 +4,11 @@ import img from '../../../assets/Favoritos.png';
 import { Image } from "react-native";
 
 const Favorite = {
-    name: "Favorite",
+    name: "Favoritos",
     component: Fav,
     options: {
-        headerTitle: 'Favorite',
+        headerTitle: 'Favoritos',
+        headerTintColor: '#ffffff',
         tabBarIcon: () => <Image source={img} />,
     }
 }

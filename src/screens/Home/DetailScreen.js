@@ -9,7 +9,7 @@ const DetailScreen = ({ route, navigation }) => {
   const [isSaved, setIsSaved] = useState(false);
 
   const handleGoToAccount = () => {
-    navigation.navigate('Account')
+    navigation.navigate('Cuenta')
 
   };
 
