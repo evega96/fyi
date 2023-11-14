@@ -22,12 +22,12 @@ const HomeScreen = ({ navigation }) => {
 
   }, []);
 
-  const onRefresh = () => {
-    if(!isRefreshing){
+  const onRefresh = async () => {
+    
       setIsRefreshing(true)
-    }else(
+    
       setIsRefreshing(false)
-    )
+    
     fetchImages(); 
   }
   
@@ -72,18 +72,18 @@ const HomeScreen = ({ navigation }) => {
           refreshing={isRefreshing}
           onRefresh={onRefresh}
           tintColor="#fff" // Opcional: color del indicador de carga
-        />
+        />   
       }
     >
-      <MasonryList
-        backgroundColor='#313131'
-        images={images}
-        spacing={5}
-        containerStyle={{ padding: 5 }}
-        onPressImage={(image, index) => {
-          openDetailScreen(image);
-        }}
-      />
+    <MasonryList
+      backgroundColor='#313131'
+      images={images}
+      spacing={5}
+      containerStyle={{ padding: 5 }}
+      onPressImage={(image, index) => {
+        openDetailScreen(image);
+      }}
+    />
     </ScrollView>
 
   );
