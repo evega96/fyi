@@ -344,7 +344,6 @@ export const getUserChatRooms = async (userId) => {
   try {
     const userChatRooms = [];
 
-    console.log('777777777', userId)
     // Consulta las salas de chat donde el usuario actual es miembro
     const chatRoomsQuery = query(
       collection(db, "rooms"),
@@ -487,24 +486,25 @@ export const getNameById = async (userId) => {
   return result.data().user;
 
 
-  // try {
-  //   const usersRef = collection(db, "users");
-  //   const querySnapshot = await getDocs(usersRef);
-
-  //   for (const doc of querySnapshot.docs) {
-  //     const userData = doc.data(userData);
-  //     if (doc.id === userId) {
-  //       return userData.user; // Cambia 'name' al campo que almacena el nombre en tus documentos de usuario
-  //     }
-  //   }
-
-  //   // Si no se encuentra el usuario con el ID especificado, puedes devolver null o algún otro valor indicativo.
-  //   return null;
-  // } catch (error) {
-  //   console.error("Error al buscar el nombre del usuario por ID:", error);
-  //   return null;
-  // }
+ 
 };
+
+
+
+export const getLatestMsg = async (roomCodeId) => {
+  try {
+    console.log('11111111111', roomCodeId)
+    const msgs = await getMsgs(roomCodeId);
+    console.log('333333333333333')
+    const latestMsg = msgs.length > 0 ? msgs[msgs.length - 1] : null;
+console.log('4444444444444444444')
+    return latestMsg ? { msg: latestMsg.msg, senderId: latestMsg.userId } : null;
+  } catch (error) {
+    console.error('Error al obtener el último mensaje:', error);
+    return null;
+  }
+};
+
 
 
 
