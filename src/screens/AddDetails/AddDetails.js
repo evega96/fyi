@@ -55,12 +55,7 @@ const AddDetails = ({ route, navigation }) => {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <BackArrow />
-                    </TouchableOpacity>
-                    <Text style={styles.textHeader}>Nueva publicación</Text>
-                </View>
+                
                 <View style={styles.imageInformation}>
                     <View style={styles.userInformation}>
                         <Image

@@ -6,12 +6,7 @@ const TattooArtistBottomConfig = {
     },
     //headerShown: false, // Ocultar la cabecera
     headerTintColor: "#313131", // Estilos del texto de la cabecera
-    headerRight: () => (
-      <Pressable onPress={() => { }}>
-        <Text>Log out</Text>
-      </Pressable>
-    ), // Mostramos contentenido en la parte derecha de la barra superior. No se verá si headerShown es false
+    tabBarStyle: { backgroundColor: '#313131'},
   },
 };
-
 export default TattooArtistBottomConfig;

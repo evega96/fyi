@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, ScrollView, RefreshControl } from 'react-native';
 import Ionicons from 'react-native-vector-icons/AntDesign';
 import Chat from '../../components/ChatRoom';
 
-import { getUserChatRooms, getCurrentUserId, getRoomById, getUserRoomsByUserId, getNameById, getItems } from '../../app/api';
+import { getLatestMsg,getUserChatRooms, getCurrentUserId, getRoomById, getUserRoomsByUserId, getNameById, getItems } from '../../app/api';
 
 import { SearchBar } from 'react-native-elements';
 
@@ -15,44 +15,73 @@ const Message = ({ route, navigation }) => {
     const [uid, setUid] = useState();
 
     const [users, setUsers] = useState();
+    const [usersInChatLobby, setUsersInChatLobby] = useState();
+    const [name, setName] = useState();
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     var userId;
-    var otherUserID
+    var otherUserID;
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-
-                const users = await getItems();
-                setUsers(users);
-
-                userId = await getCurrentUserId();
-                const chatRooms = await getUserRoomsByUserId(userId);
-                setUserChatRooms(chatRooms)
-
-                // Obtener los IDs de los miembros de cada sala
-                const memberIdsArray = chatRooms.map(room => room.members);
-                setMemberIds(memberIdsArray);
-
-                otherUserID = await getNameById('BcFleS8Au3e7cBKJl9DQggKjOBg1');
-                setUid(otherUserID);
-
-
-                var user = [];
-                // Obtener los nombres de usuario a partir de las ID de los miembros
-                for (var i = 0; i < users.length; i++) {
-                    user[i] = await getUserNameByUserId(users, users[i].id)
-                }
-
-                setMemberNames(user.displayName);
-
-            } catch (error) {
-                console.error('Error al obtener las salas de chat:', error);
-            }
-        };
-
         fetchData();
     }, []);
+    
+    const fetchData = async () => {
+        try {
+            const users = await getItems();
+            setUsers(users);
+
+            userId = await getCurrentUserId();
+            const currentUserChatRooms = await getUserRoomsByUserId(userId);
+            setUserChatRooms(currentUserChatRooms);
+
+            // Obtener los IDs de los miembros de cada sala
+            const memberIdsArray = currentUserChatRooms.map(room => room.members);
+            setMemberIds(memberIdsArray);
+            var user = [];
+            var res;
+            // Obtener los nombres de usuario y último mensaje a partir de las ID de los miembros
+            for (var i = 0; i < currentUserChatRooms.length; i++) {
+                // console.log('aaaaaaaaaaaaaaaaa')
+                // user[i] = await getUserNameByUserId(users, users[i].id);
+// console.log('bbbbbbbbbbbbbb', currentUserChatRooms)
+                const latestMsg = await getLatestMsg(currentUserChatRooms[i].id);
+// console.log('5555555555555555r')
+currentUserChatRooms[i].latestMsg = latestMsg ? latestMsg.msg : '';
+currentUserChatRooms[i].latestMsgSender = latestMsg ? latestMsg.senderId : '';
+
+             res = await getNameById(currentUserChatRooms[i].latestMsgSender);
+            }
+            // console.log('pppppppppp', memberIds)
+            for(var i = 0; i<memberIds.length; i++){
+
+
+                for(var j = 0; j<memberIds[i].length; j++){
+                    console.log(memberIds[i][j] , 121123423423212)
+                
+
+                    // console.log(j ,"jota")
+
+                    // console.log(memberIds[0],12121233223442343423423423212)
+                    if(memberIds[i][j] === userId){
+                        otherUserID= await getNameById(userId);
+                    }else {
+                        otherUserID = await getNameById(memberIds[i][j]);
+                        setUsersInChatLobby(otherUserID)
+                    }
+                }
+            }
+            console.log(currentUserChatRooms)
+
+    
+            setName(res);
+            setMemberNames(user.displayName);
+            setRoomData(currentUserChatRooms);
+            
+        } catch (error) {
+            console.error('Error al obtener las salas de chat:', error);
+        }
+    };
 
     const handleButtonChat = (roomId) => {
         navigation.navigate('ChatRooms', {
@@ -61,17 +90,36 @@ const Message = ({ route, navigation }) => {
     };
 
     function getUserNameByUserId(users, userId) {
-
         const user = users.find(user => user.id === userId);
         const result = " " + user.user + " ";
         return result;
     }
 
+  
+
+   const onRefresh = async () => {
+    
+    setIsRefreshing(true)
+  
+    setIsRefreshing(false)
+  
+  fetchData(); 
+}
+
 
     return (
-        <ScrollView style={{ backgroundColor: '#313131' }}>
+        <ScrollView style={{flex : 1 , backgroundColor: '#313131' }}
+        refreshControl={ // Agrega el RefreshControl al ScrollView
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={onRefresh}
+          tintColor="#fff" // Opcional: color del indicador de carga
+        />   
+      }>
+             
+            
             <View style={{ backgroundColor: '#313131' }}>
-                <SearchBar
+                <SearchBar 
                     placeholder="Buscar..."
                     containerStyle={{ backgroundColor: '#313131' }}
                     inputContainerStyle={{ backgroundColor: '#444' }}
@@ -79,16 +127,20 @@ const Message = ({ route, navigation }) => {
             </View>
             <Text style={styles.sectionTitle}>Salas de Chat:</Text>
             {userChatRooms.map((room) => (
-                <TouchableOpacity key={room.id} style={styles.roomContainer} onPress={() => handleButtonChat(room.id)}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image style={styles.img} source={require('../../../assets/FotodePerfil.jpg')} />
-                        <View style={{ marginLeft: 10, flex: 1 }}>
-                            <Text style={styles.roomText}>{uid}</Text>
-                            <Text style={styles.lastMessage}>Último mensaje</Text>
-                        </View>
-                    </View>
-                </TouchableOpacity>
-            ))}
+    <TouchableOpacity key={room.id} style={styles.roomContainer} onPress={() => handleButtonChat(room.id)}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image style={styles.img} source={require('../../../assets/FotodePerfil.jpg')} />
+            <View style={{ marginLeft: 10, flex: 1 }}>
+                <Text style={styles.roomText}>{usersInChatLobby}</Text>
+                <Text style={styles.lastMessage}>
+                    {room.latestMsgSender === userId ? 'Tú: ' : `${name}: `}
+                    {room.latestMsg}
+                </Text>
+            </View>
+        </View>
+    </TouchableOpacity>
+))}
+
 
 
         </ScrollView>

@@ -6,7 +6,7 @@ const AccountConfig = {
     component: Account,
     options: {
         headerTitle: 'Cuenta',
-        tabBarIcon: () => <Ionicons name="account" size={30} color="#6451a5" ></Ionicons>
+        tabBarIcon: () => <Image source={require('../../../assets/Perfil.png')} />
     }
 }
 
