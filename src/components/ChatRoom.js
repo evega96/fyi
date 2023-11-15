@@ -89,15 +89,22 @@ const PrivateChatScreen = ({ route }) => {
                 />
 
             }
+<<<<<<< Updated upstream
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 50, marginLeft: 25, marginRight: 25 }}>
+=======
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 50, marginLeft: 10, marginRight: 10, backgroundColor: '#ffffff', height: 60, width: 370, borderRadius: 30 }}>
+>>>>>>> Stashed changes
                 <TextInput
                     style={{ flex: 1, marginRight: 8 }}
-                    placeholder="Escribe un mensaje"
                     value={newMessage}
                     onChangeText={(text) => setNewMessage(text)}
                 />
                 <TouchableOpacity onPress={handleSendMessage}>
+<<<<<<< Updated upstream
                     <Icon name="send" size={24} color="blue" />
+=======
+                    <Image style={{ marginRight: 10 }} source={require('../../assets/send.png')} />
+>>>>>>> Stashed changes
                 </TouchableOpacity>
             </View>
         </View>

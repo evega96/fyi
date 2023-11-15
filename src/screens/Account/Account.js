@@ -20,6 +20,12 @@ import Ajustes from "../../components/Ajustes";
 import LineIcon from "../../components/Linea";
 import Closed from "../../components/Cerrar";
 import { getTwoHumansRoomId } from "../../app/api";
+<<<<<<< Updated upstream
+=======
+import Ioniconss from "react-native-vector-icons/Ionicons";
+import { logout } from "../../app/api";
+import Flechi from "../../components/Flecha";
+>>>>>>> Stashed changes
 
 
 const Account = ({ navigation, route }) => {
@@ -94,6 +100,7 @@ const Account = ({ navigation, route }) => {
       console.error('Error al iniciar el chat privado:', error);
     }
   };
+<<<<<<< Updated upstream
 
   return (
   
@@ -108,14 +115,42 @@ const Account = ({ navigation, route }) => {
             onPress={() => navigation.navigate("Add") }>
               <Text>ADD</Text>
           </TouchableOpacity>
+=======
 
-        <Modal isVisible={isModalVisible}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalTexts}>
-              <View>
-                <Text style={{ color: "white", padding: 20, margin: "auto", left: 90, padding: 30 }}>
-                  <Ajustes />
+
+
+  const handleOnPressAdd = () => {
+    navigation.navigate('Add')
+    console.log('11111111111', handleOnPressAdd)
+  }
+
+  return (
+
+    <ScrollView style={{ backgroundColor: '#313131' }} contentContainerStyle={styles.contenido}>
+      <TouchableOpacity onPress={showModal}>
+        <Configuration style={styles.Configuration} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.AddButton}
+        onPress={handleOnPressAdd}>
+        <Ioniconss
+          name="add-circle-sharp"
+          size={44}
+          color="#fff" /></TouchableOpacity>
+>>>>>>> Stashed changes
+
+      <Modal isVisible={isModalVisible}>
+        <View style={styles.modalContent}>
+          <View style={styles.modalTexts}>
+            <View>
+              <Text style={{ color: "white", padding: 20, margin: "auto", left: 90, padding: 30 }}>
+                <Ajustes />
+              </Text>
+              <View style={styles.headerModal}>
+                <Text style={styles.LineIcon}>
+                  <LineIcon />
                 </Text>
+<<<<<<< Updated upstream
                 <View style={styles.headerModal}>
                   <Text style={styles.LineIcon}>
                     <LineIcon />
@@ -154,24 +189,105 @@ const Account = ({ navigation, route }) => {
                 <Text style={{ color: "#ffffff" }}>  <Closed /> </Text>
               </TouchableOpacity>
             </View>
+=======
+              </View>
+              <View style={styles.Iconos}>
+                <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
+                  <Count />
+                </Text>
+                <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
+                  <Privacidad />
+                </Text>
+                <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
+                  <Contein />
+                </Text>
+                <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
+                  <Not />
+                </Text>
+                <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
+                  <Langua />
+                </Text>
+                <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
+                  <Pagos />
+                </Text>
+                <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
+                  <Reser />
+                </Text>
+                <Text style={{ color: "white", padding: 15 }} onPress={() => Alert.alert(".....hola")}>
+                  <Ay />
+                </Text>
+                <TouchableOpacity
+                  style={styles.logoutButton}
+                  onPress={() => logout()}>
+                  <Text style={{ padding: 15, right: 60 }}><Closed /></Text>
+                  <Text style={styles.logoutButtonText}  >  Cerrar Sesión</Text>
+                </TouchableOpacity>
+
+              </View>
+            </View>
+>>>>>>> Stashed changes
           </View>
-        </Modal>
+          <View>
+            <TouchableOpacity onPress={hideModal}>
+              <Text style={styles.flechaCerrar}>  <Flechi /> </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
-        <View style={styles.HeaderButton}>
-          <Text style={styles.userName}>Usuario: {userName}</Text>
-          <Image source={img} style={styles.profileImage} />
+      <View style={styles.HeaderButton}>
+        <Text style={styles.userName}>Usuario: {userName}</Text>
+        <Image source={img} style={styles.profileImage} />
 
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("EditarPerfil")}
+        >
+          <Text style={styles.buttonText}>Editar Perfil</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => handleContactButtonClick('93i5kPJhBLRB6KnwY87m9yVOJiE2')}
+        >
+          <Text style={styles.buttonText}>Mensaje</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText} onPress={() => Alert.alert("Compartir")}>Compartir</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.Text}>
+        <Text style={{ color: 'white' }}> Fan de los tatuajes</Text>
+        <Text style={{ color: 'white' }}> BARCELONA</Text>
+        <View style={styles.tatuajes}>
           <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigation.navigate("EditarPerfil")}
+            style={[
+              styles.buttons,
+              buttonPressed === 'MisTatuajes' ? { backgroundColor: 'white' } : { backgroundColor: 'black' }
+            ]}
+            onPress={() => {
+              Alert.
+                alert("Mis Tatuajes");
+              setButtonPressed('MisTatuajes');
+            }}
           >
-            <Text style={styles.buttonText}>Editar Perfil</Text>
+            <Text style={[
+              styles.buttonsText,
+              buttonPressed === 'MisTatuajes' ? { color: 'blue' } : { color: 'white' }
+            ]}>Mis Tatuajes</Text>
           </TouchableOpacity>
-
           <TouchableOpacity
-            style={styles.button}
-            onPress={() => handleContactButtonClick('93i5kPJhBLRB6KnwY87m9yVOJiE2')}
+            style={[
+              styles.buttons,
+              buttonPressed === 'Colecciones' ? { backgroundColor: 'white' } : { backgroundColor: 'black' }
+            ]}
+            onPress={() => {
+              Alert.
+                alert("Colecciones");
+              setButtonPressed('Colecciones');
+            }}
           >
+<<<<<<< Updated upstream
             <Text style={styles.buttonText}>Mensaje</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
@@ -213,17 +329,25 @@ const Account = ({ navigation, route }) => {
     ]}>Colecciones</Text>
   </TouchableOpacity>
 </View>
-
+=======
+            <Text style={[
+              styles.buttonsText,
+              buttonPressed === 'Colecciones' ? { color: 'blue' } : { color: 'white' }
+            ]}>Colecciones</Text>
+          </TouchableOpacity>
         </View>
-        {images.map((image) => (
-          <Image
-            key={image.id}
-            source={{ uri: image.url }}
-            style={styles.imagenes}
-          />
-        ))}
-      </ScrollView>
-   
+>>>>>>> Stashed changes
+
+      </View>
+      {images.map((image) => (
+        <Image
+          key={image.id}
+          source={{ uri: image.url }}
+          style={styles.imagenes}
+        />
+      ))}
+    </ScrollView>
+
   );
 
 };
@@ -231,7 +355,7 @@ const Account = ({ navigation, route }) => {
 const styles = StyleSheet.create({
 
   profileImage: {
-    width: 120,
+    width: 150,
     height: 150,
     borderRadius: 75,
     marginBottom: -20,
@@ -278,7 +402,7 @@ const styles = StyleSheet.create({
     padding: 40,
   },
   buttons: {
-    
+
     padding: 10,
     borderRadius: 50,
     marginHorizontal: 10,
@@ -294,10 +418,10 @@ const styles = StyleSheet.create({
   imagenes: {
     width: 150,
     height: 150,
-    resizeMode: 'cover', 
+    resizeMode: 'cover',
     margin: 15,
     marginLeft: 25
-    
+
   },
   Configuration: {
     left: 340,
@@ -334,8 +458,29 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent", // You can set the desired border color here
   },
   AddButton: {
+<<<<<<< Updated upstream
     
   }
+=======
+    marginTop: 70,
+    left: 298,
+
+  },
+  logoutButton: {
+
+    left: 62
+  },
+  logoutButtonText: {
+    color: '#ffffff',
+    fontSize: 18,
+    top: -40,
+    right: 10
+  },
+  flechaCerrar: {
+
+    left: 280
+  },
+>>>>>>> Stashed changes
 });
 
 export default Account;

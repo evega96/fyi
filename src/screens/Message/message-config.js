@@ -7,8 +7,14 @@ const MessageConfig = {
   name: "Message",
   component: Message,
   options: {
+<<<<<<< Updated upstream
     headerTitle: "Message",
     tabBarIcon: () => <Image source={img} />
+=======
+    headerTitle: "Mensajes",
+    headerTintColor: '#ffffff',
+    tabBarIcon: () => <Image source={require('../../../assets/mensaje.png')} />
+>>>>>>> Stashed changes
   },
 };
 

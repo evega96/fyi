@@ -64,6 +64,7 @@ const DetailScreen = ({ route, navigation }) => {
         <Text style={styles.description}>{hashtags}</Text>
       </View>
       <View style={styles.overlayButtons}>
+<<<<<<< Updated upstream
         <TouchableOpacity onPress={handleLikePress} style={styles.overlayButton}>
           <FontAwesomeIcon name={isLiked ? 'heart' : 'heart-o'} size={40} color="red" />
         </TouchableOpacity>
@@ -72,6 +73,16 @@ const DetailScreen = ({ route, navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity onPress={handleSharePress} style={styles.overlayButton}>
           <FontAwesomeIcon name="share" size={40} color="blue" />
+=======
+        <TouchableOpacity onPress={handleGoToAccount} style={styles.overlayAccount}>
+          <Image source={require('../../../assets/FotodePerfil.jpg')} style={{ borderRadius: 50, width: 45, height: 45 }}></Image>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleSavePress} style={styles.overlayButton}>
+          <Image style={{ marginRight: 15, marginTop: 10 }} source={isSaved ? require('../../../assets/fav-red.png') : require('../../../assets/fav-white.png')} size={40}></Image>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleSharePress} style={styles.overlayShare}>
+          <Image style={{ marginRight: 13, marginTop: 15 }} source={require('../../../assets/Share.png')}></Image>
+>>>>>>> Stashed changes
         </TouchableOpacity>
       </View>
     </View>
@@ -118,7 +129,12 @@ const styles = StyleSheet.create({
     right: 10,
     flexDirection: 'column',
     alignItems: 'flex-end', // Alinea los iconos a la derecha
+<<<<<<< Updated upstream
     marginBottom: 200
+=======
+    marginBottom: 200,
+    marginRight: 6
+>>>>>>> Stashed changes
   },
   overlayButton: {
     backgroundColor: 'transparent',
