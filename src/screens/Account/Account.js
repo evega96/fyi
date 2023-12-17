@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, ScrollView } from "react-native";
 import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
 import { getNameById, getCurrentUserId } from "../../app/api";
-import img from "../../../assets/FotodePerfil.jpg";
+import img from "../../../assets/fotodeperfil.jpg";
 import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
 import { getUser } from "../../app/api"
 import Configuration from "../../components/ConfigorationIcon";
@@ -248,10 +248,10 @@ const Account = ({ navigation, route }) => {
 const styles = StyleSheet.create({
 
   profileImage: {
-    width: 120,
+    width: 150,
     height: 150,
     borderRadius: 75,
-    marginBottom: -20,
+    marginBottom: 10,
     marginTop: 20
   },
   userName: {

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext} from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, 
 Alert } from "react-native";
  import { AuthenticatedUserContext } from "../../Context/AuthContextProdiver";
-import img from "../../../assets/FotodePerfil.jpg"
+import img from "../../../assets/fotodeperfil.jpg"
 import { getCurrentUserId, getNameById, getUser } from "../../app/api";
 
 import ImageIcon from "../../components/Imagen";

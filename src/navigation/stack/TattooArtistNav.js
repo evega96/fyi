@@ -34,7 +34,7 @@ const TattoArtistNav = () => {
                 options={{ headerShown: false }}
             />
             <Stack.Screen name="Home" component={Home} {...HomeConfig}/>
-            <Stack.Screen name="Add" component={Add} {...AddConfig} />
+            <Stack.Screen name="Add" component={Add}  />
             <Stack.Screen name="AddDetails" component={AddDetails} options={{headerStyle:{backgroundColor: '#313131'}, headerTintColor: '#ffffff'}}/>
             <Stack.Screen name="Favorite" component={Favorite} options={{headerTintColor: '#ffffff'}}/>
             <Stack.Screen name="Account" component={Account} {...AccountConfig}/>

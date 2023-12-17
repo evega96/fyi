@@ -65,16 +65,6 @@ const HomeScreen = ({ navigation }) => {
 
 
   return (
-    <ScrollView
-      style={{ backgroundColor: '#313131' }}
-      refreshControl={ // Agrega el RefreshControl al ScrollView
-        <RefreshControl
-          refreshing={isRefreshing}
-          onRefresh={onRefresh}
-          tintColor="#fff" // Opcional: color del indicador de carga
-        />   
-      }
-    >
     <MasonryList
       backgroundColor='#313131'
       images={images}
@@ -84,7 +74,6 @@ const HomeScreen = ({ navigation }) => {
         openDetailScreen(image);
       }}
     />
-    </ScrollView>
 
   );
 };

@@ -10,6 +10,7 @@ const Favorite = {
         headerTitle: 'Favoritos',
         headerTintColor: '#ffffff',
         tabBarIcon: () => <Image source={img} />,
+        headerStyle:{backgroundColor: '#313131'},
     }
 }
 
