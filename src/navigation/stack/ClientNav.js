@@ -24,9 +24,10 @@ const ClientNav = () => {
 
         name="Inicio"
         component={ClientBottomNav}
+        options={{headerShown: false}}
       />
       <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Add" component={Add} {...AddConfig} />
+      <Stack.Screen name="Add" component={Add} />
       <Stack.Screen name="ForYou" component={ForYou} />
       <Stack.Screen name="Favorite" component={Favorite} />
       <Stack.Screen name="Account" component={Account} />

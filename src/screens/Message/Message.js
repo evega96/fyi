@@ -107,44 +107,44 @@ currentUserChatRooms[i].latestMsgSender = latestMsg ? latestMsg.senderId : '';
 }
 
 
-    return (
-        <ScrollView style={{flex : 1 , backgroundColor: '#313131' }}
-        refreshControl={ // Agrega el RefreshControl al ScrollView
+return (
+    <ScrollView style={{ flex: 1, backgroundColor: '#313131' }}
+      refreshControl={
         <RefreshControl
           refreshing={isRefreshing}
           onRefresh={onRefresh}
-          tintColor="#fff" // Opcional: color del indicador de carga
-        />   
+          tintColor="#fff"
+        />
       }>
-             
-            
-            <View style={{ backgroundColor: '#313131' }}>
-                <SearchBar 
-                    placeholder="Buscar..."
-                    containerStyle={{ backgroundColor: '#313131' }}
-                    inputContainerStyle={{ backgroundColor: '#444' }}
-                />
-            </View>
-            <Text style={styles.sectionTitle}>Salas de Chat:</Text>
-            {userChatRooms.map((room) => (
-    <TouchableOpacity key={room.id} style={styles.roomContainer} onPress={() => handleButtonChat(room.id)}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Image style={styles.img} source={require('../../../assets/FotodePerfil.jpg')} />
-            <View style={{ marginLeft: 10, flex: 1 }}>
+      <View style={{ backgroundColor: '#313131' }}>
+        <SearchBar
+          placeholder="Buscar..."
+          containerStyle={{ backgroundColor: '#313131' }}
+          inputContainerStyle={{ backgroundColor: '#444' }}
+        />
+      </View>
+      <Text style={styles.sectionTitle}>Salas de Chat:</Text>
+      {userChatRooms && userChatRooms.length > 0 ? (
+        userChatRooms.map((room) => (
+          <TouchableOpacity key={room.id} style={styles.roomContainer} onPress={() => handleButtonChat(room.id)}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image style={styles.img} source={require('../../../assets/fotodeperfil.jpg')} />
+              <View style={{ marginLeft: 10, flex: 1 }}>
                 <Text style={styles.roomText}>{usersInChatLobby}</Text>
                 <Text style={styles.lastMessage}>
-                    {room.latestMsgSender === userId ? 'Tú: ' : `${name}: `}
-                    {room.latestMsg}
+                  {room.latestMsgSender === userId ? 'Tú: ' : `${name}: `}
+                  {room.latestMsg}
                 </Text>
+              </View>
             </View>
-        </View>
-    </TouchableOpacity>
-))}
-
-
-
-        </ScrollView>
-    );
+          </TouchableOpacity>
+        ))
+      ) : (
+        <Text>No hay salas de chat disponibles.</Text>
+      )}
+    </ScrollView>
+  );
+  
 };
 
 export default Message;
