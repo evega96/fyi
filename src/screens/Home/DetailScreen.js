@@ -60,27 +60,14 @@ const DetailScreen = ({ route, navigation }) => {
         <Text style={styles.description}>{hashtags}</Text>
       </View>
       <View style={styles.overlayButtons}>
-
         <TouchableOpacity onPress={handleGoToAccount} style={styles.overlayAccount}>
           <Image source={require('../../../assets/FotodePerfil.jpg')} style={{borderRadius:50, width:45, height:45}}></Image>
-
         </TouchableOpacity>
         <TouchableOpacity onPress={handleSavePress} style={styles.overlayButton}>
           <Image style={{marginRight:15, marginTop: 10}} source={isSaved ? require('../../../assets/fav-red.png') : require('../../../assets/fav-white.png')} size={40}></Image>
         </TouchableOpacity>
-
-        <TouchableOpacity onPress={handleGoToAccount} style={styles.overlayAccount}>
-          <Image source={require('../../../assets/FotodePerfil.jpg')} style={{ borderRadius: 50, width: 45, height: 45 }}></Image>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleSavePress} style={styles.overlayButton}>
-          <Image style={{ marginRight: 15, marginTop: 10 }} source={isSaved ? require('../../../assets/fav-red.png') : require('../../../assets/fav-white.png')} size={40}></Image>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleSharePress} style={styles.overlayShare}>
-          <Image style={{ marginRight: 13, marginTop: 15 }} source={require('../../../assets/Share.png')}></Image>
-
         <TouchableOpacity onPress={handleSharePress} style={styles.overlayShare}>
           <Image source={require('../../../assets/Share.png')}></Image>
-
         </TouchableOpacity>
       </View>
     </View>
@@ -126,9 +113,8 @@ const styles = StyleSheet.create({
     bottom: 120,
     right: 10,
     alignItems: 'flex-end', // Alinea los iconos a la derecha
-
     marginBottom: 200,
-    marginRight: 6
+    marginRight:6
   },
   overlayButton: {
     backgroundColor: 'transparent',

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image, Alert, ScrollView } from "react-native";
 import Ionicons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -20,11 +19,9 @@ import Ajustes from "../../components/Ajustes";
 import LineIcon from "../../components/Linea";
 import Closed from "../../components/Cerrar";
 import { getTwoHumansRoomId } from "../../app/api";
-
 import Ioniconss from "react-native-vector-icons/Ionicons";
-import { logout } from "../../app/api";
+import {logout} from "../../app/api";
 import Flechi from "../../components/Flecha";
-
 
 
 const Account = ({ navigation, route }) => {
@@ -99,7 +96,6 @@ const Account = ({ navigation, route }) => {
       console.error('Error al iniciar el chat privado:', error);
     }
   };
-
   
  
 
@@ -108,7 +104,6 @@ const Account = ({ navigation, route }) => {
     console.log('11111111111' , handleOnPressAdd)
   }
 
-
   return (
   
       <ScrollView style={{backgroundColor: '#313131'}} contentContainerStyle={styles.contenido}>
@@ -116,46 +111,19 @@ const Account = ({ navigation, route }) => {
           <Configuration style={styles.Configuration} />
         </TouchableOpacity>
         <TouchableOpacity
-
-            style={styles.AddButton}
-            
-
-            onPress={() => navigation.navigate("Add") }>
-              <Text>ADD</Text>
-          </TouchableOpacity>
-
-
-
-
-  const handleOnPressAdd = () => {
-    navigation.navigate('Add')
-    console.log('11111111111', handleOnPressAdd)
-  }
-
-  return (
-
-    <ScrollView style={{ backgroundColor: '#313131' }} contentContainerStyle={styles.contenido}>
-      <TouchableOpacity onPress={showModal}>
-        <Configuration style={styles.Configuration} />
-      </TouchableOpacity>
-      <TouchableOpacity
         style={styles.AddButton}
         onPress={handleOnPressAdd}>
-        <Ioniconss
-          name="add-circle-sharp"
-          size={44}
-          color="#fff" /></TouchableOpacity>
+      <Ioniconss
+        name="add-circle-sharp"
+        size={44}
+        color="#fff" /></TouchableOpacity>
 
-      <Modal isVisible={isModalVisible}>
-        <View style={styles.modalContent}>
-          <View style={styles.modalTexts}>
-            <View>
-              <Text style={{ color: "white", padding: 20, margin: "auto", left: 90, padding: 30 }}>
-                <Ajustes />
-              </Text>
-              <View style={styles.headerModal}>
-                <Text style={styles.LineIcon}>
-                  <LineIcon />
+        <Modal isVisible={isModalVisible}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalTexts}>
+              <View>
+                <Text style={{ color: "white", padding: 20, margin: "auto", left: 90, padding: 30 }}>
+                  <Ajustes />
                 </Text>
                 <View style={styles.headerModal}>
                   <Text style={styles.LineIcon}>
@@ -202,69 +170,24 @@ const Account = ({ navigation, route }) => {
                 <Text style={ styles.flechaCerrar}>  <Flechi/> </Text>
               </TouchableOpacity>
             </View>
-
           </View>
-          <View>
-            <TouchableOpacity onPress={hideModal}>
-              <Text style={styles.flechaCerrar}>  <Flechi /> </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+        </Modal>
 
-      <View style={styles.HeaderButton}>
-        <Text style={styles.userName}>Usuario: {userName}</Text>
-        <Image source={img} style={styles.profileImage} />
+        <View style={styles.HeaderButton}>
+          <Text style={styles.userName}>Usuario: {userName}</Text>
+          <Image source={img} style={styles.profileImage} />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("EditarPerfil")}
-        >
-          <Text style={styles.buttonText}>Editar Perfil</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => handleContactButtonClick('93i5kPJhBLRB6KnwY87m9yVOJiE2')}
-        >
-          <Text style={styles.buttonText}>Mensaje</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText} onPress={() => Alert.alert("Compartir")}>Compartir</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.Text}>
-        <Text style={{ color: 'white' }}> Fan de los tatuajes</Text>
-        <Text style={{ color: 'white' }}> BARCELONA</Text>
-        <View style={styles.tatuajes}>
           <TouchableOpacity
-            style={[
-              styles.buttons,
-              buttonPressed === 'MisTatuajes' ? { backgroundColor: 'white' } : { backgroundColor: 'black' }
-            ]}
-            onPress={() => {
-              Alert.
-                alert("Mis Tatuajes");
-              setButtonPressed('MisTatuajes');
-            }}
+            style={styles.button}
+            onPress={() => navigation.navigate("EditarPerfil")}
           >
-            <Text style={[
-              styles.buttonsText,
-              buttonPressed === 'MisTatuajes' ? { color: 'blue' } : { color: 'white' }
-            ]}>Mis Tatuajes</Text>
+            <Text style={styles.buttonText}>Editar Perfil</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.buttons,
-              buttonPressed === 'Colecciones' ? { backgroundColor: 'white' } : { backgroundColor: 'black' }
-            ]}
-            onPress={() => {
-              Alert.
-                alert("Colecciones");
-              setButtonPressed('Colecciones');
-            }}
-          >
 
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => handleContactButtonClick('93i5kPJhBLRB6KnwY87m9yVOJiE2')}
+          >
             <Text style={styles.buttonText}>Mensaje</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
@@ -307,17 +230,16 @@ const Account = ({ navigation, route }) => {
   </TouchableOpacity>
 </View>
 
-
-      </View>
-      {images.map((image) => (
-        <Image
-          key={image.id}
-          source={{ uri: image.url }}
-          style={styles.imagenes}
-        />
-      ))}
-    </ScrollView>
-
+        </View>
+        {images.map((image) => (
+          <Image
+            key={image.id}
+            source={{ uri: image.url }}
+            style={styles.imagenes}
+          />
+        ))}
+      </ScrollView>
+   
   );
 
 };
@@ -325,7 +247,7 @@ const Account = ({ navigation, route }) => {
 const styles = StyleSheet.create({
 
   profileImage: {
-    width: 150,
+    width: 120,
     height: 150,
     borderRadius: 75,
     marginBottom: -20,
@@ -372,7 +294,7 @@ const styles = StyleSheet.create({
     padding: 40,
   },
   buttons: {
-
+    
     padding: 10,
     borderRadius: 50,
     marginHorizontal: 10,
@@ -388,10 +310,10 @@ const styles = StyleSheet.create({
   imagenes: {
     width: 150,
     height: 150,
-    resizeMode: 'cover',
+    resizeMode: 'cover', 
     margin: 15,
     marginLeft: 25
-
+    
   },
   Configuration: {
     left: 340,
@@ -428,16 +350,12 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent", // You can set the desired border color here
   },
   AddButton: {
-
-    
-  }
-
     marginTop: 70,
     left: 298,
-
+    
   },
   logoutButton: {
-
+    
     left: 62
   },
   logoutButtonText: {
@@ -447,11 +365,9 @@ const styles = StyleSheet.create({
     right: 10
   },
   flechaCerrar: {
-
-
+ 
     left: 280
   },
-
 });
 
 export default Account;
